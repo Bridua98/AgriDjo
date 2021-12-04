@@ -6,112 +6,352 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_tables2 import SingleTableMixin
 
 from inventory.mixins import SearchViewMixin
-from inventory.models import Brand, Category, Product
-from inventory.tables import BrandTable, CategoryTable, ProductTable
+from inventory.models import Categoria, Item, Lote, Marca, TipoActividadAgricola, Finca, TipoImpuesto, TipoMaquinariaAgricola, Zafra
+from inventory.tables import CategoriaTable, ItemTable, LoteTable, MarcaTable, TipoActividadAgricolaTable,FincaTable, TipoImpuestoTable, TipoMaquinariaAgricolaTable, ZafraTable
 
 
 def main(request):
     return render(request, template_name='home.html', context={})
 
-class BrandListView(SearchViewMixin, SingleTableMixin, ListView):
-    model = Brand
-    table_class = BrandTable
+
+def menu(request):
+    return render(request, template_name="menu_dummy.html", context={})
+
+# TIPO DE ACTIVIDAD AGRICOLA
+
+class TipoActividadAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = TipoActividadAgricola
+    table_class = TipoActividadAgricolaTable
     paginate_by = 6
-    search_fields = ['name']
-    template_name = 'inventory/brand_list.html'
+    search_fields = ['descripcion']
+    template_name = 'inventory/tipo_actividad_agricola_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['update_url'] = 'brand_update'
+        context['update_url'] = 'tipo_actividad_agricola_update'
+        context['delete_url'] = 'tipo_actividad_agricola_delete'
         return context
 
-class BrandCreateView(CreateView):
-    model = Brand
-    template_name = 'inventory/brand_create.html'
-    fields = ['name']
+class TipoActividadAgricolaCreateView(CreateView):
+    model = TipoActividadAgricola
+    template_name = 'inventory/tipo_actividad_agricola_create.html'
+    fields = ['descripcion','esCosecha','esSiembra','esResiembra']
 
     def get_success_url(self):
-        return reverse_lazy("brand_list")
+        return reverse_lazy("tipo_actividad_agricola_list")
 
-class BrandUpdateView(UpdateView):
-    model = Brand
-    template_name = 'inventory/brand_update.html'
-    fields = ['name']
-
-    def get_success_url(self):
-        return reverse_lazy("brand_list")
-
-class BrandDeleteView(DeleteView):
-    model = Brand
-    template_name = 'inventory/brand_delete.html'
+class TipoActividadAgricolaUpdateView(UpdateView):
+    model = TipoActividadAgricola
+    template_name = 'inventory/tipo_actividad_agricola_update.html'
+    fields = ['descripcion','esCosecha','esSiembra','esResiembra']
 
     def get_success_url(self):
-        return reverse_lazy("brand_list")
+        return reverse_lazy("tipo_actividad_agricola_list")
 
-class CategoryListView(SearchViewMixin, SingleTableMixin, ListView):
-    model = Category
-    table_class = CategoryTable
-    search_fields = ['name']
-    template_name = 'inventory/category_list.html'
+class TipoActividadAgricolaDeleteView(DeleteView):
+    model = TipoActividadAgricola
+    template_name = 'inventory/tipo_actividad_agricola_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("tipo_actividad_agricola_list")
+
+
+# FINCA
+class FincaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Finca
+    table_class = FincaTable
+    paginate_by = 6
+    search_fields = ['descripcion','ubicacion']
+    template_name = 'inventory/finca_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['update_url'] = 'category_update'
+        context['update_url'] = 'finca_update'
+        context['delete_url'] = 'finca_delete'
         return context
 
-class CategoryCreateView(CreateView):
-    model = Category
-    template_name = 'inventory/category_create.html'
-    fields = ['name']
+class FincaCreateView(CreateView):
+    model = Finca
+    template_name = 'inventory/finca_create.html'
+    fields = ['descripcion','dimensionHa','ubicacion']
 
     def get_success_url(self):
-        return reverse_lazy("category_list")
+        return reverse_lazy("finca_list")
 
-class CategoryUpdateView(UpdateView):
-    model = Category
-    template_name = 'inventory/category_update.html'
-    fields = ['name']
-
-    def get_success_url(self):
-        return reverse_lazy("category_list")
-
-class CategoryDeleteView(DeleteView):
-    model = Category
-    template_name = 'inventory/category_delete.html'
+class FincaUpdateView(UpdateView):
+    model = Finca
+    template_name = 'inventory/finca_update.html'
+    fields = ['descripcion','dimensionHa','ubicacion']
 
     def get_success_url(self):
-        return reverse_lazy("category_list")
+        return reverse_lazy("finca_list")
 
-class ProductListView(SearchViewMixin, SingleTableMixin, ListView):
-    model = Product
-    table_class = ProductTable
-    search_fields = ['name', 'barcode', 'brand__name']
-    template_name = 'inventory/product_list.html'
+class FincaDeleteView(DeleteView):
+    model = Finca
+    template_name = 'inventory/finca_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("finca_list")
+
+
+# TIPO IMPUESTO
+class TipoImpuestoListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = TipoImpuesto
+    table_class = TipoImpuestoTable
+    paginate_by = 6
+    search_fields = ['descripcion']
+    template_name = 'inventory/tipo_impuesto_list.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['update_url'] = 'product_update'
+        context['update_url'] = 'tipo_impuesto_update'
+        context['delete_url'] = 'tipo_impuesto_delete'
         return context
 
-class ProductCreateView(CreateView):
-    model = Product
-    template_name = 'inventory/product_create.html'
-    fields = ['name', 'barcode', 'brand', 'category', 'cost', 'price']
+class TipoImpuestoCreateView(CreateView):
+    model = TipoImpuesto
+    template_name = 'inventory/tipo_impuesto_create.html'
+    fields = ['descripcion','porcentaje','esIva']
 
     def get_success_url(self):
-        return reverse_lazy("product_list")
+        return reverse_lazy("tipo_impuesto_list")
 
-class ProductUpdateView(UpdateView):
-    model = Product
-    template_name = 'inventory/product_update.html'
-    fields = ['name', 'barcode', 'brand', 'category', 'cost', 'price']
-
-    def get_success_url(self):
-        return reverse_lazy("product_list")
-
-class ProductDeleteView(DeleteView):
-    model = Product
-    template_name = 'inventory/product_delete.html'
+class TipoImpuestoUpdateView(UpdateView):
+    model = TipoImpuesto
+    template_name = 'inventory/tipo_impuesto_update.html'
+    fields = ['descripcion','porcentaje','esIva']
 
     def get_success_url(self):
-        return reverse_lazy("product_list")
+        return reverse_lazy("tipo_impuesto_list")
+
+class TipoImpuestoDeleteView(DeleteView):
+    model = TipoImpuesto
+    template_name = 'inventory/tipo_impuesto_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("tipo_impuesto_list")
+
+# TIPO MAQUINARIA AGRICOLA
+
+class TipoMaquinariaAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = TipoMaquinariaAgricola
+    table_class = TipoMaquinariaAgricolaTable
+    paginate_by = 6
+    search_fields = ['descripcion']
+    template_name = 'inventory/tipo_maquinaria_agricola_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'tipo_maquinaria_agricola_update'
+        context['delete_url'] = 'tipo_maquinaria_agricola_delete'
+        return context
+
+class TipoMaquinariaAgricolaCreateView(CreateView):
+    model = TipoMaquinariaAgricola
+    template_name = 'inventory/tipo_maquinaria_agricola_create.html'
+    fields = ['descripcion']
+
+    def get_success_url(self):
+        return reverse_lazy("tipo_maquinaria_agricola_list")
+
+class TipoMaquinariaAgricolaUpdateView(UpdateView):
+    model = TipoMaquinariaAgricola
+    template_name = 'inventory/tipo_maquinaria_agricola_update.html'
+    fields = ['descripcion']
+
+    def get_success_url(self):
+        return reverse_lazy("tipo_maquinaria_agricola_list")
+
+class TipoMaquinariaAgricolaDeleteView(DeleteView):
+    model = TipoMaquinariaAgricola
+    template_name = 'inventory/tipo_maquinaria_agricola_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("tipo_maquinaria_agricola_list")
+
+
+# MARCA
+class MarcaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Marca
+    table_class = MarcaTable
+    paginate_by = 6
+    search_fields = ['descripcion']
+    template_name = 'inventory/marca_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'marca_update'
+        context['delete_url'] = 'marca_delete'
+        return context
+
+class MarcaCreateView(CreateView):
+    model = Marca
+    template_name = 'inventory/marca_create.html'
+    fields = ['descripcion']
+
+    def get_success_url(self):
+        return reverse_lazy("marca_list")
+
+class MarcaUpdateView(UpdateView):
+    model = Marca
+    template_name = 'inventory/marca_update.html'
+    fields = ['descripcion']
+
+    def get_success_url(self):
+        return reverse_lazy("marca_list")
+
+class MarcaDeleteView(DeleteView):
+    model = Marca
+    template_name = 'inventory/marca_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("marca_list")
+
+
+# CATEGORIA 
+class CategoriaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Categoria
+    table_class = CategoriaTable
+    search_fields = ['descripcion']
+    template_name = 'inventory/categoria_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'categoria_update'
+        context['delete_url'] = 'categoria_delete'
+        return context
+
+class CategoriaCreateView(CreateView):
+    model = Categoria
+    template_name = 'inventory/categoria_create.html'
+    fields = ['descripcion']
+
+    def get_success_url(self):
+        return reverse_lazy("categoria_list")
+
+class CategoriaUpdateView(UpdateView):
+    model = Categoria
+    template_name = 'inventory/categoria_update.html'
+    fields = ['descripcion']
+
+    def get_success_url(self):
+        return reverse_lazy("categoria_list")
+
+class CategoriaDeleteView(DeleteView):
+    model = Categoria
+    template_name = 'inventory/categoria_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("categoria_list")
+
+
+#ITEM
+class ItemListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Item
+    table_class = ItemTable
+    search_fields = ['descripcion', 'codigoBarra','marca__descripcion','"categoria__descripcion','tipo_item__descripcion','tipo_impuesto__descripcion']
+    template_name = 'inventory/item_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'item_update'
+        context['delete_url'] = 'item_delete'
+        return context
+
+class ItemCreateView(CreateView):
+    model = Item
+    template_name = 'inventory/item_create.html'
+    fields = ['codigoBarra','descripcion','tipoItem','tipoImpuesto','categoria','marca','precio','esActivo']
+
+    def get_success_url(self):
+        return reverse_lazy("item_list")
+
+class ItemUpdateView(UpdateView):
+    model = Item
+    template_name = 'inventory/item_update.html'
+    fields = ['codigoBarra','descripcion','tipoImpuesto','categoria','marca','precio','esActivo']
+
+    def get_success_url(self):
+        return reverse_lazy("item_list")
+
+class ItemDeleteView(DeleteView):
+    model = Item
+    template_name = 'inventory/item_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("item_list")
+
+
+#ZAFRA
+class ZafraListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Zafra
+    table_class = ZafraTable
+    search_fields = ['descripcion', 'item__descripcion']
+    template_name = 'inventory/zafra_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'zafra_update'
+        context['delete_url'] = 'zafra_delete'
+        return context
+
+class ZafraCreateView(CreateView):
+    model = Zafra
+    template_name = 'inventory/zafra_create.html'
+    fields = ['descripcion','item','anho','esZafrinha','kgEstimado']
+
+    def get_success_url(self):
+        return reverse_lazy("zafra_list")
+
+class ZafraUpdateView(UpdateView):
+    model = Zafra
+    template_name = 'inventory/zafra_update.html'
+    fields = ['descripcion','item','anho','esZafrinha','kgEstimado']
+    def get_success_url(self):
+        return reverse_lazy("zafra_list")
+
+class ZafraDeleteView(DeleteView):
+    model = Zafra
+    template_name = 'inventory/zafra_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("zafra_list")
+
+# FINCA
+class LoteListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Lote
+    table_class = LoteTable
+    paginate_by = 6
+    search_fields = ['descripcion','zafra__descripcion','finca__descripcion']
+    template_name = 'inventory/lote_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'lote_update'
+        context['delete_url'] = 'lote_delete'
+        return context
+
+class LoteCreateView(CreateView):
+    model = Lote
+    template_name = 'inventory/lote_create.html'
+    fields = ['descripcion','zafra','finca','dimension']
+
+    def get_success_url(self):
+        return reverse_lazy("lote_list")
+
+class LoteUpdateView(UpdateView):
+    model = Lote
+    template_name = 'inventory/lote_update.html'
+    fields = ['descripcion','zafra','finca','dimension']
+
+    def get_success_url(self):
+        return reverse_lazy("lote_list")
+
+class LoteDeleteView(DeleteView):
+    model = Lote
+    template_name = 'inventory/lote_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("lote_list")
+
+

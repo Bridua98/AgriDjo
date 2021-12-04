@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Añadir Maquinaria Agricola Tipo {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<h1> Añadir Maquinaria Agrícola Tipo </h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-success" type="submit" value="Guardar">
+    <a class="btn btn-primary" href="{% url 'tipo_maquinaria_agricola_list' %}"> Cancelar </a>
+</form>
+
+{% endblock %}

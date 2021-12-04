@@ -17,39 +17,63 @@ from django.contrib import admin
 from django.urls import path
 
 # importando vistas
-from store.views import BuyerListView, BuyerCreateView, BuyerUpdateView, BuyerDeleteView
-from store.views import SupplierListView, SupplierCreateView, SupplierUpdateView, SupplierDeleteView
-from inventory.views import BrandListView, BrandCreateView, BrandUpdateView, BrandDeleteView
-from inventory.views import CategoryListView, CategoryCreateView, CategoryUpdateView, CategoryDeleteView
-from inventory.views import ProductListView, ProductCreateView, ProductUpdateView, ProductDeleteView
-from inventory.views import main
+from inventory.views import CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
+from inventory.views import MarcaCreateView, MarcaDeleteView, MarcaListView, MarcaUpdateView
+from inventory.views import TipoMaquinariaAgricolaCreateView, TipoMaquinariaAgricolaDeleteView, TipoMaquinariaAgricolaListView, TipoMaquinariaAgricolaUpdateView
+from inventory.views import ItemDeleteView, ItemListView, ItemUpdateView
+from inventory.views import TipoActividadAgricolaListView, TipoActividadAgricolaCreateView, TipoActividadAgricolaUpdateView, TipoActividadAgricolaDeleteView
+from inventory.views import FincaListView, FincaCreateView, FincaUpdateView, FincaDeleteView
+from inventory.views import main, menu
 
 urlpatterns = [
-    # supplier
-    path('store/supplier/<int:pk>/delete', SupplierDeleteView.as_view(), name="supplier_delete"),
-    path('store/supplier/<int:pk>/update', SupplierUpdateView.as_view(), name="supplier_update"),
-    path('store/supplier/add', SupplierCreateView.as_view(), name="supplier_create"),
-    path('store/supplier', SupplierListView.as_view(), name="supplier_list"), 
-    # store
-    path('store/buyer/<int:pk>/delete', BuyerDeleteView.as_view(), name="buyer_delete"),
-    path('store/buyer/<int:pk>/update', BuyerUpdateView.as_view(), name="buyer_update"),
-    path('store/buyer/add', BuyerCreateView.as_view(), name="buyer_create"),
-    path('store/buyer', BuyerListView.as_view(), name="buyer_list"), 
-    # product
-    path('inventory/products/<int:pk>/delete', ProductDeleteView.as_view(), name="product_delete"),
-    path('inventory/products/<int:pk>/update', ProductUpdateView.as_view(), name="product_update"),
-    path('inventory/products/add', ProductCreateView.as_view(), name="product_create"),
-    path('inventory/products', ProductListView.as_view(), name="product_list"),
-    # category
-    path('inventory/categories/<int:pk>/delete', CategoryDeleteView.as_view(), name="category_delete"),
-    path('inventory/categories/<int:pk>/update', CategoryUpdateView.as_view(), name="category_update"),
-    path('inventory/categories/add', CategoryCreateView.as_view(), name="category_create"),
-    path('inventory/categories', CategoryListView.as_view(), name="category_list"),
-    # brand
-    path('inventory/brands/<int:pk>/delete', BrandDeleteView.as_view(), name="brand_delete"),
-    path('inventory/brands/<int:pk>/update', BrandUpdateView.as_view(), name="brand_update"),
-    path('inventory/brands/add', BrandCreateView.as_view(), name="brand_create"),
-    path('inventory/brands', BrandListView.as_view(), name="brand_list"),
+    # item
+    path('inventory/item/<int:pk>/delete', ItemDeleteView.as_view(), name="item_delete"),
+    path('inventory/item/<int:pk>/update',ItemUpdateView.as_view(), name="item_update"),
+    path('inventory/item/add', ItemCreateView.as_view(), name="item_create"),
+    path('inventory/item', ItemListView.as_view(), name="item_list"),
+    # categoria
+    path('inventory/categoria/<int:pk>/delete', CategoriaDeleteView.as_view(), name="categoria_delete"),
+    path('inventory/categoria/<int:pk>/update', CategoriaUpdateView.as_view(), name="categoria_update"),
+    path('inventory/categoria/add', CategoriaCreateView.as_view(), name="categoria_create"),
+    path('inventory/categoria', CategoriaListView.as_view(), name="categoria_list"),
+    # marca
+    path('inventory/marca/<int:pk>/delete', MarcaDeleteView.as_view(), name="marca_delete"),
+    path('inventory/marca/<int:pk>/update', MarcaUpdateView.as_view(), name="marca_update"),
+    path('inventory/marca/add', MarcaCreateView.as_view(), name="marca_create"),
+    path('inventory/marca', MarcaListView.as_view(), name="marca_list"),
+    # tipoActividadAgricola
+    path('inventory/tipo_actividad_agricola/<int:pk>/delete', TipoActividadAgricolaDeleteView.as_view(), name="tipo_actividad_agricola_delete"),
+    path('inventory/tipo_actividad_agricola/<int:pk>/update',TipoActividadAgricolaUpdateView.as_view(), name="tipo_actividad_agricola_update"),
+    path('inventory/tipo_actividad_agricola/add',TipoActividadAgricolaCreateView.as_view(), name="tipo_actividad_agricola_create"),
+    path('inventory/tipo_actividad_agricola', TipoActividadAgricolaListView.as_view(), name="tipo_actividad_agricola_list"),
+     # finca
+    path('inventory/finca/<int:pk>/delete',FincaDeleteView.as_view(), name="finca_delete"),
+    path('inventory/finca/<int:pk>/update',FincaUpdateView.as_view(), name="finca_update"),
+    path('inventory/finca/add',FincaCreateView.as_view(), name="finca_create"),
+    path('inventory/finca', FincaListView.as_view(), name="finca_list"),
+    # tipo maquinaria agricola
+    path('inventory/tipo_maquinaria_agricola/<int:pk>/delete',TipoMaquinariaAgricolaDeleteView.as_view(), name="tipo_maquinaria_agricola_delete"),
+    path('inventory/tipo_maquinaria_agricola/<int:pk>/update',TipoMaquinariaAgricolaUpdateView.as_view(), name="tipo_maquinaria_agricola_update"),
+    path('inventory/tipo_maquinaria_agricola/add',TipoMaquinariaAgricolaCreateView.as_view(), name="tipo_maquinaria_agricola_create"),
+    path('inventory/tipo_maquinaria_agricola', TipoMaquinariaAgricolaListView.as_view(), name="tipo_maquinaria_agricola_list"),
+    # tipo impuesto
+    path('inventory/tipo_impuesto/<int:pk>/delete',TipoImpuestoDeleteView.as_view(), name="tipo_impuesto_delete"),
+    path('inventory/tipo_impuesto/<int:pk>/update',TipoImpuestoUpdateView.as_view(), name="tipo_impuesto_update"),
+    path('inventory/tipo_impuesto/add',TipoImpuestoCreateView.as_view(), name="tipo_impuesto_create"),
+    path('inventory/tipo_impuesto', TipoImpuestoListView.as_view(), name="tipo_impuesto_list"),
+    # zafra
+    path('inventory/zafra/<int:pk>/delete',ZafraDeleteView.as_view(), name="zafra_delete"),
+    path('inventory/zafra/<int:pk>/update',ZafraUpdateView.as_view(), name="zafra_update"),
+    path('inventory/zafra/add',ZafraCreateView.as_view(), name="zafra_create"),
+    path('inventory/zafra', ZafraListView.as_view(), name="zafra_list"),
+    # lote
+    path('inventory/lote/<int:pk>/delete',LoteDeleteView.as_view(), name="lote_delete"),
+    path('inventory/lote/<int:pk>/update',LoteUpdateView.as_view(), name="lote_update"),
+    path('inventory/lote/add',LoteCreateView.as_view(), name="lote_create"),
+    path('inventory/lote', LoteListView.as_view(), name="lote_list"),
+
+    path('inventory/', menu, name="inventory_menu"),
+
     path('admin/', admin.site.urls),
     path('', main, name="main"),
 ]

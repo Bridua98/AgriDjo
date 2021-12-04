@@ -5,6 +5,7 @@
 
 ```bash
 c:\> python -m venv venv
+py -3 m venv venv
 ```
 O
 ```bash
@@ -95,3 +96,11 @@ C:\invsist
 ```bash
 (venv) c:\invsist>python manage.py runserver
 ```
+
+
+EJECUTAR ESTO 
+
+py -3 -m venv venv
+cd venv\Scripts
+Activate
+python manage.py runserver
