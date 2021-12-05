@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 # importando vistas
-from inventory.views import CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
+from inventory.views import BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
 from inventory.views import MarcaCreateView, MarcaDeleteView, MarcaListView, MarcaUpdateView
 from inventory.views import TipoMaquinariaAgricolaCreateView, TipoMaquinariaAgricolaDeleteView, TipoMaquinariaAgricolaListView, TipoMaquinariaAgricolaUpdateView
 from inventory.views import ItemDeleteView, ItemListView, ItemUpdateView
@@ -61,6 +61,16 @@ urlpatterns = [
     path('inventory/tipo_impuesto/<int:pk>/update',TipoImpuestoUpdateView.as_view(), name="tipo_impuesto_update"),
     path('inventory/tipo_impuesto/add',TipoImpuestoCreateView.as_view(), name="tipo_impuesto_create"),
     path('inventory/tipo_impuesto', TipoImpuestoListView.as_view(), name="tipo_impuesto_list"),
+    # bancos
+    path('inventory/banco/<int:pk>/delete',BancoDeleteView.as_view(), name="banco_delete"),
+    path('inventory/banco/<int:pk>/update',BancoUpdateView.as_view(), name="banco_update"),
+    path('inventory/banco/add',BancoCreateView.as_view(), name="banco_create"),
+    path('inventory/banco', BancoListView.as_view(), name="banco_list"),
+    # deposito
+    path('inventory/deposito/<int:pk>/delete',DepositoDeleteView.as_view(), name="deposito_delete"),
+    path('inventory/deposito/<int:pk>/update',DepositoUpdateView.as_view(), name="deposito_update"),
+    path('inventory/deposito/add',DepositoCreateView.as_view(), name="deposito_create"),
+    path('inventory/deposito', DepositoListView.as_view(), name="deposito_list"),
     # zafra
     path('inventory/zafra/<int:pk>/delete',ZafraDeleteView.as_view(), name="zafra_delete"),
     path('inventory/zafra/<int:pk>/update',ZafraUpdateView.as_view(), name="zafra_update"),
@@ -71,7 +81,13 @@ urlpatterns = [
     path('inventory/lote/<int:pk>/update',LoteUpdateView.as_view(), name="lote_update"),
     path('inventory/lote/add',LoteCreateView.as_view(), name="lote_create"),
     path('inventory/lote', LoteListView.as_view(), name="lote_list"),
+   # maquinaria agricola
+    path('inventory/maquinaria_agricola/<int:pk>/delete',MaquinariaAgricolaDeleteView.as_view(), name="maquinaria_agricola_delete"),
+    path('inventory/maquinaria_agricola/<int:pk>/update',MaquinariaAgricolaUpdateView.as_view(), name="maquinaria_agricola_update"),
+    path('inventory/maquinaria_agricola/add',MaquinariaAgricolaCreateView.as_view(), name="maquinaria_agricola_create"),
+    path('inventory/maquinaria_agricola', MaquinariaAgricolaListView.as_view(), name="maquinaria_agricola_list"),
 
+    # menu tonto
     path('inventory/', menu, name="inventory_menu"),
 
     path('admin/', admin.site.urls),

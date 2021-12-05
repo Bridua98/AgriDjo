@@ -6,8 +6,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_tables2 import SingleTableMixin
 
 from inventory.mixins import SearchViewMixin
-from inventory.models import Categoria, Item, Lote, Marca, TipoActividadAgricola, Finca, TipoImpuesto, TipoMaquinariaAgricola, Zafra
-from inventory.tables import CategoriaTable, ItemTable, LoteTable, MarcaTable, TipoActividadAgricolaTable,FincaTable, TipoImpuestoTable, TipoMaquinariaAgricolaTable, ZafraTable
+from inventory.models import Banco, Categoria, Deposito, Item, Lote, MaquinariaAgricola, Marca, TipoActividadAgricola, Finca, TipoImpuesto, TipoMaquinariaAgricola, Zafra
+from inventory.tables import BancoTable, CategoriaTable, DepositoTable, ItemTable, LoteTable, MaquinariaAgricolaTable, MarcaTable, TipoActividadAgricolaTable,FincaTable, TipoImpuestoTable, TipoMaquinariaAgricolaTable, ZafraTable
 
 
 def main(request):
@@ -18,7 +18,6 @@ def menu(request):
     return render(request, template_name="menu_dummy.html", context={})
 
 # TIPO DE ACTIVIDAD AGRICOLA
-
 class TipoActividadAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
     model = TipoActividadAgricola
     table_class = TipoActividadAgricolaTable
@@ -208,6 +207,80 @@ class MarcaDeleteView(DeleteView):
         return reverse_lazy("marca_list")
 
 
+# BANCO
+class BancoListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Banco
+    table_class = BancoTable
+    paginate_by = 6
+    search_fields = ['descripcion']
+    template_name = 'inventory/banco_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'banco_update'
+        context['delete_url'] = 'banco_delete'
+        return context
+
+class BancoCreateView(CreateView):
+    model = Banco
+    template_name = 'inventory/banco_create.html'
+    fields = ['descripcion']
+
+    def get_success_url(self):
+        return reverse_lazy("banco_list")
+
+class BancoUpdateView(UpdateView):
+    model = Banco
+    template_name = 'inventory/banco_update.html'
+    fields = ['descripcion']
+
+    def get_success_url(self):
+        return reverse_lazy("banco_list")
+
+class BancoDeleteView(DeleteView):
+    model = Banco
+    template_name = 'inventory/banco_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("banco_list")
+
+# DEPOSITO
+class DepositoListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Deposito
+    table_class = DepositoTable
+    paginate_by = 6
+    search_fields = ['descripcion']
+    template_name = 'inventory/deposito_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'deposito_update'
+        context['delete_url'] = 'deposito_delete'
+        return context
+
+class DepositoCreateView(CreateView):
+    model = Deposito
+    template_name = 'inventory/deposito_create.html'
+    fields = ['descripcion','esPlantaAcopiadora']
+
+    def get_success_url(self):
+        return reverse_lazy("deposito_list")
+
+class DepositoUpdateView(UpdateView):
+    model = Deposito
+    template_name = 'inventory/deposito_update.html'
+    fields = ['descripcion','esPlantaAcopiadora']
+
+    def get_success_url(self):
+        return reverse_lazy("deposito_list")
+
+class DepositoDeleteView(DeleteView):
+    model = Deposito
+    template_name = 'inventory/deposito_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("deposito_list")
+
 # CATEGORIA 
 class CategoriaListView(SearchViewMixin, SingleTableMixin, ListView):
     model = Categoria
@@ -353,5 +426,43 @@ class LoteDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("lote_list")
+
+
+# MAQUINARIA AGRICOLA
+class MaquinariaAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = MaquinariaAgricola
+    table_class = MaquinariaAgricolaTable
+    paginate_by = 6
+    search_fields = ['descripcion','tipoMaquinariaAgricola__descripcion']
+    template_name = 'inventory/maquinaria_agricola_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'maquinaria_agricola_update'
+        context['delete_url'] = 'maquinaria_agricola_delete'
+        return context
+
+class MaquinariaAgricolaCreateView(CreateView):
+    model = MaquinariaAgricola
+    template_name = 'inventory/maquinaria_agricola_create.html'
+    fields = ['descripcion','tipoMaquinariaAgricola','esImplemento','admiteImplemento','precio']
+
+    def get_success_url(self):
+        return reverse_lazy("maquinaria_agricola_list")
+
+class MaquinariaAgricolaUpdateView(UpdateView):
+    model = MaquinariaAgricola
+    template_name = 'inventory/maquinaria_agricola_update.html'
+    fields = ['descripcion','tipoMaquinariaAgricola','esImplemento','admiteImplemento','precio']
+
+    def get_success_url(self):
+        return reverse_lazy("maquinaria_agricola_list")
+
+class MaquinariaAgricolaDeleteView(DeleteView):
+    model = MaquinariaAgricola
+    template_name = 'inventory/maquinaria_agricola_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("maquinaria_agricola_list")
 
 

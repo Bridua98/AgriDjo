@@ -94,3 +94,24 @@ class Lote(models.Model):
     def __str__(self):
         return self.descripcion
 
+class MaquinariaAgricola(models.Model):
+    descripcion = models.CharField(max_length=200, verbose_name="Descripcion")
+    tipoMaquinariaAgricola = models.ForeignKey(TipoMaquinariaAgricola, on_delete=models.DO_NOTHING, verbose_name="Maquinaria Agrícola Tipo")
+    esImplemento = models.BooleanField(verbose_name="Es Implemento?")
+    admiteImplemento = models.BooleanField(verbose_name="Admite Implemento?")
+    precio = models.DecimalField(max_digits=15, decimal_places=2, verbose_name="Precio")
+    created = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.descripcion
+
+class Banco(models.Model):
+    descripcion = models.CharField(max_length=200, verbose_name="Descripcion",unique=True)
+    def __str__(self):
+        return self.descripcion
+
+class Deposito(models.Model):
+    descripcion = models.CharField(max_length=200, verbose_name="Descripcion",unique=True)
+    esPlantaAcopiadora = models.BooleanField(verbose_name="Es Planta Acopiadora?",default=False)
+    def __str__(self):
+        return self.descripcion
+
