@@ -6,8 +6,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_tables2 import SingleTableMixin
 
 from inventory.mixins import SearchViewMixin
-from inventory.models import Banco, Categoria, Deposito, Item, Lote, MaquinariaAgricola, Marca, TipoActividadAgricola, Finca, TipoImpuesto, TipoMaquinariaAgricola, Zafra
-from inventory.tables import BancoTable, CategoriaTable, DepositoTable, ItemTable, LoteTable, MaquinariaAgricolaTable, MarcaTable, TipoActividadAgricolaTable,FincaTable, TipoImpuestoTable, TipoMaquinariaAgricolaTable, ZafraTable
+from inventory.models import Banco, Categoria, Cuenta, Deposito, Item, Lote, MaquinariaAgricola, Marca, Persona, TipoActividadAgricola, Finca, TipoImpuesto, TipoMaquinariaAgricola, Zafra
+from inventory.tables import BancoTable, CategoriaTable, CuentaTable, DepositoTable, ItemTable, LoteTable, MaquinariaAgricolaTable, MarcaTable, PersonaTable, TipoActividadAgricolaTable,FincaTable, TipoImpuestoTable, TipoMaquinariaAgricolaTable, ZafraTable
 
 
 def main(request):
@@ -243,6 +243,42 @@ class BancoDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("banco_list")
+# CUENTA
+class CuentaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Cuenta
+    table_class = CuentaTable
+    paginate_by = 6
+    search_fields = ['descripcion','banco__descripcion','nroCuenta']
+    template_name = 'inventory/cuenta_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'cuenta_update'
+        context['delete_url'] = 'cuenta_delete'
+        return context
+
+class CuentaCreateView(CreateView):
+    model = Cuenta
+    template_name = 'inventory/cuenta_create.html'
+    fields = ['descripcion','esBanco','banco','nroCuenta']
+
+    def get_success_url(self):
+        return reverse_lazy("cuenta_list")
+
+class CuentaUpdateView(UpdateView):
+    model = Cuenta
+    template_name = 'inventory/cuenta_update.html'
+    fields = ['descripcion','esBanco','banco','nroCuenta']
+
+    def get_success_url(self):
+        return reverse_lazy("cuenta_list")
+
+class CuentaDeleteView(DeleteView):
+    model = Cuenta
+    template_name = 'inventory/cuenta_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("cuenta_list")
 
 # DEPOSITO
 class DepositoListView(SearchViewMixin, SingleTableMixin, ListView):
@@ -316,6 +352,42 @@ class CategoriaDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("categoria_list")
+
+# PERSONA 
+class PersonaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Persona
+    table_class = PersonaTable
+    search_fields = ['documento','razonSocial','localidad__descripcion']
+    template_name = 'inventory/persona_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'persona_update'
+        context['delete_url'] = 'persona_delete'
+        return context
+
+class PersonaCreateView(CreateView):
+    model = Persona
+    template_name = 'inventory/persona_create.html'
+    fields = ['razonSocial','documento','pais','localidad','direccion','celular','esCliente','esProveedor','esEmpleado']
+
+    def get_success_url(self):
+        return reverse_lazy("persona_list")
+
+class PersonaUpdateView(UpdateView):
+    model = Persona
+    template_name = 'inventory/persona_update.html'
+    fields = ['razonSocial','documento','pais','localidad','direccion','celular','esCliente','esProveedor','esEmpleado']
+
+    def get_success_url(self):
+        return reverse_lazy("persona_list")
+
+class PersonaDeleteView(DeleteView):
+    model = Persona
+    template_name = 'inventory/persona_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("persona_list")
 
 
 #ITEM

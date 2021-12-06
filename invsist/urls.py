@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 # importando vistas
-from inventory.views import BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
+from inventory.views import BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
 from inventory.views import MarcaCreateView, MarcaDeleteView, MarcaListView, MarcaUpdateView
 from inventory.views import TipoMaquinariaAgricolaCreateView, TipoMaquinariaAgricolaDeleteView, TipoMaquinariaAgricolaListView, TipoMaquinariaAgricolaUpdateView
 from inventory.views import ItemDeleteView, ItemListView, ItemUpdateView
@@ -26,6 +26,11 @@ from inventory.views import FincaListView, FincaCreateView, FincaUpdateView, Fin
 from inventory.views import main, menu
 
 urlpatterns = [
+     # personas
+    path('inventory/persona/<int:pk>/delete',PersonaDeleteView.as_view(), name="persona_delete"),
+    path('inventory/persona/<int:pk>/update',PersonaUpdateView.as_view(), name="persona_update"),
+    path('inventory/persona/add',PersonaCreateView.as_view(), name="persona_create"),
+    path('inventory/persona', PersonaListView.as_view(), name="persona_list"),
     # item
     path('inventory/item/<int:pk>/delete', ItemDeleteView.as_view(), name="item_delete"),
     path('inventory/item/<int:pk>/update',ItemUpdateView.as_view(), name="item_update"),
@@ -66,6 +71,11 @@ urlpatterns = [
     path('inventory/banco/<int:pk>/update',BancoUpdateView.as_view(), name="banco_update"),
     path('inventory/banco/add',BancoCreateView.as_view(), name="banco_create"),
     path('inventory/banco', BancoListView.as_view(), name="banco_list"),
+    # cuentas
+    path('inventory/cuenta/<int:pk>/delete',CuentaDeleteView.as_view(), name="cuenta_delete"),
+    path('inventory/cuenta/<int:pk>/update',CuentaUpdateView.as_view(), name="cuenta_update"),
+    path('inventory/cuenta/add',CuentaCreateView.as_view(), name="cuenta_create"),
+    path('inventory/cuenta', CuentaListView.as_view(), name="cuenta_list"),
     # deposito
     path('inventory/deposito/<int:pk>/delete',DepositoDeleteView.as_view(), name="deposito_delete"),
     path('inventory/deposito/<int:pk>/update',DepositoUpdateView.as_view(), name="deposito_update"),

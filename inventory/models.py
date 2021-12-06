@@ -115,3 +115,48 @@ class Deposito(models.Model):
     def __str__(self):
         return self.descripcion
 
+class Cuenta(models.Model):
+    descripcion = models.CharField(max_length=200, verbose_name="Descripcion",unique=True)
+    esBanco = models.BooleanField(verbose_name="Es Banco?",default=False)
+    nroCuenta = models.CharField(max_length=200, verbose_name="Nro Cuenta",null=True,blank=True)
+    banco = models.ForeignKey(Banco, on_delete=models.DO_NOTHING, verbose_name="Banco",null=True,blank=True)
+    def __str__(self):
+        return self.descripcion
+
+class Pais(models.Model):
+    abreviatura = models.CharField(max_length=200, verbose_name="Descripcion",unique=True)
+    descripcion = models.CharField(max_length=200, verbose_name="Descripcion",unique=True)
+    def __str__(self):
+        return self.descripcion
+
+class Departamento(models.Model):
+    descripcion = models.CharField(max_length=200, verbose_name="Descripcion",unique=True)
+    def __str__(self):
+        return self.descripcion
+
+class Distrito(models.Model):
+    descripcion = models.CharField(max_length=200, verbose_name="Descripcion")
+    departamento = models.ForeignKey(Departamento, on_delete=models.DO_NOTHING, verbose_name="Departamento")
+    def __str__(self):
+        return self.descripcion
+
+class Localidad(models.Model):
+    descripcion = models.CharField(max_length=200, verbose_name="Descripcion")
+    distrito = models.ForeignKey(Distrito, on_delete=models.DO_NOTHING, verbose_name="Distrito")
+    def __str__(self):
+        return self.descripcion
+
+class Persona(models.Model):
+    pais = models.ForeignKey(Pais, on_delete=models.DO_NOTHING, verbose_name="Pais")
+    localidad = models.ForeignKey(Localidad, on_delete=models.DO_NOTHING, verbose_name="Localidad")
+    razonSocial = models.CharField(max_length=200, verbose_name="Razon Social")
+    documento = models.CharField(max_length=40, verbose_name="Documento")
+    direccion = models.CharField(max_length=200, verbose_name="Direccion")
+    celular = models.CharField(max_length=60, verbose_name="Celular / Telefono",null=True,blank=True)
+    esCliente = models.BooleanField(verbose_name="Es Cliente?",default=False)
+    esProveedor = models.BooleanField(verbose_name="Es Proveedor?",default=False)
+    esEmpleado = models.BooleanField(verbose_name="Es Empleado?",default=False)
+    
+    def __str__(self):
+        return self.razonSocial
+

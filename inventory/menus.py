@@ -7,6 +7,9 @@ Menu.add_item("main", MenuItem("Inicio",
 
 Menu.add_item("main", MenuItem("Items",
                                reverse_lazy("item_list")))
+
+Menu.add_item("main", MenuItem("Personas",
+                               reverse_lazy("persona_list")))
                                
 
 hijos_referenciales_agricultura = (
@@ -24,6 +27,7 @@ hijos_referenciales_gestion = (
     MenuItem("Tipos de Impuestos",reverse_lazy("tipo_impuesto_list")),
     MenuItem("Bancos",reverse_lazy("banco_list")),
     MenuItem("Depósitos",reverse_lazy("deposito_list")),
+    MenuItem("Cuentas",reverse_lazy("cuenta_list")),
 )
 
 Menu.add_item("referencial_agricultura", MenuItem("Referenciales Agricultura",

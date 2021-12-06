@@ -1,5 +1,5 @@
 import django_tables2 as tables
-from inventory.models import Deposito, Item, Marca, Categoria, TipoActividadAgricola, Finca, TipoMaquinariaAgricola, TipoImpuesto, Zafra
+from inventory.models import Banco, Cuenta, Deposito, Item, Marca, Categoria, Persona, TipoActividadAgricola, Finca, TipoMaquinariaAgricola, TipoImpuesto, Zafra
 
 class BaseTable(tables.Table):
     def __init__(self, *args, **kwargs):
@@ -88,4 +88,14 @@ class DepositoTable(EditableDeleteTable):
     class Meta:
         model = Deposito
         fields = ("descripcion","esPlantaAcopiadora")
+
+class CuentaTable(EditableDeleteTable):
+    class Meta:
+        model = Cuenta
+        fields = ("descripcion","nroCuenta","banco")
+
+class PersonaTable(EditableDeleteTable):
+    class Meta:
+        model = Persona
+        fields = ("documento","razonSocial","localidad","esCliente","esProveedor","esEmpleado")
 
