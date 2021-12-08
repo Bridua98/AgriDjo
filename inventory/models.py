@@ -1,6 +1,7 @@
 from django.db import models
 
 
+
 class TipoActividadAgricola(models.Model):
     #  error_messages={'unique': u'My custom message'}
     descripcion = models.CharField(max_length=200, verbose_name="Descripcion",unique=True)
@@ -159,4 +160,21 @@ class Persona(models.Model):
     
     def __str__(self):
         return self.razonSocial
+
+class PlanActividadZafra(models.Model):
+    fecha = models.DateField()
+    zafra = models.ForeignKey(Zafra, on_delete=models.DO_NOTHING, null=True, blank=True)
+    observacion = models.CharField(max_length=300, null=True, blank=True)
+
+    @property
+    def total(self):
+        return sum(round(x.costo)  for x in self.planactividadzafradetalle_set.all())
+
+class PlanActividadZafraDetalle(models.Model):
+    planActividadZafra = models.ForeignKey(PlanActividadZafra, on_delete=models.DO_NOTHING)
+    fechaActividad = models.DateField()
+    finca = models.ForeignKey(Finca, on_delete=models.DO_NOTHING)
+    tipoActividadAgricola = models.ForeignKey(TipoActividadAgricola, on_delete=models.DO_NOTHING, null=True, blank=True)
+    descripcion = models.CharField(max_length=300, null=True, blank=True)
+    costo = models.DecimalField(max_digits=15, decimal_places=2)
 

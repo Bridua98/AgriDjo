@@ -4,10 +4,12 @@ from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_tables2 import SingleTableMixin
+from inventory.forms import PlanActividadZafraForm
+from inventory.inlines import PlanActividadZafraDetalleInline
 
-from inventory.mixins import SearchViewMixin
-from inventory.models import Banco, Categoria, Cuenta, Deposito, Item, Lote, MaquinariaAgricola, Marca, Persona, TipoActividadAgricola, Finca, TipoImpuesto, TipoMaquinariaAgricola, Zafra
-from inventory.tables import BancoTable, CategoriaTable, CuentaTable, DepositoTable, ItemTable, LoteTable, MaquinariaAgricolaTable, MarcaTable, PersonaTable, TipoActividadAgricolaTable,FincaTable, TipoImpuestoTable, TipoMaquinariaAgricolaTable, ZafraTable
+from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
+from inventory.models import Banco, Categoria, Cuenta, Deposito, Item, Lote, MaquinariaAgricola, Marca, Persona, PlanActividadZafra, TipoActividadAgricola, Finca, TipoImpuesto, TipoMaquinariaAgricola, Zafra
+from inventory.tables import BancoTable, CategoriaTable, CuentaTable, DepositoTable, ItemTable, LoteTable, MaquinariaAgricolaTable, MarcaTable, PersonaTable, PlanActividadZafraTable, TipoActividadAgricolaTable,FincaTable, TipoImpuestoTable, TipoMaquinariaAgricolaTable, ZafraTable
 
 
 def main(request):
@@ -16,6 +18,81 @@ def main(request):
 
 def menu(request):
     return render(request, template_name="menu_dummy.html", context={})
+
+
+
+class CreateWithFormsetInlinesView(FormsetInlinesMetaMixin, CreateWithInlinesView):
+    """
+    Create view con soporte para formset inlines
+    """
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        #initial_object = self.object
+        inlines = self.construct_inlines()
+        try:
+            with transaction.atomic():
+                if form.is_valid():
+                    self.object = form.save(commit=False)
+                    form_validated = True
+                else:
+                    form_validated = False
+                # Loop through inlines to set master instance
+                for inline in inlines:
+                    inline.instance = form.instance
+
+                if all_valid(inlines) and form_validated:
+                    response = self.forms_valid(form, inlines)
+                    self.run_form_extra_validation(form, inlines)
+                    if not form.errors and response:
+                        return response
+                raise ValidationError('Error')
+        except ValidationError:
+            pass
+        #self.object = initial_object
+        return self.forms_invalid(form, inlines)
+
+
+class UpdateWithFormsetInlinesView(FormsetInlinesMetaMixin, UpdateWithInlinesView):
+    """
+    Update view con soporte para formset inlines
+    """
+
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        initial_object = self.object
+        inlines = self.construct_inlines()
+        try:
+            with transaction.atomic():
+                if form.is_valid():
+                    self.object = form.save(commit=False)
+                    form_validated = True
+                else:
+                    form_validated = False
+                # Loop through inlines to set master instance
+                for inline in inlines:
+                    inline.instance = form.instance
+
+                if all_valid(inlines) and form_validated:
+                    response = self.forms_valid(form, inlines)
+                    self.run_form_extra_validation(form, inlines)
+                    if not form.errors and response:
+                        return response
+                raise ValidationError('Error')
+        except ValidationError:
+            pass
+        self.object = initial_object
+        return self.forms_invalid(form, inlines)
+
 
 # TIPO DE ACTIVIDAD AGRICOLA
 class TipoActividadAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
@@ -538,3 +615,49 @@ class MaquinariaAgricolaDeleteView(DeleteView):
         return reverse_lazy("maquinaria_agricola_list")
 
 
+#PLAN ACTIVIDAD ZAFRA
+class PlanActividadZafraListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = PlanActividadZafra
+    table_class = PlanActividadZafraTable
+    search_fields = ['zafra__descripcion', 'observacion']
+    template_name = 'inventory/plan_actividad_zafra_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'plan_actividad_zafra_update'
+        return context
+
+
+class PlanActividadZafraCreateView(CreateWithFormsetInlinesView):
+    model = PlanActividadZafra
+    form_class = PlanActividadZafraForm
+    template_name = 'inventory/plan_actividad_zafra_create.html'
+    inlines = [PlanActividadZafraDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('plan_actividad_zafra_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class OrderUpdateView(UpdateWithFormsetInlinesView):
+    model = PlanActividadZafra
+    form_class = PlanActividadZafraForm
+    template_name = 'inventory/plan_actividad_zafra_update.html'
+    inlines = [PlanActividadZafraDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('plan_actividad_zafra_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context

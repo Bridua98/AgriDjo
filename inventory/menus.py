@@ -30,6 +30,11 @@ hijos_referenciales_gestion = (
     MenuItem("Cuentas",reverse_lazy("cuenta_list")),
 )
 
+
+hijos_movimiento_agricultura = (
+    MenuItem("Plan de Actividades Zafras",reverse_lazy("plan_actividad_zafra_list")),
+)
+
 Menu.add_item("referencial_agricultura", MenuItem("Referenciales Agricultura",
                             reverse_lazy("inventory_menu"),
                             children = hijos_referenciales_agricultura))
@@ -37,6 +42,11 @@ Menu.add_item("referencial_agricultura", MenuItem("Referenciales Agricultura",
 Menu.add_item("referencial_gestion", MenuItem("Referenciales Gestión",
                             reverse_lazy("inventory_menu"),
                             children = hijos_referenciales_gestion))
+
+Menu.add_item("movimientos_agricultura", MenuItem("Movimientos",
+                            reverse_lazy("inventory_menu"),
+                            children = hijos_movimiento_agricultura))
+
 
 #hijos_referenciales= (
 #    MenuItem("Gestión",reverse_lazy("inventory_menu"),children= hijos_referenciales_gestion),
