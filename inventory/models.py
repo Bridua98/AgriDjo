@@ -162,9 +162,9 @@ class Persona(models.Model):
         return self.razonSocial
 
 class PlanActividadZafra(models.Model):
-    fecha = models.DateField()
-    zafra = models.ForeignKey(Zafra, on_delete=models.DO_NOTHING, null=True, blank=True)
-    observacion = models.CharField(max_length=300, null=True, blank=True)
+    fecha = models.DateField(verbose_name="Fecha")
+    zafra = models.ForeignKey(Zafra, on_delete=models.DO_NOTHING, null=True, blank=True,verbose_name="Zafra")
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
 
     @property
     def total(self):
@@ -172,9 +172,9 @@ class PlanActividadZafra(models.Model):
 
 class PlanActividadZafraDetalle(models.Model):
     planActividadZafra = models.ForeignKey(PlanActividadZafra, on_delete=models.DO_NOTHING)
-    fechaActividad = models.DateField()
-    finca = models.ForeignKey(Finca, on_delete=models.DO_NOTHING)
-    tipoActividadAgricola = models.ForeignKey(TipoActividadAgricola, on_delete=models.DO_NOTHING, null=True, blank=True)
-    descripcion = models.CharField(max_length=300, null=True, blank=True)
-    costo = models.DecimalField(max_digits=15, decimal_places=2)
+    fechaActividad = models.DateField(verbose_name="Fecha Act.")
+    finca = models.ForeignKey(Finca, on_delete=models.DO_NOTHING,verbose_name="Finca")
+    tipoActividadAgricola = models.ForeignKey(TipoActividadAgricola, on_delete=models.DO_NOTHING, null=True, blank=True,verbose_name="Tipo Actividad Agrícola")
+    descripcion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Descripción")
+    costo = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Estimado")
 

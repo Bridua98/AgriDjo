@@ -99,7 +99,7 @@ class PersonaTable(EditableDeleteTable):
         model = Persona
         fields = ("documento","razonSocial","localidad","esCliente","esProveedor","esEmpleado")
 
-class PlanActividadZafraTable(EditableDeleteTable):
+class PlanActividadZafraTable(EditableTable):
     class Meta:
         model = PlanActividadZafra
         fields = ("fecha","zafra","observacion","total")

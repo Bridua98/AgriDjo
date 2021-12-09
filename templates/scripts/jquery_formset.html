@@ -1,0 +1,30 @@
+{% load static %}
+<script src="{% static '/site/js/jquery.formset.js' %}"></script>
+<script>
+    $(document).ready(function () {
+
+        function refresh(){
+            if (window.hasOwnProperty('calculatedFields')) {
+                calculatedFields.forEach(function (obj) {
+                    obj.executeAll();
+                });
+            }            
+        }
+
+        $(".formset").formset({
+            animateForms: true
+        });
+
+        $(".formset").on('formAdded', function (e) {
+            if (window.hasOwnProperty('calculatedFields')) {
+                resetCalculatedFields();
+            }
+        });
+
+        $(".formset").on('formDeleted', function (e) {
+            refresh();
+        });
+
+        refresh();
+    });
+</script>

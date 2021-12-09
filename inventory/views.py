@@ -1,15 +1,26 @@
+from django.core.exceptions import ValidationError
+from django.db import transaction
+from django.forms.formsets import all_valid
 from django.shortcuts import render
 from django.urls import reverse_lazy
-
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_tables2 import SingleTableMixin
+from extra_views import CreateWithInlinesView, UpdateWithInlinesView
+
 from inventory.forms import PlanActividadZafraForm
 from inventory.inlines import PlanActividadZafraDetalleInline
-
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import Banco, Categoria, Cuenta, Deposito, Item, Lote, MaquinariaAgricola, Marca, Persona, PlanActividadZafra, TipoActividadAgricola, Finca, TipoImpuesto, TipoMaquinariaAgricola, Zafra
-from inventory.tables import BancoTable, CategoriaTable, CuentaTable, DepositoTable, ItemTable, LoteTable, MaquinariaAgricolaTable, MarcaTable, PersonaTable, PlanActividadZafraTable, TipoActividadAgricolaTable,FincaTable, TipoImpuestoTable, TipoMaquinariaAgricolaTable, ZafraTable
+from inventory.models import (Banco, Categoria, Cuenta, Deposito, Finca, Item,
+                              Lote, MaquinariaAgricola, Marca, Persona,
+                              PlanActividadZafra, TipoActividadAgricola,
+                              TipoImpuesto, TipoMaquinariaAgricola, Zafra)
+from inventory.tables import (BancoTable, CategoriaTable, CuentaTable,
+                              DepositoTable, FincaTable, ItemTable, LoteTable,
+                              MaquinariaAgricolaTable, MarcaTable,
+                              PersonaTable, PlanActividadZafraTable,
+                              TipoActividadAgricolaTable, TipoImpuestoTable,
+                              TipoMaquinariaAgricolaTable, ZafraTable)
 
 
 def main(request):
@@ -645,7 +656,7 @@ class PlanActividadZafraCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class OrderUpdateView(UpdateWithFormsetInlinesView):
+class PlanActividadZafraUpdateView(UpdateWithFormsetInlinesView):
     model = PlanActividadZafra
     form_class = PlanActividadZafraForm
     template_name = 'inventory/plan_actividad_zafra_update.html'

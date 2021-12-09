@@ -1,4 +1,5 @@
 from extra_views.advanced import InlineFormSetFactory
+
 from .models import PlanActividadZafraDetalle
 from .forms import PlanActividadZafraDetalleForm
 

@@ -1,6 +1,6 @@
 import calculation
-from layout import CancelButton, DeleteButton, Formset
-from widgets import DateInput
+from .layout import CancelButton, DeleteButton, Formset
+from .widgets import DateInput
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fieldset,
                                  Layout, Row, Submit, Field)
@@ -25,20 +25,21 @@ class PlanActividadZafraForm(forms.ModelForm):
         self.helper.form_tag = False
         self.fields['total'].label = False
         self.helper.layout = Layout(
-            Column("date"),
+            "fecha",
             "zafra",
             "observacion",
             Fieldset(
                 u'Artículos',
                 Formset(
-                    "PlanActividadZafraDetalleInline"
-                )
+                    "PlanActividadZafraDetalleInline"#, stacked=True
+                ), 
+                
             ),
             Row(
                 Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
             ), 
             Row(
-                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'order_list' %}"> Cancelar</a>""" ))
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'plan_actividad_zafra_list' %}"> Cancelar</a>""" ))
             ) 
         )
 
