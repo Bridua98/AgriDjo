@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import PlanActividadZafra, PlanActividadZafraDetalle
+from .models import Acopio, AcopioDetalle, PlanActividadZafra, PlanActividadZafraDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -29,7 +29,7 @@ class PlanActividadZafraForm(forms.ModelForm):
             "zafra",
             "observacion",
             Fieldset(
-                u'Artículos',
+                u'Detalle',
                 Formset(
                     "PlanActividadZafraDetalleInline"#, stacked=True
                 ), 
@@ -48,3 +48,45 @@ class PlanActividadZafraDetalleForm(forms.ModelForm):
         model = PlanActividadZafraDetalle
         fields = ['fechaActividad', 'finca', 'tipoActividadAgricola', 'descripcion','costo']
         widgets = { 'fechaActividad':DateInput }
+
+
+
+class AcopioForm(forms.ModelForm):
+    class Meta:
+        model = Acopio
+        fields = ['fecha', 'zafra', 'deposito', 'conductor','conductor','camion','comprobante','pBruto','pTara','pDescuento','pBonificacion','esTransportadoraPropia','observacion']
+        widgets = {'fecha':DateInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            "fecha",
+            "zafra",
+            "deposito",
+            "conductor",
+            "camion",
+            "comprobante",
+            "pBruto",
+            "pTara",
+            "pDescuento",
+            "pBonificacion",
+            "esTransportadoraPropia",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "AcopioDetalleInline"#, stacked=True
+                ), 
+                
+            ),
+            Row(
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'plan_actividad_zafra_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class AcopioDetalleForm(forms.ModelForm):
+    class Meta:
+        model = AcopioDetalle
+        fields = ['acopio', 'finca', 'lote', 'peso']

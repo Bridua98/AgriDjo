@@ -178,3 +178,39 @@ class PlanActividadZafraDetalle(models.Model):
     descripcion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Descripción")
     costo = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Estimado")
 
+
+
+class Acopio(models.Model):
+    zafra = models.ForeignKey(Zafra, on_delete=models.DO_NOTHING,verbose_name="Zafra")
+    deposito = models.ForeignKey(Deposito, on_delete=models.DO_NOTHING,verbose_name="Depósito")
+    conductor = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Conductor")
+    camion = models.ForeignKey(MaquinariaAgricola, on_delete=models.DO_NOTHING,verbose_name="Camión")
+    fecha = models.DateField(verbose_name="Fecha")
+    comprobante = models.CharField(max_length=30,verbose_name="Comprobante")
+    pBruto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Bruto")
+    pTara = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Tara")
+    pDescuento = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Descuento")
+    pBonificacion = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Bonificación")
+    esTransportadoraPropia = models.BooleanField(verbose_name="Es Transportadora Propia?",default=False)
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+
+class AcopioDetalle(models.Model):
+    acopio = models.ForeignKey(Acopio, on_delete=models.DO_NOTHING)
+    finca = models.ForeignKey(Finca, on_delete=models.DO_NOTHING,verbose_name="Finca")
+    lote = models.ForeignKey(Lote, on_delete=models.DO_NOTHING,verbose_name="Lote")
+    peso = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso")
+
+class CalificacionAgricola(models.Model):
+    descripcion = models.CharField(max_length=200, verbose_name="Descripcion",unique=True)
+    created = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.descripcion
+
+class AcopioCalificacion(models.Model):
+    acopio = models.ForeignKey(Acopio, on_delete=models.DO_NOTHING)
+    calificaionAgricola = models.ForeignKey(CalificacionAgricola, on_delete=models.DO_NOTHING)
+    grado = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Grado")
+    porcentaje = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Porcentaje")
+    peso = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso")
+

@@ -13,6 +13,7 @@ Menu.add_item("main", MenuItem("Personas",
                                
 
 hijos_referenciales_agricultura = (
+    MenuItem("Calificaciones Agrícolas",reverse_lazy("calificacion_agricola_list")),
     MenuItem("Actividades Agrícolas Tipos",reverse_lazy("tipo_actividad_agricola_list")),
     MenuItem("Máquinarias Agrícolas Tipos", reverse_lazy("tipo_maquinaria_agricola_list")),
     MenuItem("Máquinarias Agrícolas",reverse_lazy("maquinaria_agricola_list")),
@@ -33,6 +34,7 @@ hijos_referenciales_gestion = (
 
 hijos_movimiento_agricultura = (
     MenuItem("Plan de Actividades Zafras",reverse_lazy("plan_actividad_zafra_list")),
+    MenuItem("Acopios",reverse_lazy("acopio_list")),
 )
 
 Menu.add_item("referencial_agricultura", MenuItem("Referenciales Agricultura",

@@ -8,14 +8,14 @@ from django.views.generic.list import ListView
 from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
-from inventory.forms import PlanActividadZafraForm
-from inventory.inlines import PlanActividadZafraDetalleInline
+from inventory.forms import AcopioForm, PlanActividadZafraForm
+from inventory.inlines import AcopioDetalleInline, PlanActividadZafraDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import (Banco, Categoria, Cuenta, Deposito, Finca, Item,
+from inventory.models import (Acopio, Banco, CalificacionAgricola, Categoria, Cuenta, Deposito, Finca, Item,
                               Lote, MaquinariaAgricola, Marca, Persona,
                               PlanActividadZafra, TipoActividadAgricola,
                               TipoImpuesto, TipoMaquinariaAgricola, Zafra)
-from inventory.tables import (BancoTable, CategoriaTable, CuentaTable,
+from inventory.tables import (AcopioTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CuentaTable,
                               DepositoTable, FincaTable, ItemTable, LoteTable,
                               MaquinariaAgricolaTable, MarcaTable,
                               PersonaTable, PlanActividadZafraTable,
@@ -625,6 +625,42 @@ class MaquinariaAgricolaDeleteView(DeleteView):
     def get_success_url(self):
         return reverse_lazy("maquinaria_agricola_list")
 
+# CALIFICACION AGRICOLA
+class CalificacionAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = CalificacionAgricola
+    table_class = CalificacionAgricolaTable
+    paginate_by = 6
+    search_fields = ['descripcion',]
+    template_name = 'inventory/calificacion_agricola_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'calificacion_agricola_update'
+        context['delete_url'] = 'calificacion_agricola_delete'
+        return context
+
+class CalificacionAgricolaCreateView(CreateView):
+    model = CalificacionAgricola
+    template_name = 'inventory/calificacion_agricola_create.html'
+    fields = ['descripcion',]
+
+    def get_success_url(self):
+        return reverse_lazy("calificacion_agricola_list")
+
+class CalificacionAgricolaUpdateView(UpdateView):
+    model = CalificacionAgricola
+    template_name = 'inventory/calificacion_agricola_update.html'
+    fields = ['descripcion',]
+
+    def get_success_url(self):
+        return reverse_lazy("calificacion_agricola_list")
+
+class CalificacionAgricolaDeleteView(DeleteView):
+    model = CalificacionAgricola
+    template_name = 'inventory/calificacion_agricola_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("calificacion_agricola_list")
 
 #PLAN ACTIVIDAD ZAFRA
 class PlanActividadZafraListView(SearchViewMixin, SingleTableMixin, ListView):
@@ -672,3 +708,51 @@ class PlanActividadZafraUpdateView(UpdateWithFormsetInlinesView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         return context
+
+#ACOPIOS
+class AcopioListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Acopio
+    table_class = AcopioTable
+    search_fields = ['zafra__descripcion', 'comprobante','deposito__descripcion']
+    template_name = 'inventory/acopio_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'acopio_update'
+        return context
+
+
+class AcopioCreateView(CreateWithFormsetInlinesView):
+    model = Acopio
+    form_class = AcopioForm
+    template_name = 'inventory/acopio_create.html'
+    inlines = [AcopioDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('acopio_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class AcopioUpdateView(UpdateWithFormsetInlinesView):
+    model = Acopio
+    form_class = AcopioForm
+    template_name = 'inventory/acopio_update.html'
+    inlines = [AcopioDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('acopio_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+

@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 
 # importando vistas
-from inventory.views import BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
+from inventory.views import AcopioCreateView, AcopioListView, AcopioUpdateView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
 from inventory.views import MarcaCreateView, MarcaDeleteView, MarcaListView, MarcaUpdateView
 from inventory.views import TipoMaquinariaAgricolaCreateView, TipoMaquinariaAgricolaDeleteView, TipoMaquinariaAgricolaListView, TipoMaquinariaAgricolaUpdateView
 from inventory.views import ItemDeleteView, ItemListView, ItemUpdateView
@@ -98,10 +98,19 @@ urlpatterns = [
     path('inventory/maquinaria_agricola/<int:pk>/update',MaquinariaAgricolaUpdateView.as_view(), name="maquinaria_agricola_update"),
     path('inventory/maquinaria_agricola/add',MaquinariaAgricolaCreateView.as_view(), name="maquinaria_agricola_create"),
     path('inventory/maquinaria_agricola', MaquinariaAgricolaListView.as_view(), name="maquinaria_agricola_list"),
+    # calificacion agricola
+    path('inventory/calificacion_agricola/<int:pk>/delete',CalificacionAgricolaDeleteView.as_view(), name="calificacion_agricola_delete"),
+    path('inventory/calificacion_agricola/<int:pk>/update',CalificacionAgricolaUpdateView.as_view(), name="calificacion_agricola_update"),
+    path('inventory/calificacion_agricola/add',CalificacionAgricolaCreateView.as_view(), name="calificacion_agricola_create"),
+    path('inventory/calificacion_agricola', CalificacionAgricolaListView.as_view(), name="calificacion_agricola_list"),
     # plan actividad zafra
     path('inventory/plan_actividad_zafra/<int:pk>/update',PlanActividadZafraUpdateView.as_view(), name="plan_actividad_zafra_update"),
     path('inventory/plan_actividad_zafra/add',PlanActividadZafraCreateView.as_view(), name="plan_actividad_zafra_create"),
     path('inventory/plan_actividad_zafra', PlanActividadZafraListView.as_view(), name="plan_actividad_zafra_list"),
+     # plan actividad zafra
+    path('inventory/acopio/<int:pk>/update',AcopioUpdateView.as_view(), name="acopio_update"),
+    path('inventory/acopio/add',AcopioCreateView.as_view(), name="acopio_create"),
+    path('inventory/acopio', AcopioListView.as_view(), name="acopio_list"),
     # menu tonto
     path('inventory/', menu, name="inventory_menu"),
 
