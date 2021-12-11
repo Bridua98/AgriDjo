@@ -209,8 +209,23 @@ class CalificacionAgricola(models.Model):
 
 class AcopioCalificacion(models.Model):
     acopio = models.ForeignKey(Acopio, on_delete=models.DO_NOTHING)
-    calificaionAgricola = models.ForeignKey(CalificacionAgricola, on_delete=models.DO_NOTHING)
+    calificacionAgricola = models.ForeignKey(CalificacionAgricola, on_delete=models.DO_NOTHING)
     grado = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Grado")
     porcentaje = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Porcentaje")
     peso = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso")
+
+class PedidoCompra(models.Model):
+    proveedor = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Proveedor")
+    fechaDocumento = models.DateField(verbose_name="Fecha Documento")
+    fechaVencimiento = models.DateField(verbose_name="Fecha Vencimiento")
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    @property
+    def total(self):
+        return sum(round(x.cantidad)  for x in self.pedidocompradetalle_set.all())
+
+class PedidoCompraDetalle(models.Model):
+    pedidoCompra = models.ForeignKey(PedidoCompra, on_delete=models.DO_NOTHING)
+    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
+    cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
 

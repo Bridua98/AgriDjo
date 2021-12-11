@@ -8,16 +8,16 @@ from django.views.generic.list import ListView
 from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
-from inventory.forms import AcopioForm, PlanActividadZafraForm
-from inventory.inlines import AcopioDetalleInline, PlanActividadZafraDetalleInline
+from inventory.forms import AcopioForm, PedidoCompraForm, PlanActividadZafraForm
+from inventory.inlines import AcopioDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, Banco, CalificacionAgricola, Categoria, Cuenta, Deposito, Finca, Item,
-                              Lote, MaquinariaAgricola, Marca, Persona,
+                              Lote, MaquinariaAgricola, Marca, PedidoCompra, Persona,
                               PlanActividadZafra, TipoActividadAgricola,
                               TipoImpuesto, TipoMaquinariaAgricola, Zafra)
 from inventory.tables import (AcopioTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CuentaTable,
                               DepositoTable, FincaTable, ItemTable, LoteTable,
-                              MaquinariaAgricolaTable, MarcaTable,
+                              MaquinariaAgricolaTable, MarcaTable, PedidoCompraTable,
                               PersonaTable, PlanActividadZafraTable,
                               TipoActividadAgricolaTable, TipoImpuestoTable,
                               TipoMaquinariaAgricolaTable, ZafraTable)
@@ -755,4 +755,52 @@ class AcopioUpdateView(UpdateWithFormsetInlinesView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         return context
+
+#PEDIDOS DE COMPRAS
+class PedidoCompraListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = PedidoCompra
+    table_class = PedidoCompraTable
+    search_fields = ['proveedor__razonSocial',]
+    template_name = 'inventory/pedido_compra_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'pedido_compra_update'
+        return context
+
+
+class PedidoCompraCreateView(CreateWithFormsetInlinesView):
+    model = PedidoCompra
+    form_class = PedidoCompraForm
+    template_name = 'inventory/pedido_compra_create.html'
+    inlines = [PedidoCompraDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('pedido_compra_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class PedidoCompraUpdateView(UpdateWithFormsetInlinesView):
+    model = PedidoCompra
+    form_class = PedidoCompraForm
+    template_name = 'inventory/pedido_compra_update.html'
+    inlines = [PedidoCompraDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('pedido_compra_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
 

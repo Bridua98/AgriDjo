@@ -1,5 +1,11 @@
 import django_tables2 as tables
-from inventory.models import Acopio, Banco, Cuenta, Deposito, Item, Marca, Categoria, Persona, PlanActividadZafra, TipoActividadAgricola, Finca, TipoMaquinariaAgricola, TipoImpuesto, Zafra,CalificacionAgricola
+
+from inventory.models import (Acopio, Banco, CalificacionAgricola, Categoria,
+                              Cuenta, Deposito, Finca, Item, Marca,
+                              PedidoCompra, Persona, PlanActividadZafra,
+                              TipoActividadAgricola, TipoImpuesto,
+                              TipoMaquinariaAgricola, Zafra)
+
 
 class BaseTable(tables.Table):
     def __init__(self, *args, **kwargs):
@@ -24,9 +30,9 @@ class EditableDeleteTable(BaseTable):
         kwargs['extra_columns'] = [('editar', tables.TemplateColumn(template_name="includes/edit_button.html", verbose_name="Editar", orderable=False)),
                                    ('eliminar', tables.TemplateColumn(template_name="includes/delete_button.html", verbose_name="Eliminar", orderable=False))]
         super().__init__(*args, **kwargs)
+
+  
         
-
-
 ## definiciones
 
 class TipoActividadAgricolaTable(EditableDeleteTable):
@@ -113,3 +119,13 @@ class AcopioTable(EditableTable):
     class Meta:
         model = Acopio
         fields = ("fecha","comprobante","zafra","deposito","pBruto","pTara","pDescuento")
+
+class AcopioCalificacionTable(EditableTable):
+    class Meta:
+        model = Acopio
+        fields = ("acopio","calificaionAgricola","grado","porcentaje","peso",)
+
+class PedidoCompraTable(EditableTable):
+    class Meta:
+        model = PedidoCompra
+        fields = ("proveedor","fechaDocumento","fechaVencimiento","esVigente",)
