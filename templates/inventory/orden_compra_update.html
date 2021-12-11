@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block title %} Crear Pedido de Compra {% endblock %}
+{% block title %} Actualizar Orden de Compra {% endblock %}
 
 {% block content %}
-<h1> Añadir Pedido de Compra </h1>
+<h1> Actualizar Orden de Compra</h1>
 <form method="post" enctype="multipart/form-data">
 {% crispy form %}
 {{form.errors}}

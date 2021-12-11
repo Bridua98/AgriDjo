@@ -8,16 +8,16 @@ from django.views.generic.list import ListView
 from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
-from inventory.forms import AcopioForm, PedidoCompraForm, PlanActividadZafraForm
-from inventory.inlines import AcopioDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
+from inventory.forms import AcopioForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
+from inventory.inlines import AcopioDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, Banco, CalificacionAgricola, Categoria, Cuenta, Deposito, Finca, Item,
-                              Lote, MaquinariaAgricola, Marca, PedidoCompra, Persona,
+                              Lote, MaquinariaAgricola, Marca, OrdenCompra, PedidoCompra, Persona,
                               PlanActividadZafra, TipoActividadAgricola,
                               TipoImpuesto, TipoMaquinariaAgricola, Zafra)
 from inventory.tables import (AcopioTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CuentaTable,
                               DepositoTable, FincaTable, ItemTable, LoteTable,
-                              MaquinariaAgricolaTable, MarcaTable, PedidoCompraTable,
+                              MaquinariaAgricolaTable, MarcaTable, OrdenCompraTable, PedidoCompraTable,
                               PersonaTable, PlanActividadZafraTable,
                               TipoActividadAgricolaTable, TipoImpuestoTable,
                               TipoMaquinariaAgricolaTable, ZafraTable)
@@ -803,4 +803,58 @@ class PedidoCompraUpdateView(UpdateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
+#ORDENES DE COMPRAS
+class OrdenCompraListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = OrdenCompra
+    table_class = OrdenCompraTable
+    search_fields = ['proveedor__razonSocial',]
+    template_name = 'inventory/orden_compra_list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'orden_compra_update'
+        return context
+
+
+class OrdenCompraCreateView(CreateWithFormsetInlinesView):
+    model = OrdenCompra
+    form_class = OrdenCompraForm
+    template_name = 'inventory/orden_compra_create.html'
+    inlines = [OrdenCompraDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('orden_compra_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class OrdenCompraUpdateView(UpdateWithFormsetInlinesView):
+    model = OrdenCompra
+    form_class = OrdenCompraForm
+    template_name = 'inventory/orden_compra_update.html'
+    inlines = [OrdenCompraDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('orden_compra_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class OrdenCompraAnularView(DeleteView):
+    model = OrdenCompra
+    template_name = 'inventory/orden_compra_anular.html'
+
+   # def delete(self):
+
+    def get_success_url(self):
+        return reverse_lazy("orden_compra_list")

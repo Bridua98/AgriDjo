@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -135,4 +135,46 @@ class PedidoCompraDetalleForm(forms.ModelForm):
     class Meta:
         model = PedidoCompraDetalle
         fields = ['item', 'cantidad']
+
+
+# ORDEN COMPRA
+class OrdenCompraForm(forms.ModelForm):
+    total = forms.DecimalField(
+        widget=calculation.SumInput('precio',   attrs={'readonly':True}),
+    )
+    class Meta:
+        model = OrdenCompra
+        fields = ['pedidoCompra','proveedor','fechaDocumento', 'observacion']
+        widgets = {'fechaDocumento':DateInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['total'].label = False
+        self.helper.layout = Layout(
+            "pedidoCompra",
+            "proveedor",
+            "fechaDocumento",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "OrdenCompraDetalleInline"#, stacked=True
+                ), 
+                
+            ),
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+            ), 
+            Row(
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class OrdenCompraDetalleForm(forms.ModelForm):
+    class Meta:
+        model = OrdenCompraDetalle
+        fields = ['item', 'cantidad','precio','descuento']
+
 

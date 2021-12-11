@@ -1,7 +1,7 @@
 import django_tables2 as tables
 
 from inventory.models import (Acopio, Banco, CalificacionAgricola, Categoria,
-                              Cuenta, Deposito, Finca, Item, Marca,
+                              Cuenta, Deposito, Finca, Item, Marca, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
                               TipoMaquinariaAgricola, Zafra)
@@ -22,6 +22,12 @@ class EditableTable(BaseTable):
     def __init__(self, *args, **kwargs):
         kwargs['empty_text']  =  "Sin resultados."
         kwargs['extra_columns'] = [('editar', tables.TemplateColumn(template_name="includes/edit_button.html", verbose_name="Editar", orderable=False))]
+        super().__init__(*args, **kwargs)
+
+class AnulableTable(BaseTable):
+    def __init__(self, *args, **kwargs):
+        kwargs['empty_text']  =  "Sin resultados."
+        kwargs['extra_columns'] = [('anular', tables.TemplateColumn(template_name="includes/edit_button.html", verbose_name="Anular", orderable=False))]
         super().__init__(*args, **kwargs)
 
 class EditableDeleteTable(BaseTable):
@@ -129,3 +135,8 @@ class PedidoCompraTable(EditableTable):
     class Meta:
         model = PedidoCompra
         fields = ("proveedor","fechaDocumento","fechaVencimiento","esVigente",)
+
+class OrdenCompraTable(AnulableTable):
+    class Meta:
+        model = OrdenCompra
+        fields = ("proveedor","fechaDocumento","total","esVigente","total")

@@ -223,9 +223,26 @@ class PedidoCompra(models.Model):
     @property
     def total(self):
         return sum(round(x.cantidad)  for x in self.pedidocompradetalle_set.all())
-
+    
 class PedidoCompraDetalle(models.Model):
     pedidoCompra = models.ForeignKey(PedidoCompra, on_delete=models.DO_NOTHING)
     item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
     cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
+
+class OrdenCompra(models.Model):
+    pedidoCompra = models.ForeignKey(PedidoCompra, on_delete=models.DO_NOTHING,verbose_name="Pedido Compra")
+    proveedor = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Proveedor")
+    fechaDocumento = models.DateField(verbose_name="Fecha Documento")
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    @property
+    def total(self):
+        return sum(round(x.precio)  for x in self.ordencompradetalle_set.all())
+
+class OrdenCompraDetalle(models.Model):
+    ordenCompra = models.ForeignKey(OrdenCompra, on_delete=models.DO_NOTHING)
+    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
+    cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
+    precio = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Precio")
+    descuento = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Descuento")
 
