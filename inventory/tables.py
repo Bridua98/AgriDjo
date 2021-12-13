@@ -121,10 +121,10 @@ class PlanActividadZafraTable(EditableTable):
         model = PlanActividadZafra
         fields = ("fecha","zafra","observacion","total")
 
-class AcopioTable(EditableTable):
+class AcopioTable(AnulableTable):
     class Meta:
         model = Acopio
-        fields = ("fecha","comprobante","zafra","deposito","pBruto","pTara","pDescuento")
+        fields = ("fecha","comprobante","zafra","deposito","pBruto","pTara","pDescuento","esVigente")
 
 class AcopioCalificacionTable(EditableTable):
     class Meta:
@@ -139,4 +139,4 @@ class PedidoCompraTable(EditableTable):
 class OrdenCompraTable(AnulableTable):
     class Meta:
         model = OrdenCompra
-        fields = ("proveedor","fechaDocumento","total","total","esVigente")
+        fields = ("proveedor","fechaDocumento","total","esVigente")

@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 
 # importando vistas
-from inventory.views import AcopioCreateView, AcopioListView, AcopioUpdateView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, OrdenCompraAnularView, OrdenCompraCreateView, OrdenCompraListView, OrdenCompraUpdateView, PedidoCompraCreateView, PedidoCompraListView, PedidoCompraUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
+from inventory.views import AcopioAnularView, AcopioCreateView, AcopioListView, AcopioUpdateView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, OrdenCompraAnularView, OrdenCompraCreateView, OrdenCompraListView, OrdenCompraUpdateView, PedidoCompraCreateView, PedidoCompraListView, PedidoCompraUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
 from inventory.views import MarcaCreateView, MarcaDeleteView, MarcaListView, MarcaUpdateView
 from inventory.views import TipoMaquinariaAgricolaCreateView, TipoMaquinariaAgricolaDeleteView, TipoMaquinariaAgricolaListView, TipoMaquinariaAgricolaUpdateView
 from inventory.views import ItemDeleteView, ItemListView, ItemUpdateView
@@ -107,10 +107,11 @@ urlpatterns = [
     path('inventory/plan_actividad_zafra/<int:pk>/update',PlanActividadZafraUpdateView.as_view(), name="plan_actividad_zafra_update"),
     path('inventory/plan_actividad_zafra/add',PlanActividadZafraCreateView.as_view(), name="plan_actividad_zafra_create"),
     path('inventory/plan_actividad_zafra', PlanActividadZafraListView.as_view(), name="plan_actividad_zafra_list"),
-    # Acopio
+    # ACOPIO
     path('inventory/acopio/<int:pk>/update',AcopioUpdateView.as_view(), name="acopio_update"),
     path('inventory/acopio/add',AcopioCreateView.as_view(), name="acopio_create"),
     path('inventory/acopio', AcopioListView.as_view(), name="acopio_list"),
+    path('inventory/acopio/<int:pk>/anular',AcopioAnularView.as_view(), name="acopio_anular"),
     # PEDIDO COMPRA
     path('inventory/pedido_compra/<int:pk>/update',PedidoCompraUpdateView.as_view(), name="pedido_compra_update"),
     path('inventory/pedido_compra/add',PedidoCompraCreateView.as_view(), name="pedido_compra_create"),

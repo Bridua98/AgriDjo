@@ -780,6 +780,7 @@ class AcopioListView(SearchViewMixin, SingleTableMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['update_url'] = 'acopio_update'
+        context['anular_url'] = 'acopio_anular'
         return context
 
 
@@ -816,6 +817,32 @@ class AcopioUpdateView(UpdateWithFormsetInlinesView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         return context
+
+class AcopioAnularView(DeleteView):
+    model = Acopio
+    template_name = 'inventory/anular.html'
+    success_url = reverse_lazy("acopio_list")
+
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        self.object = self.get_object()
+        self.object.esVigente = False
+        self.object.save()
+        return HttpResponseRedirect(success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list_url'] = 'acopio_list'
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects']=deletable_objects
+        context['model_count']=dict(model_count).items()
+        context['protected']=protected
+        context['title']="Anular Acopio"
+        context['description']="Está seguro de anular el Acopio?"
+        return context
+    def get_success_url(self):
+        return reverse_lazy("acopio_list")
 
 #PEDIDOS DE COMPRAS
 class PedidoCompraListView(SearchViewMixin, SingleTableMixin, ListView):
@@ -927,14 +954,13 @@ class OrdenCompraAnularView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['anular_url'] = 'anular'
-        context['list_url'] = 'orden_compra_list'
         deletable_objects, model_count, protected = get_deleted_objects([self.object])
         context['deletable_objects']=deletable_objects
         context['model_count']=dict(model_count).items()
         context['protected']=protected
         context['title']="Anular Orden Compra"
         context['description']="Está seguro de anular la Orden de Compra?"
-
+        context['list_url'] = 'orden_compra_list'
+        return context
     def get_success_url(self):
         return reverse_lazy("orden_compra_list")
