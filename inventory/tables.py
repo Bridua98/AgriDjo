@@ -27,7 +27,7 @@ class EditableTable(BaseTable):
 class AnulableTable(BaseTable):
     def __init__(self, *args, **kwargs):
         kwargs['empty_text']  =  "Sin resultados."
-        kwargs['extra_columns'] = [('anular', tables.TemplateColumn(template_name="includes/edit_button.html", verbose_name="Anular", orderable=False))]
+        kwargs['extra_columns'] = [('anular', tables.TemplateColumn(template_name="includes/anular_button.html", verbose_name="Anular", orderable=False))]
         super().__init__(*args, **kwargs)
 
 class EditableDeleteTable(BaseTable):
@@ -139,4 +139,4 @@ class PedidoCompraTable(EditableTable):
 class OrdenCompraTable(AnulableTable):
     class Meta:
         model = OrdenCompra
-        fields = ("proveedor","fechaDocumento","total","esVigente","total")
+        fields = ("proveedor","fechaDocumento","total","total","esVigente")
