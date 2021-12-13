@@ -22,6 +22,26 @@ from inventory.tables import (AcopioTable, BancoTable, CalificacionAgricolaTable
                               TipoActividadAgricolaTable, TipoImpuestoTable,
                               TipoMaquinariaAgricolaTable, ZafraTable)
 
+import os
+import uuid
+import base64
+import imghdr
+import logging
+import pathlib
+import hashlib
+from os import path
+from io import BytesIO
+
+from django.db import models
+from django.core.files.base import ContentFile
+from django.conf import settings
+from django.contrib.admin.utils import NestedObjects
+from django.contrib.staticfiles import finders
+from django.utils.text import capfirst
+from django.utils.encoding import force_text
+from django.http import HttpResponse, HttpResponseRedirect
+
+
 
 def main(request):
     return render(request, template_name='home.html', context={})
@@ -30,7 +50,48 @@ def main(request):
 def menu(request):
     return render(request, template_name="menu_dummy.html", context={})
 
+class CustomDeleteView(DeleteView):
+    error = None
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['error'] = self.error
+        return context
+
+    def before_delete(self):
+        pass
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            success_url = self.get_success_url()
+            self.before_delete()
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        except Exception as e:
+            self.error = e
+            self.object = self.get_object()
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
+
+def get_deleted_objects(objs):
+    """
+    get related objects to delete
+    """
+    collector = NestedObjects(using='default')
+    collector.collect(objs)
+
+    def format_callback(obj):
+        opts = obj._meta
+        no_edit_link = '%s: %s' % (capfirst(opts.verbose_name),
+                                   force_text(obj))
+        return no_edit_link
+
+    to_delete = collector.nested(format_callback)
+    protected = [format_callback(obj) for obj in collector.protected]
+    model_count = {model._meta.verbose_name_plural: len(
+        objs) for model, objs in collector.model_objs.items()}
+    return to_delete, model_count, protected
 
 class CreateWithFormsetInlinesView(FormsetInlinesMetaMixin, CreateWithInlinesView):
     """
@@ -813,6 +874,7 @@ class OrdenCompraListView(SearchViewMixin, SingleTableMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['update_url'] = 'orden_compra_update'
+        context['anular_url'] = 'orden_compra_anular'
         return context
 
 
@@ -852,9 +914,27 @@ class OrdenCompraUpdateView(UpdateWithFormsetInlinesView):
 
 class OrdenCompraAnularView(DeleteView):
     model = OrdenCompra
-    template_name = 'inventory/orden_compra_anular.html'
+    template_name = 'inventory/anular.html'
+    success_url = reverse_lazy("orden_compra_list")
 
-   # def delete(self):
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        self.object = self.get_object()
+        self.object.esVigente = False
+        self.object.save()
+        return HttpResponseRedirect(success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['anular_url'] = 'anular'
+        context['list_url'] = 'orden_compra_list'
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects']=deletable_objects
+        context['model_count']=dict(model_count).items()
+        context['protected']=protected
+        context['title']="Anular Orden Compra"
+        context['description']="Está seguro de anular la Orden de Compra?"
 
     def get_success_url(self):
         return reverse_lazy("orden_compra_list")
