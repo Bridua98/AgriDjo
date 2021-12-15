@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 border-bottom">
+    <h1 class="h2 w-100">{{ title }}</h1>
+	<p class="text-muted"> {{ description }}? </p>
+</div> 
+<form method="post" class="mt-2">
+ {% csrf_token %}
+ <input  class="btn btn-danger" type="submit" name="cerrar" value="Cerrar">
+ <a class="btn btn-primary" href="{% url list_url %}"> Cancelar </a>
+</form>
+{% endblock %}

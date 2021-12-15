@@ -42,6 +42,10 @@ hijos_movimiento_compra = (
     MenuItem("Ordenes de Compras",reverse_lazy("orden_compra_list")),
 )
 
+hijos_movimiento_venta = (
+    MenuItem("Apertura/Cierre Cajas",reverse_lazy("apertura_caja_list")),
+)
+
 Menu.add_item("referencial_agricultura", MenuItem("Referenciales Agricultura",
                             reverse_lazy("inventory_menu"),
                             children = hijos_referenciales_agricultura))
@@ -54,9 +58,13 @@ Menu.add_item("movimientos_agricultura", MenuItem("Movimientos Agricultura",
                             reverse_lazy("inventory_menu"),
                             children = hijos_movimiento_agricultura))
 
-Menu.add_item("movifmientos_compras", MenuItem("Movimientos Compras",
+Menu.add_item("movimientos_compras", MenuItem("Movimientos Compras",
                             reverse_lazy("inventory_menu"),
                             children = hijos_movimiento_compra))
+
+Menu.add_item("movimientos_ventas", MenuItem("Movimientos Ventas",
+                            reverse_lazy("inventory_menu"),
+                            children = hijos_movimiento_venta))
 
 
 #hijos_referenciales= (

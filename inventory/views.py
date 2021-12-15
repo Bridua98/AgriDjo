@@ -11,11 +11,11 @@ from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 from inventory.forms import AcopioForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
 from inventory.inlines import AcopioDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import (Acopio, Banco, CalificacionAgricola, Categoria, Cuenta, Deposito, Finca, Item,
+from inventory.models import (Acopio, AperturaCaja, Banco, CalificacionAgricola, Categoria, Cuenta, Deposito, Finca, Item,
                               Lote, MaquinariaAgricola, Marca, OrdenCompra, PedidoCompra, Persona,
                               PlanActividadZafra, TipoActividadAgricola,
                               TipoImpuesto, TipoMaquinariaAgricola, Zafra)
-from inventory.tables import (AcopioTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CuentaTable,
+from inventory.tables import (AcopioTable, AperturaCajaTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CuentaTable,
                               DepositoTable, FincaTable, ItemTable, LoteTable,
                               MaquinariaAgricolaTable, MarcaTable, OrdenCompraTable, PedidoCompraTable,
                               PersonaTable, PlanActividadZafraTable,
@@ -40,6 +40,7 @@ from django.contrib.staticfiles import finders
 from django.utils.text import capfirst
 from django.utils.encoding import force_text
 from django.http import HttpResponse, HttpResponseRedirect
+import datetime
 
 
 
@@ -964,3 +965,51 @@ class OrdenCompraAnularView(DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("orden_compra_list")
+
+#APERTURA CIERRE DE CAJAS
+class AperturaCajaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = AperturaCaja
+    table_class = AperturaCajaTable
+    paginate_by = 6
+    search_fields = ['empleado__razonSocial','observacion']
+    template_name = 'inventory/apertura_caja_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cerrar_url'] = 'apertura_caja_cerrar'
+        return context
+
+class AperturaCajaCreateView(CreateView):
+    model = AperturaCaja
+    template_name = 'inventory/apertura_caja_create.html'
+    fields = ['empleado','observacion','montoInicio']
+
+    def get_success_url(self):
+        return reverse_lazy("apertura_caja_list")
+
+class AperturaCajaCerrarView(DeleteView):
+    model = AperturaCaja
+    template_name = 'inventory/cerrar.html'
+    success_url = reverse_lazy("apertura_caja_list")
+
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        self.object = self.get_object()
+        self.object.estaCerrado = True
+        self.object.fechaHoraCierre = datetime.datetime.now()
+        self.object.save()
+        return HttpResponseRedirect(success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects']=deletable_objects
+        context['model_count']=dict(model_count).items()
+        context['protected']=protected
+        context['title']="Cierre de Caja"
+        context['description']="Está seguro de cerrar la Caja?"
+        context['list_url'] = 'apertura_caja_list'
+        return context
+    def get_success_url(self):
+        return reverse_lazy("apertura_caja_list")

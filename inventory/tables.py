@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from inventory.models import (Acopio, Banco, CalificacionAgricola, Categoria,
+from inventory.models import (Acopio, AperturaCaja, Banco, CalificacionAgricola, Categoria,
                               Cuenta, Deposito, Finca, Item, Marca, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
@@ -28,6 +28,12 @@ class AnulableTable(BaseTable):
     def __init__(self, *args, **kwargs):
         kwargs['empty_text']  =  "Sin resultados."
         kwargs['extra_columns'] = [('anular', tables.TemplateColumn(template_name="includes/anular_button.html", verbose_name="Anular", orderable=False))]
+        super().__init__(*args, **kwargs)
+
+class CerrarAperturaCajaTable(BaseTable):
+    def __init__(self, *args, **kwargs):
+        kwargs['empty_text']  =  "Sin resultados."
+        kwargs['extra_columns'] = [('cerrar', tables.TemplateColumn(template_name="includes/cerrar_button.html", verbose_name="Cerrar", orderable=False))]
         super().__init__(*args, **kwargs)
 
 class EditableDeleteTable(BaseTable):
@@ -140,3 +146,8 @@ class OrdenCompraTable(AnulableTable):
     class Meta:
         model = OrdenCompra
         fields = ("proveedor","fechaDocumento","total","esVigente")
+
+class AperturaCajaTable(CerrarAperturaCajaTable):
+    class Meta:
+        model = AperturaCaja
+        fields = ("empleado","fechaHoraApertura","fechaHoraCiere","montoInicio","estaCerrado")
