@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from inventory.models import (Acopio, AperturaCaja, Banco, CalificacionAgricola, Categoria,
+from inventory.models import (Acopio, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria,
                               Cuenta, Deposito, Finca, Item, Marca, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
@@ -43,10 +43,14 @@ class EditableDeleteTable(BaseTable):
                                    ('eliminar', tables.TemplateColumn(template_name="includes/delete_button.html", verbose_name="Eliminar", orderable=False))]
         super().__init__(*args, **kwargs)
 
-  
-        
-## definiciones
+class DeleteTable(BaseTable):
+    def __init__(self, *args, **kwargs):
+        kwargs['empty_text']  =  "Sin resultados."
+        kwargs['extra_columns'] = [('eliminar', tables.TemplateColumn(template_name="includes/delete_button.html", verbose_name="Eliminar", orderable=False))]
+        super().__init__(*args, **kwargs)
 
+
+## definiciones
 class TipoActividadAgricolaTable(EditableDeleteTable):
     class Meta:
         model = TipoActividadAgricola
@@ -151,3 +155,8 @@ class AperturaCajaTable(CerrarAperturaCajaTable):
     class Meta:
         model = AperturaCaja
         fields = ("empleado","fechaHoraApertura","fechaHoraCiere","montoInicio","estaCerrado")
+
+class ArqueoTable(DeleteTable):
+    class Meta:
+        model = Arqueo
+        fields = ("empleado","aperturaCaja","observacion","fechaHoraRegistro","monto")

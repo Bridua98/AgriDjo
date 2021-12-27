@@ -11,11 +11,11 @@ from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 from inventory.forms import AcopioForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
 from inventory.inlines import AcopioDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import (Acopio, AperturaCaja, Banco, CalificacionAgricola, Categoria, Cuenta, Deposito, Finca, Item,
+from inventory.models import (Acopio, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Cuenta, Deposito, Finca, Item,
                               Lote, MaquinariaAgricola, Marca, OrdenCompra, PedidoCompra, Persona,
                               PlanActividadZafra, TipoActividadAgricola,
                               TipoImpuesto, TipoMaquinariaAgricola, Zafra)
-from inventory.tables import (AcopioTable, AperturaCajaTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CuentaTable,
+from inventory.tables import (AcopioTable, AperturaCajaTable, ArqueoTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CuentaTable,
                               DepositoTable, FincaTable, ItemTable, LoteTable,
                               MaquinariaAgricolaTable, MarcaTable, OrdenCompraTable, PedidoCompraTable,
                               PersonaTable, PlanActividadZafraTable,
@@ -1013,3 +1013,31 @@ class AperturaCajaCerrarView(DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("apertura_caja_list")
+
+# ARQUEO
+class ArqueoListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Arqueo
+    table_class = ArqueoTable
+    paginate_by = 6
+    search_fields = ['empleado__razonSocial','observacion']
+    template_name = 'inventory/arqueo_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['delete_url'] = 'arqueo_delete'
+        return context
+
+class ArqueoCreateView(CreateView):
+    model = Arqueo
+    template_name = 'inventory/arqueo_create.html'
+    fields = ['empleado','aperturaCaja','observacion','monto']
+
+    def get_success_url(self):
+        return reverse_lazy("arqueo_list")
+
+class ArqueoDeleteView(DeleteView):
+    model = Arqueo
+    template_name = 'inventory/arqueo_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("arqueo_list")

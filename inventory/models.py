@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 
 
@@ -249,20 +250,17 @@ class OrdenCompraDetalle(models.Model):
 class AperturaCaja(models.Model):
     empleado = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Empleado")
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
-    fechaHoraRegistro = models.DateTimeField(auto_now_add=True)
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
     estaCerrado = models.BooleanField(verbose_name="Esta Cerrado?",default=False)
     montoInicio = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Monto Apertura")
     fechaHoraCierre = models.DateTimeField(auto_now_add=True,null=True, blank=True,verbose_name="Fecha Hora Cierre")
     def __str__(self):
-        return self.id + " " + self.empleado.razonSocial + " " +self.montoInicio
+        return "Fecha: "+self.fechaHoraRegistro.strftime("%m/%d/%Y, %H:%M:%S")+" / Empl: "+self.empleado.razonSocial
 
 class Arqueo(models.Model):
     empleado = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Empleado")
     aperturaCaja = models.ForeignKey(AperturaCaja, on_delete=models.DO_NOTHING,verbose_name="Apertura Caja")
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
-    fechaHoraRegistro = models.DateTimeField(auto_now_add=True)
-    monto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Monto A Retirar")
-    def __str__(self):
-        return self.id + " " + self.empleado.razonSocial + " " +self.monto
-
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
+    monto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Monto Retirado")
 

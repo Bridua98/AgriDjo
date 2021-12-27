@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Añadir Arqueo {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<h1> Registrar Arqueo </h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-success" type="submit" value="Guardar">
+    <a class="btn btn-primary" href="{% url 'arqueo_list' %}"> Cancelar </a>
+</form>
+
+{% endblock %}
