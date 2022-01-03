@@ -1,7 +1,7 @@
 from extra_views.advanced import InlineFormSetFactory
 
-from .models import AcopioCalificacion, AcopioDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle
-from .forms import AcopioCalificacionForm, AcopioDetalleForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm
+from .models import AcopioCalificacion, AcopioDetalle, CompraDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle
+from .forms import AcopioCalificacionForm, AcopioDetalleForm, CompraDetalleForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm
 
 class PlanActividadZafraDetalleInline(InlineFormSetFactory):
     model = PlanActividadZafraDetalle
@@ -32,3 +32,9 @@ class OrdenCompraDetalleInline(InlineFormSetFactory):
     form_class = OrdenCompraDetalleForm
     factory_kwargs = {'extra':1 }
     fields = ['item', 'cantidad','precio','descuento']
+
+class CompraDetalleInline(InlineFormSetFactory):
+    model = CompraDetalle
+    form_class = CompraDetalleForm
+    factory_kwargs = {'extra':1 }
+    fields = ['item', 'cantidad','costo','porcentajeImpuesto',]

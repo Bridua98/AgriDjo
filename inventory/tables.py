@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from inventory.models import (Acopio, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria,
+from inventory.models import (Acopio, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra,
                               Cuenta, Deposito, Finca, Item, Marca, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
@@ -160,3 +160,8 @@ class ArqueoTable(DeleteTable):
     class Meta:
         model = Arqueo
         fields = ("empleado","aperturaCaja","observacion","fechaHoraRegistro","monto")
+
+class CompraTable(AnulableTable):
+    class Meta:
+        model = Compra
+        fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)

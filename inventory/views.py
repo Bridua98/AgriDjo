@@ -8,14 +8,14 @@ from django.views.generic.list import ListView
 from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
-from inventory.forms import AcopioForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
-from inventory.inlines import AcopioDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
+from inventory.forms import AcopioForm, CompraForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
+from inventory.inlines import AcopioDetalleInline, CompraDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import (Acopio, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Cuenta, Deposito, Finca, Item,
+from inventory.models import (Acopio, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Cuenta, Deposito, Finca, Item,
                               Lote, MaquinariaAgricola, Marca, OrdenCompra, PedidoCompra, Persona,
                               PlanActividadZafra, TipoActividadAgricola,
                               TipoImpuesto, TipoMaquinariaAgricola, Zafra)
-from inventory.tables import (AcopioTable, AperturaCajaTable, ArqueoTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CuentaTable,
+from inventory.tables import (AcopioTable, AperturaCajaTable, ArqueoTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CompraTable, CuentaTable,
                               DepositoTable, FincaTable, ItemTable, LoteTable,
                               MaquinariaAgricolaTable, MarcaTable, OrdenCompraTable, PedidoCompraTable,
                               PersonaTable, PlanActividadZafraTable,
@@ -1041,3 +1041,60 @@ class ArqueoDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("arqueo_list")
+
+
+#COMPRAS
+class CompraListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Compra
+    table_class = CompraTable
+    search_fields = ['proveedor__razonSocial','comprobante','timbrado','observacion']
+    template_name = 'inventory/compra_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['anular_url'] = 'compra_anular'
+        return context
+
+
+class CompraCreateView(CreateWithFormsetInlinesView):
+    model = Compra
+    form_class = CompraForm
+    template_name = 'inventory/compra_create.html'
+    inlines = [CompraDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('compra_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class CompraAnularView(DeleteView):
+    model = Compra
+    template_name = 'inventory/anular.html'
+    success_url = reverse_lazy("compra_list")
+
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        self.object = self.get_object()
+        self.object.esVigente = False
+        self.object.save()
+        return HttpResponseRedirect(success_url)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects']=deletable_objects
+        context['model_count']=dict(model_count).items()
+        context['protected']=protected
+        context['title']="Anular Compra"
+        context['description']="Está seguro de anular la Compra?"
+        context['list_url'] = 'compra_list'
+        return context
+    def get_success_url(self):
+        return reverse_lazy("compra_list")

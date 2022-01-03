@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, Compra, CompraDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -178,3 +178,61 @@ class OrdenCompraDetalleForm(forms.ModelForm):
         fields = ['item', 'cantidad','precio','descuento']
 
 
+# ORDEN COMPRA
+class CompraForm(forms.ModelForm):
+    total = forms.DecimalField(
+        widget=calculation.SumInput('subtotal',   attrs={'readonly':True}),
+    )
+    total_iva = forms.DecimalField(
+        widget=calculation.SumInput('impuesto',   attrs={'readonly':True}),
+    )
+    class Meta:
+        model = Compra
+        fields = ['fechaDocumento','esCredito','comprobante', 'timbrado','proveedor','cuenta','deposito','observacion']
+        widgets = {'fechaDocumento':DateInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['total'].label = False
+        self.fields['total_iva'].label = False
+        self.helper.layout = Layout(
+            "fechaDocumento",
+            "esCredito",
+            "comprobante",
+            "timbrado",
+            "proveedor",
+            "cuenta",
+            "deposito",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "CompraDetalleInline"#, stacked=True
+                ), 
+                
+            ),
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+            ), 
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total Impuesto: </span>'), css_class="text-right"), Column("total_iva")
+            ),
+            Row(
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'compra_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class CompraDetalleForm(forms.ModelForm):
+    subtotal = forms.DecimalField(
+        widget=calculation.FormulaInput('cantidad*costo', attrs={'readonly':True}),
+        label = "SubTotal"
+    )
+    impuesto = forms.DecimalField(
+        widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
+        label = "Impuesto"
+    )
+    class Meta:
+        model = CompraDetalle
+        fields = ['item', 'cantidad','costo','porcentajeImpuesto','impuesto','subtotal']

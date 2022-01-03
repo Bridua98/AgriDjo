@@ -40,6 +40,7 @@ hijos_movimiento_agricultura = (
 hijos_movimiento_compra = (
     MenuItem("Pedidos de Compras",reverse_lazy("pedido_compra_list")),
     MenuItem("Ordenes de Compras",reverse_lazy("orden_compra_list")),
+    MenuItem("Compras",reverse_lazy("compra_list")),
 )
 
 hijos_movimiento_venta = (
