@@ -41,6 +41,7 @@ hijos_movimiento_compra = (
     MenuItem("Pedidos de Compras",reverse_lazy("pedido_compra_list")),
     MenuItem("Ordenes de Compras",reverse_lazy("orden_compra_list")),
     MenuItem("Compras",reverse_lazy("compra_list")),
+    MenuItem("Ajustes Stock",reverse_lazy("ajuste_stock_list")),
 )
 
 hijos_movimiento_venta = (

@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from inventory.models import (Acopio, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra,
+from inventory.models import (Acopio, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra,
                               Cuenta, Deposito, Finca, Item, Marca, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
@@ -165,3 +165,8 @@ class CompraTable(AnulableTable):
     class Meta:
         model = Compra
         fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)
+
+class AjusteStockTable(EditableDeleteTable):
+    class Meta:
+        model = AjusteStock
+        fields = ("fechaDocumento","comprobante","empleado","deposito","observacion",)

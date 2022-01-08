@@ -8,14 +8,14 @@ from django.views.generic.list import ListView
 from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
-from inventory.forms import AcopioForm, CompraForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
-from inventory.inlines import AcopioDetalleInline, CompraDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
+from inventory.forms import AcopioForm, AjusteStockForm, CompraForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
+from inventory.inlines import AcopioDetalleInline, AjusteStockDetalleInline, CompraDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import (Acopio, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Cuenta, Deposito, Finca, Item,
+from inventory.models import (Acopio, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Cuenta, Deposito, Finca, Item,
                               Lote, MaquinariaAgricola, Marca, OrdenCompra, PedidoCompra, Persona,
                               PlanActividadZafra, TipoActividadAgricola,
                               TipoImpuesto, TipoMaquinariaAgricola, Zafra)
-from inventory.tables import (AcopioTable, AperturaCajaTable, ArqueoTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CompraTable, CuentaTable,
+from inventory.tables import (AcopioTable, AjusteStockTable, AperturaCajaTable, ArqueoTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CompraTable, CuentaTable,
                               DepositoTable, FincaTable, ItemTable, LoteTable,
                               MaquinariaAgricolaTable, MarcaTable, OrdenCompraTable, PedidoCompraTable,
                               PersonaTable, PlanActividadZafraTable,
@@ -1098,3 +1098,56 @@ class CompraAnularView(DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("compra_list")
+    
+# AJUSTE DE STOCK
+class AjusteStockListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = AjusteStock
+    table_class = AjusteStockTable
+    paginate_by = 6
+    search_fields = ['comprobante','empleado__razonSocial','deposito__descripcion']
+    template_name = 'inventory/ajuste_stock_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'ajuste_stock_update'
+        context['delete_url'] = 'ajuste_stock_delete'
+        return context
+
+class AjusteStockCreateView(CreateWithFormsetInlinesView):
+    model = AjusteStock
+    form_class = AjusteStockForm
+    template_name = 'inventory/ajuste_stock_create.html'
+    inlines = [AjusteStockDetalleInline]
+    def get_success_url(self):
+        return reverse_lazy('ajuste_stock_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class AjusteStockUpdateView(UpdateWithFormsetInlinesView):
+    model = AjusteStock
+    form_class = AjusteStockForm
+    template_name = 'inventory/ajuste_stock_update.html'
+    inlines = [AjusteStockDetalleInline]
+    def get_success_url(self):
+        return reverse_lazy('ajuste_stock_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class AjusteStockDeleteView(DeleteView):
+    model = CalificacionAgricola
+    template_name = 'inventory/ajuste_stock_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("ajuste_stock_list")

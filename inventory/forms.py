@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, Compra, CompraDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -236,3 +236,34 @@ class CompraDetalleForm(forms.ModelForm):
     class Meta:
         model = CompraDetalle
         fields = ['item', 'cantidad','costo','porcentajeImpuesto','impuesto','subtotal']
+
+
+class AjusteStockForm(forms.ModelForm):
+    class Meta:
+       model = AjusteStock
+       template_name = 'inventory/ajuste_stock_create.html'
+       fields = ['fechaDocumento','comprobante','empleado','deposito','observacion',]
+       widgets = { 'fechaDocumento':DateInput }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            "fechaDocumento",
+            "comprobante",
+            "empleado",
+            "deposito",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "AjusteStockDetalleInline"#, stacked=True
+                ), 
+                
+            )
+        )
+
+class AjusteStockDetalleForm(forms.ModelForm):
+    class Meta:
+        model = AjusteStockDetalle
+        fields = ['item', 'cantidad',]
