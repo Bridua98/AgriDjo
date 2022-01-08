@@ -827,9 +827,18 @@ class AcopioAnularView(DeleteView):
     @transaction.atomic
     def delete(self, request, *args, **kwargs):
         success_url = self.get_success_url()
-        self.object = self.get_object()
-        self.object.esVigente = False
-        self.object.save()
+        try:
+            self.object = self.get_object()
+            if self.object.esVigente == False:
+                print('entro en exepcion para anulado')
+                raise Exception("El Acopio ya fue anulado.")
+            else:
+                self.object.esVigente = False
+                self.object.save()
+        except  Exception as e:
+            self.error = e
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
         return HttpResponseRedirect(success_url)
 
     def get_context_data(self, **kwargs):
@@ -1081,10 +1090,20 @@ class CompraAnularView(DeleteView):
     @transaction.atomic
     def delete(self, request, *args, **kwargs):
         success_url = self.get_success_url()
-        self.object = self.get_object()
-        self.object.esVigente = False
-        self.object.save()
+        try:
+            self.object = self.get_object()
+            if self.object.esVigente == False:
+                print('entro en exepcion para anulado')
+                raise Exception("La factura ya fue anulado.")
+            else:
+                self.object.esVigente = False
+                self.object.save()
+        except  Exception as e:
+            self.error = e
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
         return HttpResponseRedirect(success_url)
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1098,7 +1117,7 @@ class CompraAnularView(DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("compra_list")
-    
+
 # AJUSTE DE STOCK
 class AjusteStockListView(SearchViewMixin, SingleTableMixin, ListView):
     model = AjusteStock

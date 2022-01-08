@@ -142,7 +142,7 @@ class PedidoCompraDetalleForm(forms.ModelForm):
 # ORDEN COMPRA
 class OrdenCompraForm(forms.ModelForm):
     total = forms.DecimalField(
-        widget=calculation.SumInput('precio',   attrs={'readonly':True}),
+        widget=calculation.SumInput('subtotal',   attrs={'readonly':True}),
     )
     class Meta:
         model = OrdenCompra
@@ -166,7 +166,7 @@ class OrdenCompraForm(forms.ModelForm):
                 ), 
                 
             ),
-            Row(
+             Row(
                 Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
             ), 
             Row(
@@ -175,6 +175,10 @@ class OrdenCompraForm(forms.ModelForm):
         )
 
 class OrdenCompraDetalleForm(forms.ModelForm):
+    subtotal = forms.DecimalField(
+        widget=calculation.FormulaInput('(cantidad*(precio-descuento))', attrs={'readonly':True}),
+        label = "SubTotal"
+    )
     class Meta:
         model = OrdenCompraDetalle
         fields = ['item', 'cantidad','precio','descuento']

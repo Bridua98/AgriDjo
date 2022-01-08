@@ -132,7 +132,7 @@ urlpatterns = [
     # COMPRA
     path('inventory/compra/<int:pk>/anular',CompraAnularView .as_view(), name="compra_anular"),
     path('inventory/compra/add',CompraCreateView.as_view(), name="compra_create"),
-    path('inventory/compra', CompraListView .as_view(), name="compra_list"),
+    path('inventory/compra', CompraListView.as_view(), name="compra_list"),
     # AJUSTE STOCK
     path('inventory/ajuste_stock/<int:pk>/delete',AjusteStockDeleteView.as_view(), name="ajuste_stock_delete"),
     path('inventory/ajuste_stock/<int:pk>/update',AjusteStockUpdateView.as_view(), name="ajuste_stock_update"),

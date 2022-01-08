@@ -135,6 +135,10 @@ class AcopioTable(AnulableTable):
     class Meta:
         model = Acopio
         fields = ("fecha","comprobante","zafra","deposito","pBruto","pTara","pDescuento","esVigente")
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fecha"
 
 class AcopioCalificacionTable(EditableTable):
     class Meta:
@@ -150,6 +154,10 @@ class OrdenCompraTable(AnulableTable):
     class Meta:
         model = OrdenCompra
         fields = ("proveedor","fechaDocumento","total","esVigente")
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fechaDocumento"
 
 class AperturaCajaTable(CerrarAperturaCajaTable):
     class Meta:
@@ -165,6 +173,10 @@ class CompraTable(AnulableTable):
     class Meta:
         model = Compra
         fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fechaDocumento"
 
 class AjusteStockTable(EditableDeleteTable):
     class Meta:

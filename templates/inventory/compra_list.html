@@ -1,9 +1,21 @@
 {% extends 'base.html' %}
 {% load render_table from django_tables2 %}
-
 {% block content %}
 
 <h1>Listado Compras</h1>
+
+{% block head %}
+<style>
+    .filter{
+        max-height: calc(100vh - 150px);
+    }
+    tr[registro_esVigente='False'] {
+        background-color: #6c757d!important;
+        color: white; 
+        text-decoration: line-through;
+    }
+</style>
+{% endblock %}
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2">

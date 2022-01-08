@@ -4,7 +4,18 @@
 {% block content %}
 
 <h1>Listado de Acopios</h1>
-
+{% block head %}
+<style>
+    .filter{
+        max-height: calc(100vh - 150px);
+    }
+    tr[registro_esVigente='False'] {
+        background-color: #6c757d!important;
+        color: white; 
+        text-decoration: line-through;
+    }
+</style>
+{% endblock %}
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         {% include 'includes/search_form.html' %}

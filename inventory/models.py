@@ -238,7 +238,7 @@ class OrdenCompra(models.Model):
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
     @property
     def total(self):
-        return sum(round(x.precio)  for x in self.ordencompradetalle_set.all())
+        return sum(round(x.precio*x.cantidad)  for x in self.ordencompradetalle_set.all())
 
 class OrdenCompraDetalle(models.Model):
     ordenCompra = models.ForeignKey(OrdenCompra, on_delete=models.DO_NOTHING)
