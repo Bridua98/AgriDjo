@@ -323,3 +323,4 @@ class ItemMovimiento(models.Model):
 # IMPLEMENTAMOS LA SEÑAL DE COMPRA
 from .signals import signalCompraGuardado
 from .signals import signalAjusteStockGuardado
+from .signals import signalAcopioGuardado
