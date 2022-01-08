@@ -286,4 +286,40 @@ class CompraDetalle(models.Model):
     cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
     costo = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo")
     porcentajeImpuesto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="% Impuesto")
-    
+
+class AjusteStock(models.Model):
+    empleado = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Empleado")
+    deposito = models.ForeignKey(Deposito, on_delete=models.DO_NOTHING,verbose_name="Deposito")
+    fechaDocumento = models.DateField(verbose_name="Fecha")
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
+    comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+
+class AjusteStockDetalle(models.Model):
+    ajusteStock = models.ForeignKey(AjusteStock, on_delete=models.DO_NOTHING)
+    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
+    cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
+
+class ItemMovimiento(models.Model):
+    VALORESENUMTIPMOV = (
+    ('CM', 'COMPRAS'),
+    ('VT', 'VENTAS'),
+    ('A+', 'AJUSTES STOCK +'),
+    ('A-', 'AJUSTES STOCK -'),
+    ('AC', 'ACOPIOS'),
+    ('AA', 'ACTIVIDADES AGRICOLAS'),
+    )
+    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
+    deposito = models.ForeignKey(Deposito, on_delete=models.DO_NOTHING,verbose_name="Deposito")
+    cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
+    costo = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo")
+    precio = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Precio")
+    fechaDocumento = models.DateField(verbose_name="Fecha Documento")
+    secuenciaOrigen = models.IntegerField()
+    detalleSecuenciaOrigen = models.IntegerField()
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True) 
+    tipoMovimiento = models.CharField(max_length=50,choices=VALORESENUMTIPMOV) 
+
+# IMPLEMENTAMOS LA SEÑAL DE COMPRA
+from .signals import signalCompraGuardado
+from .signals import signal
