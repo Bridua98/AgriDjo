@@ -139,7 +139,7 @@ class AcopioTable(AnulableTable):
 class AcopioCalificacionTable(EditableTable):
     class Meta:
         model = Acopio
-        fields = ("acopio","calificaionAgricola","grado","porcentaje","peso",)
+        fields = ("acopio","calificacionAgricola","grado","porcentaje","peso",)
 
 class PedidoCompraTable(EditableTable):
     class Meta:

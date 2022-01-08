@@ -19,7 +19,7 @@ class AcopioCalificacionDetalleInline(InlineFormSetFactory):
     model = AcopioCalificacion
     form_class = AcopioCalificacionForm
     factory_kwargs = {'extra':1 }
-    fields = ['acopio', 'calificaionAgricola', 'grado', 'porcentaje','peso']
+    fields = ['acopio', 'calificacionAgricola', 'grado', 'porcentaje','peso']
 
 class PedidoCompraDetalleInline(InlineFormSetFactory):
     model = PedidoCompraDetalle

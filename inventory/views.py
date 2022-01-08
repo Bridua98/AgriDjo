@@ -9,7 +9,7 @@ from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 
 from inventory.forms import AcopioForm, AjusteStockForm, CompraForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
-from inventory.inlines import AcopioDetalleInline, AjusteStockDetalleInline, CompraDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
+from inventory.inlines import AcopioCalificacionDetalleInline, AcopioDetalleInline, AjusteStockDetalleInline, CompraDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Cuenta, Deposito, Finca, Item,
                               Lote, MaquinariaAgricola, Marca, OrdenCompra, PedidoCompra, Persona,
@@ -789,7 +789,7 @@ class AcopioCreateView(CreateWithFormsetInlinesView):
     model = Acopio
     form_class = AcopioForm
     template_name = 'inventory/acopio_create.html'
-    inlines = [AcopioDetalleInline]
+    inlines = [AcopioDetalleInline,AcopioCalificacionDetalleInline]
 
     def get_success_url(self):
         return reverse_lazy('acopio_list')
@@ -806,7 +806,7 @@ class AcopioUpdateView(UpdateWithFormsetInlinesView):
     model = Acopio
     form_class = AcopioForm
     template_name = 'inventory/acopio_update.html'
-    inlines = [AcopioDetalleInline]
+    inlines = [AcopioDetalleInline,AcopioCalificacionDetalleInline]
 
     def get_success_url(self):
         return reverse_lazy('acopio_list')

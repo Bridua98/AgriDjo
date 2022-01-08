@@ -82,7 +82,7 @@ C:\invsist
 2. Crear migraciones, cada vez que sea creado o modificado los modelos de datos.
 
 ```bash
-(venv) c:\invsist>python manage.py makemigrations
+(venv) c:\invsist>c
 ```
 
 3. Persistir migraciones en la base de datos.

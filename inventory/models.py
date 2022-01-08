@@ -210,7 +210,7 @@ class CalificacionAgricola(models.Model):
 
 class AcopioCalificacion(models.Model):
     acopio = models.ForeignKey(Acopio, on_delete=models.DO_NOTHING)
-    calificacionAgricola = models.ForeignKey(CalificacionAgricola, on_delete=models.DO_NOTHING)
+    calificacionAgricola = models.ForeignKey(CalificacionAgricola, on_delete=models.DO_NOTHING,verbose_name="Calif. Agrícola")
     grado = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Grado")
     porcentaje = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Porcentaje")
     peso = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso")
@@ -322,4 +322,4 @@ class ItemMovimiento(models.Model):
 
 # IMPLEMENTAMOS LA SEÑAL DE COMPRA
 from .signals import signalCompraGuardado
-from .signals import signal
+from .signals import signalAjusteStockGuardado

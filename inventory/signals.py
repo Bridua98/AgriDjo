@@ -43,7 +43,7 @@ def signalAjusteStockGuardado(sender, instance, created, **kwargs):
         itMov.cantidad = instance.cantidad
         itMov.costo = 0
         itMov.precio = 0
-        itMov.fechaDocumento = instance.ajusteStock.fecha
+        itMov.fechaDocumento = instance.ajusteStock.fechaDocumento
         itMov.secuenciaOrigen = instance.ajusteStock.pk
         itMov.detalleSecuenciaOrigen = instance.pk
         itMov.esVigente = True

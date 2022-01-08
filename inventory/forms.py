@@ -75,11 +75,13 @@ class AcopioForm(forms.ModelForm):
             "esTransportadoraPropia",
             "observacion",
             Fieldset(
-                u'Detalle',
+                u'Detalles',
                 Formset(
-                    "AcopioDetalleInline"#, stacked=True
+                    "AcopioDetalleInline",#, stacked=True
                 ), 
-                
+                Formset(
+                    "AcopioCalificacionDetalleInline",#, stacked=True
+                ), 
             ),
             Row(
                 Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'plan_actividad_zafra_list' %}"> Cancelar</a>""" ))
@@ -241,7 +243,7 @@ class CompraDetalleForm(forms.ModelForm):
 class AjusteStockForm(forms.ModelForm):
     class Meta:
        model = AjusteStock
-       template_name = 'inventory/ajuste_stock_create.html'
+       #template_name = 'inventory/ajuste_stock_create.html'
        fields = ['fechaDocumento','comprobante','empleado','deposito','observacion',]
        widgets = { 'fechaDocumento':DateInput }
     def __init__(self, *args, **kwargs):
@@ -259,7 +261,9 @@ class AjusteStockForm(forms.ModelForm):
                 Formset(
                     "AjusteStockDetalleInline"#, stacked=True
                 ), 
-                
+                Row(
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'plan_actividad_zafra_list' %}"> Cancelar</a>""" ))
+                ) 
             )
         )
 
