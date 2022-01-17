@@ -35,6 +35,7 @@ hijos_referenciales_gestion = (
 hijos_movimiento_agricultura = (
     MenuItem("Plan de Actividades Zafras",reverse_lazy("plan_actividad_zafra_list")),
     MenuItem("Acopios",reverse_lazy("acopio_list")),
+    MenuItem("Actividades Agrícolas",reverse_lazy("actividad_agricola_list")),
 )
 
 hijos_movimiento_compra = (

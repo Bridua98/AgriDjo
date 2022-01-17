@@ -1,5 +1,5 @@
 from django.db.models.signals import post_save
-from .models import AcopioDetalle, AjusteStockDetalle, CompraDetalle, Item,ItemMovimiento
+from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, CompraDetalle, Item,ItemMovimiento
 from django.dispatch import receiver
 
 @receiver(post_save, sender = CompraDetalle)
@@ -70,4 +70,21 @@ def signalAcopioGuardado(sender, instance, created, **kwargs):
         itMov.detalleSecuenciaOrigen = instance.pk
         itMov.esVigente = True
         itMov.tipoMovimiento = 'AC'
+        itMov.save()
+
+
+@receiver(post_save, sender = ActividadAgricolaItemDetalle)
+def signalActividadAgricolaItemGuardado(sender, instance, created, **kwargs):
+    if created:
+        itMov = ItemMovimiento()
+        itMov.item = instance.item
+        itMov.deposito = instance.deposito
+        itMov.cantidad = instance.cantidad
+        itMov.costo = instance.costo
+        itMov.precio = 0
+        itMov.fechaDocumento = instance.actividadAgricola.fechaDocumento
+        itMov.secuenciaOrigen = instance.actividadAgricola.pk
+        itMov.detalleSecuenciaOrigen = instance.pk
+        itMov.esVigente = True
+        itMov.tipoMovimiento = 'AA'
         itMov.save()

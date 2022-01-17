@@ -1,7 +1,7 @@
 from extra_views.advanced import InlineFormSetFactory
 
-from .models import AcopioCalificacion, AcopioDetalle, AjusteStockDetalle, CompraDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle
-from .forms import AcopioCalificacionForm, AcopioDetalleForm, AjusteStockDetalleForm, CompraDetalleForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm
+from .models import AcopioCalificacion, AcopioDetalle, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStockDetalle, CompraDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle
+from .forms import AcopioCalificacionForm, AcopioDetalleForm, ActividadAgricolaItemDetalleForm, ActividadAgricolaMaquinariaDetalleForm, AjusteStockDetalleForm, CompraDetalleForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm
 
 class PlanActividadZafraDetalleInline(InlineFormSetFactory):
     model = PlanActividadZafraDetalle
@@ -44,3 +44,15 @@ class AjusteStockDetalleInline(InlineFormSetFactory):
     form_class = AjusteStockDetalleForm
     factory_kwargs = {'extra':1 }
     fields = ['item', 'cantidad',]
+
+class ActividadAgricolaMaquinariaDetalleInline(InlineFormSetFactory):
+    model = ActividadAgricolaMaquinariaDetalle
+    form_class = ActividadAgricolaMaquinariaDetalleForm
+    factory_kwargs = {'extra':1 }
+    fields = ['maquinaria', 'haTrabajada','precio','subtotal']
+
+class ActividadAgricolaItemDetalleInline(InlineFormSetFactory):
+    model = ActividadAgricolaItemDetalle
+    form_class = ActividadAgricolaItemDetalleForm
+    factory_kwargs = {'extra':1 }
+    fields = ['item', 'deposito','dosis','costo','cantidad','porcentajeImpuesto','subtotal']

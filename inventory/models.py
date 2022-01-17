@@ -300,6 +300,34 @@ class AjusteStockDetalle(models.Model):
     item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
     cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
 
+class ActividadAgricola(models.Model):
+    tipoActividadAgricola = models.ForeignKey(TipoActividadAgricola, on_delete=models.DO_NOTHING,verbose_name="Tipo Act. Agrícola")
+    lote = models.ForeignKey(Lote, on_delete=models.DO_NOTHING,verbose_name="Lote")
+    zafra = models.ForeignKey(Zafra, on_delete=models.DO_NOTHING,verbose_name="Zafra")
+    finca = models.ForeignKey(Finca, on_delete=models.DO_NOTHING,verbose_name="Finca")
+    fechaDocumento = models.DateField(verbose_name="Fecha")
+    empleado = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Empleado")
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    esServicioContratado = models.BooleanField(verbose_name="Es contratado?",default=False)
+    cantidadTrabajada = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cant HA Trabajada")
+
+class ActividadAgricolaMaquinariaDetalle(models.Model):
+    actividadAgricola = models.ForeignKey(ActividadAgricola, on_delete=models.DO_NOTHING)
+    maquinaria = models.ForeignKey(MaquinariaAgricola, on_delete=models.DO_NOTHING,verbose_name="Maquinaria")
+    haTrabajada = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Ha Trabajada")
+    precio = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Precio HA")
+
+class ActividadAgricolaItemDetalle(models.Model):
+    actividadAgricola = models.ForeignKey(ActividadAgricola, on_delete=models.DO_NOTHING)
+    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
+    costo = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo")
+    cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
+    porcentajeImpuesto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="% Impuesto")
+    dosis = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Dosis")
+    deposito = models.ForeignKey(Deposito, on_delete=models.DO_NOTHING,verbose_name="Deposito",default=1)
+
 class ItemMovimiento(models.Model):
     VALORESENUMTIPMOV = (
     ('CM', 'COMPRAS'),
@@ -324,3 +352,4 @@ class ItemMovimiento(models.Model):
 from .signals import signalCompraGuardado
 from .signals import signalAjusteStockGuardado
 from .signals import signalAcopioGuardado
+from .signals import signalActividadAgricolaItemGuardado

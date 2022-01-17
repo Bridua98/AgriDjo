@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from inventory.models import (Acopio, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra,
+from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra,
                               Cuenta, Deposito, Finca, Item, Marca, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
@@ -182,3 +182,12 @@ class AjusteStockTable(EditableDeleteTable):
     class Meta:
         model = AjusteStock
         fields = ("fechaDocumento","comprobante","empleado","deposito","observacion",)
+
+class ActividadAgricolaTable(AnulableTable):
+    class Meta:
+        model = ActividadAgricola
+        fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","cantidadTrabajada","esServicioContratado","esVigente")
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fechaDocumento"

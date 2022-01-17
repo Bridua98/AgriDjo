@@ -1,15 +1,3 @@
-# invsist
-Sistema de gestión de inventario (Tutorial)
-
-## Instalación
-
-1. Clonar el repositorio: 
-
-```
-git clone https://github.com/blasferna/invsist
-```
-
-2. Crear el entorno virtual
 
 ```
 cd invsist
@@ -18,22 +6,11 @@ cd venv\Scripts
 activate
 ```
 
-3. Instalar dependencias
-
-```
-(venv) c:\invsist> pip install -r requirements.txt
-```
-
-4. Ejecutar migraciones
-
-```
-(venv) c:\invsist> python manage.py migrate
-```
-
-5. Ejecutar servidor de pruebas
-
-```
-(venv) c:\invsist> python manage.py runserver
-```
-
-
+Crear una aplicación.
+(venv) c:\invsist>python manage.py startapp inventory
+Crear migraciones, cada vez que sea creado o modificado los modelos de datos.
+(venv) c:\invsist>python manage.py makemigrations
+Persistir migraciones en la base de datos.
+(venv) c:\invsist>python manage.py migrate
+Ejecutar el servidor para realizar pruebas.
+(venv) c:\invsist>python manage.py runserver

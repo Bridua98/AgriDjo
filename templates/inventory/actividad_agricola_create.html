@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Crear Actividad Agrícola {% endblock %}
+
+{% block content %}
+<h1> Añadir Actividad Agrícola </h1>
+<form method="post" enctype="multipart/form-data">
+{% crispy form %}
+{{form.errors}}
+</form>
+{% endblock %}

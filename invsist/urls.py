@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 
 # importando vistas
-from inventory.views import AcopioAnularView, AcopioCreateView, AcopioListView, AcopioUpdateView, AjusteStockCreateView, AjusteStockDeleteView, AjusteStockListView, AjusteStockUpdateView, AperturaCajaCerrarView, AperturaCajaCreateView, AperturaCajaListView, ArqueoCreateView, ArqueoDeleteView, ArqueoListView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CompraAnularView, CompraCreateView, CompraListView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, OrdenCompraAnularView, OrdenCompraCreateView, OrdenCompraListView, OrdenCompraUpdateView, PedidoCompraCreateView, PedidoCompraListView, PedidoCompraUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
+from inventory.views import AcopioAnularView, AcopioCreateView, AcopioListView, AcopioUpdateView, ActividadAgricolaAnularView, ActividadAgricolaCreateView, ActividadAgricolaListView, AjusteStockCreateView, AjusteStockDeleteView, AjusteStockListView, AjusteStockUpdateView, AperturaCajaCerrarView, AperturaCajaCreateView, AperturaCajaListView, ArqueoCreateView, ArqueoDeleteView, ArqueoListView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CompraAnularView, CompraCreateView, CompraListView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, OrdenCompraAnularView, OrdenCompraCreateView, OrdenCompraListView, OrdenCompraUpdateView, PedidoCompraCreateView, PedidoCompraListView, PedidoCompraUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
 from inventory.views import MarcaCreateView, MarcaDeleteView, MarcaListView, MarcaUpdateView
 from inventory.views import TipoMaquinariaAgricolaCreateView, TipoMaquinariaAgricolaDeleteView, TipoMaquinariaAgricolaListView, TipoMaquinariaAgricolaUpdateView
 from inventory.views import ItemDeleteView, ItemListView, ItemUpdateView
@@ -138,9 +138,13 @@ urlpatterns = [
     path('inventory/ajuste_stock/<int:pk>/update',AjusteStockUpdateView.as_view(), name="ajuste_stock_update"),
     path('inventory/ajuste_stock/add',AjusteStockCreateView.as_view(), name="ajuste_stock_create"),
     path('inventory/ajuste_stock', AjusteStockListView.as_view(), name="ajuste_stock_list"),
+    # ACTIVIDAD AGRICOLA
+    path('inventory/actividad_agricola/<int:pk>/anular',ActividadAgricolaAnularView .as_view(), name="actividad_agricola_anular"),
+    path('inventory/actividad_agricola/add',ActividadAgricolaCreateView.as_view(), name="actividad_agricola_create"),
+    path('inventory/actividad_agricola', ActividadAgricolaListView.as_view(), name="actividad_agricola_list"),
     # menu tonto
     path('inventory/', menu, name="inventory_menu"),
-
+    
     path('admin/', admin.site.urls),
     path('', main, name="main"),
 ]

@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -184,7 +184,7 @@ class OrdenCompraDetalleForm(forms.ModelForm):
         fields = ['item', 'cantidad','precio','descuento']
 
 
-# ORDEN COMPRA
+# COMPRA
 class CompraForm(forms.ModelForm):
     total = forms.DecimalField(
         widget=calculation.SumInput('subtotal',   attrs={'readonly':True}),
@@ -275,3 +275,64 @@ class AjusteStockDetalleForm(forms.ModelForm):
     class Meta:
         model = AjusteStockDetalle
         fields = ['item', 'cantidad',]
+
+
+# ACTIVIDADES AGRICOLAS
+class ActividadAgricolaForm(forms.ModelForm):
+    total = forms.DecimalField(
+        widget=calculation.SumInput('SubTotalMaquinaria',   attrs={'readonly':True}),
+    )
+    class Meta:
+        model = ActividadAgricola
+        fields = ['fechaDocumento','tipoActividadAgricola','zafra', 'finca','lote','esServicioContratado','empleado','cantidadTrabajada','observacion']
+        widgets = {'fechaDocumento':DateInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['total'].label = False
+        self.helper.layout = Layout(
+            "fechaDocumento",
+            "tipoActividadAgricola",
+            "zafra",
+            "finca",
+            "lote",
+            "esServicioContratado",
+            "empleado",
+            "cantidadTrabajada",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "ActividadAgricolaMaquinariaDetalleInline"#, stacked=True
+                ), 
+                Formset(
+                    "ActividadAgricolaItemDetalleInline",#, stacked=True
+                ),       
+            ),
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+            ), 
+            Row(
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'actividad_agricola_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class ActividadAgricolaMaquinariaDetalleForm(forms.ModelForm):
+    subtotal = forms.DecimalField(
+        widget=calculation.FormulaInput('precio*haTrabajada', attrs={'readonly':True}),
+        label = "SubTotalMaquinaria"
+    )
+    class Meta:
+        model = ActividadAgricolaMaquinariaDetalle
+        fields = ['maquinaria', 'haTrabajada','precio','subtotal']
+
+class ActividadAgricolaItemDetalleForm(forms.ModelForm):
+    subtotal = forms.DecimalField(
+        widget=calculation.FormulaInput('costo*cantidad', attrs={'readonly':True}),
+        label = "SubTotalItem"
+    )
+    class Meta:
+        model = ActividadAgricolaItemDetalle
+        fields = ['item', 'deposito','dosis','costo','cantidad','porcentajeImpuesto','subtotal']
