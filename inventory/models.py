@@ -328,6 +328,14 @@ class ActividadAgricolaItemDetalle(models.Model):
     dosis = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Dosis")
     deposito = models.ForeignKey(Deposito, on_delete=models.DO_NOTHING,verbose_name="Deposito",default=1)
 
+
+class Contrato(models.Model):
+    zafra = models.ForeignKey(Zafra, on_delete=models.DO_NOTHING,verbose_name="Zafra")
+    persona = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Persona")
+    costoPactado = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Pactado")
+    fecha = models.DateField(verbose_name="Fecha")
+    descripcion = models.CharField(max_length=300,verbose_name="Descripción")
+
 class ItemMovimiento(models.Model):
     VALORESENUMTIPMOV = (
     ('CM', 'COMPRAS'),

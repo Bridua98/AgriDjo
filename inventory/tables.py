@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra,
+from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Contrato,
                               Cuenta, Deposito, Finca, Item, Marca, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
@@ -191,3 +191,8 @@ class ActividadAgricolaTable(AnulableTable):
             "registro_esVigente": lambda record: record.esVigente
         }
         order_by = "-fechaDocumento"
+
+class ContratoTable(DeleteTable):
+    class Meta:
+        model = Contrato
+        fields = ("fecha","zafra","persona","costoPactado","descripcion")

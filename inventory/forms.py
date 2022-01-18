@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -343,3 +343,66 @@ class ActividadAgricolaItemDetalleForm(forms.ModelForm):
     class Meta:
         model = ActividadAgricolaItemDetalle
         fields = ['item', 'deposito','dosis','costo','cantidad','porcentajeImpuesto','subtotalItem']
+
+# PEDIDO COMPRA
+class PedidoCompraForm(forms.ModelForm):
+    cantidad = forms.DecimalField(
+        widget=calculation.SumInput('cantidad',   attrs={'readonly':True}),
+    )
+    class Meta:
+        model = PedidoCompra
+        fields = ['proveedor','fechaDocumento', 'fechaVencimiento', 'observacion']
+        widgets = {'fechaDocumento':DateInput,'fechaVencimiento':DateInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['cantidad'].label = False
+        self.helper.layout = Layout(
+            "proveedor",
+            "fechaDocumento",
+            "fechaVencimiento",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "PedidoCompraDetalleInline"#, stacked=True
+                ), 
+                
+            ),
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Cantidad: </span>'), css_class="text-right"), Column("cantidad")
+            ), 
+            Row(
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class PedidoCompraDetalleForm(forms.ModelForm):
+    class Meta:
+        model = PedidoCompraDetalle
+        fields = ['item', 'cantidad']
+
+
+# ORDEN COMPRA
+class ContratoForm(forms.ModelForm):
+    class Meta:
+        model = Contrato
+        fields = ['fecha','zafra','persona','descripcion','costoPactado']
+        widgets = {'fecha':DateInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            "fecha",
+            "zafra",
+            "persona",
+            "descripcion",
+            "costoPactado",
+            Row(
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" ))
+            ) 
+        )

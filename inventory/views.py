@@ -7,15 +7,16 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
+from .widgets import DateInput
 
-from inventory.forms import AcopioForm, ActividadAgricolaForm, AjusteStockForm, CompraForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
+from inventory.forms import AcopioForm, ActividadAgricolaForm, AjusteStockForm, CompraForm, ContratoForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
 from inventory.inlines import AcopioCalificacionDetalleInline, AcopioDetalleInline, ActividadAgricolaItemDetalleInline, ActividadAgricolaMaquinariaDetalleInline, AjusteStockDetalleInline, CompraDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Cuenta, Deposito, Finca, Item,
+from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Contrato, Cuenta, Deposito, Finca, Item,
                               Lote, MaquinariaAgricola, Marca, OrdenCompra, PedidoCompra, Persona,
                               PlanActividadZafra, TipoActividadAgricola,
                               TipoImpuesto, TipoMaquinariaAgricola, Zafra)
-from inventory.tables import (AcopioTable, ActividadAgricolaTable, AjusteStockTable, AperturaCajaTable, ArqueoTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CompraTable, CuentaTable,
+from inventory.tables import (AcopioTable, ActividadAgricolaTable, AjusteStockTable, AperturaCajaTable, ArqueoTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CompraTable, ContratoTable, CuentaTable,
                               DepositoTable, FincaTable, ItemTable, LoteTable,
                               MaquinariaAgricolaTable, MarcaTable, OrdenCompraTable, PedidoCompraTable,
                               PersonaTable, PlanActividadZafraTable,
@@ -1236,3 +1237,31 @@ class ActividadAgricolaAnularView(DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("actividad_agricola_list")
+
+# CONTRATO 
+class ContratoListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Contrato
+    table_class = ContratoTable
+    paginate_by = 6
+    search_fields = ['descripcion','persona__razonSocial','zafra__descripcion']
+    template_name = 'inventory/contrato_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['delete_url'] = 'contrato_delete'
+        return context
+
+class ContratoCreateView(CreateView):
+  
+    model = Contrato
+    template_name = 'inventory/contrato_create.html'
+    form_class = ContratoForm
+    def get_success_url(self):
+        return reverse_lazy("contrato_list")
+
+class ContratoDeleteView(DeleteView):
+    model = Contrato
+    template_name = 'inventory/contrato_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("contrato_list")
