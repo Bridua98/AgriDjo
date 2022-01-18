@@ -49,10 +49,10 @@ class ActividadAgricolaMaquinariaDetalleInline(InlineFormSetFactory):
     model = ActividadAgricolaMaquinariaDetalle
     form_class = ActividadAgricolaMaquinariaDetalleForm
     factory_kwargs = {'extra':1 }
-    fields = ['maquinaria', 'haTrabajada','precio','subtotal']
+    fields = ['maquinaria', 'haTrabajada','precio','subtotalMaquinaria']
 
 class ActividadAgricolaItemDetalleInline(InlineFormSetFactory):
     model = ActividadAgricolaItemDetalle
     form_class = ActividadAgricolaItemDetalleForm
     factory_kwargs = {'extra':1 }
-    fields = ['item', 'deposito','dosis','costo','cantidad','porcentajeImpuesto','subtotal']
+    fields = ['item', 'deposito','dosis','costo','cantidad','porcentajeImpuesto','subtotalItem']

@@ -279,8 +279,11 @@ class AjusteStockDetalleForm(forms.ModelForm):
 
 # ACTIVIDADES AGRICOLAS
 class ActividadAgricolaForm(forms.ModelForm):
-    total = forms.DecimalField(
-        widget=calculation.SumInput('SubTotalMaquinaria',   attrs={'readonly':True}),
+    totalMaquinaria = forms.DecimalField(
+        widget=calculation.SumInput('subtotalMaquinaria',   attrs={'readonly':True}),
+    )
+    totalItem = forms.DecimalField(
+        widget=calculation.SumInput('subtotalItem',   attrs={'readonly':True}),
     )
     class Meta:
         model = ActividadAgricola
@@ -291,7 +294,8 @@ class ActividadAgricolaForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.fields['total'].label = False
+        self.fields['totalMaquinaria'].label = False
+        self.fields['totalItem'].label = False
         self.helper.layout = Layout(
             "fechaDocumento",
             "tipoActividadAgricola",
@@ -312,7 +316,10 @@ class ActividadAgricolaForm(forms.ModelForm):
                 ),       
             ),
             Row(
-                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total Máquina: </span>'), css_class="text-right"), Column("totalMaquinaria")
+            ), 
+             Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total Items: </span>'), css_class="text-right"), Column("totalItem")
             ), 
             Row(
                 Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'actividad_agricola_list' %}"> Cancelar</a>""" ))
@@ -320,19 +327,19 @@ class ActividadAgricolaForm(forms.ModelForm):
         )
 
 class ActividadAgricolaMaquinariaDetalleForm(forms.ModelForm):
-    subtotal = forms.DecimalField(
+    subtotalMaquinaria = forms.DecimalField(
         widget=calculation.FormulaInput('precio*haTrabajada', attrs={'readonly':True}),
-        label = "SubTotalMaquinaria"
+        label = "SubTotal"
     )
     class Meta:
         model = ActividadAgricolaMaquinariaDetalle
-        fields = ['maquinaria', 'haTrabajada','precio','subtotal']
+        fields = ['maquinaria', 'haTrabajada','precio','subtotalMaquinaria']
 
 class ActividadAgricolaItemDetalleForm(forms.ModelForm):
-    subtotal = forms.DecimalField(
+    subtotalItem = forms.DecimalField(
         widget=calculation.FormulaInput('costo*cantidad', attrs={'readonly':True}),
-        label = "SubTotalItem"
+        label = "SubTotal"
     )
     class Meta:
         model = ActividadAgricolaItemDetalle
-        fields = ['item', 'deposito','dosis','costo','cantidad','porcentajeImpuesto','subtotal']
+        fields = ['item', 'deposito','dosis','costo','cantidad','porcentajeImpuesto','subtotalItem']
