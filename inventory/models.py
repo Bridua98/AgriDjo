@@ -336,6 +336,30 @@ class Contrato(models.Model):
     fecha = models.DateField(verbose_name="Fecha")
     descripcion = models.CharField(max_length=300,verbose_name="Descripción")
 
+class Venta(models.Model):
+    cliente = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Cliente")
+    cuenta = models.ForeignKey(Cuenta, on_delete=models.DO_NOTHING,verbose_name="Cuenta")
+    deposito = models.ForeignKey(Deposito, on_delete=models.DO_NOTHING,verbose_name="Deposito")
+    aperturaCaja = models.ForeignKey(AperturaCaja, on_delete=models.DO_NOTHING,verbose_name="AperturaCaja")
+    fechaDocumento = models.DateField(verbose_name="Fecha Documento")
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
+    comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
+    timbrado = models.CharField(max_length=8,verbose_name="Timbrado")
+    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=False)
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    @property
+    def total(self):
+        return sum(round(x.precio * x.cantidad)  for x in self.ventadetalle_set.all())
+
+class VentaDetalle(models.Model):
+    venta = models.ForeignKey(Venta, on_delete=models.DO_NOTHING)
+    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
+    cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
+    costo = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo")
+    precio = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Precio")
+    porcentajeImpuesto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="% Impuesto")
+
 class ItemMovimiento(models.Model):
     VALORESENUMTIPMOV = (
     ('CM', 'COMPRAS'),

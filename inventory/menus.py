@@ -49,6 +49,7 @@ hijos_movimiento_compra = (
 hijos_movimiento_venta = (
     MenuItem("Apertura/Cierre Cajas",reverse_lazy("apertura_caja_list")),
     MenuItem("Arqueos",reverse_lazy("arqueo_list")),
+    MenuItem("Ventas",reverse_lazy("venta_list")),
 )
 
 Menu.add_item("referencial_agricultura", MenuItem("Referenciales Agricultura",

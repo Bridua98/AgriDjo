@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Registrar Venta {% endblock %}
+
+{% block content %}
+<h1> Añadir Venta </h1>
+<form method="post" enctype="multipart/form-data">
+{% crispy form %}
+{{form.errors}}
+</form>
+{% endblock %}

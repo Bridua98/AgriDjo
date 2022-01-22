@@ -4,7 +4,7 @@ from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCa
                               Cuenta, Deposito, Finca, Item, Marca, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
-                              TipoMaquinariaAgricola, Zafra)
+                              TipoMaquinariaAgricola, Venta, Zafra)
 
 
 class BaseTable(tables.Table):
@@ -196,3 +196,13 @@ class ContratoTable(DeleteTable):
     class Meta:
         model = Contrato
         fields = ("fecha","zafra","persona","costoPactado","descripcion")
+
+
+class VentaTable(AnulableTable):
+    class Meta:
+        model = Venta
+        fields = ("fechaDocumento","comprobante","cliente","total","esVigente",)
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fechaDocumento"

@@ -9,19 +9,19 @@ from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 from .widgets import DateInput
 
-from inventory.forms import AcopioForm, ActividadAgricolaForm, AjusteStockForm, CompraForm, ContratoForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm
-from inventory.inlines import AcopioCalificacionDetalleInline, AcopioDetalleInline, ActividadAgricolaItemDetalleInline, ActividadAgricolaMaquinariaDetalleInline, AjusteStockDetalleInline, CompraDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline
+from inventory.forms import AcopioForm, ActividadAgricolaForm, AjusteStockForm, CompraForm, ContratoForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm, VentaForm
+from inventory.inlines import AcopioCalificacionDetalleInline, AcopioDetalleInline, ActividadAgricolaItemDetalleInline, ActividadAgricolaMaquinariaDetalleInline, AjusteStockDetalleInline, CompraDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline, VentaDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Contrato, Cuenta, Deposito, Finca, Item,
                               Lote, MaquinariaAgricola, Marca, OrdenCompra, PedidoCompra, Persona,
                               PlanActividadZafra, TipoActividadAgricola,
-                              TipoImpuesto, TipoMaquinariaAgricola, Zafra)
+                              TipoImpuesto, TipoMaquinariaAgricola, Venta, Zafra)
 from inventory.tables import (AcopioTable, ActividadAgricolaTable, AjusteStockTable, AperturaCajaTable, ArqueoTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CompraTable, ContratoTable, CuentaTable,
                               DepositoTable, FincaTable, ItemTable, LoteTable,
                               MaquinariaAgricolaTable, MarcaTable, OrdenCompraTable, PedidoCompraTable,
                               PersonaTable, PlanActividadZafraTable,
                               TipoActividadAgricolaTable, TipoImpuestoTable,
-                              TipoMaquinariaAgricolaTable, ZafraTable)
+                              TipoMaquinariaAgricolaTable, VentaTable, ZafraTable)
 
 import os
 import uuid
@@ -1265,3 +1265,69 @@ class ContratoDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("contrato_list")
+
+#VENTAS
+class VentaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = Venta
+    table_class = VentaTable
+    search_fields = ['cliente__razonSocial','comprobante','timbrado','observacion']
+    template_name = 'inventory/venta_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['anular_url'] = 'venta_anular'
+        return context
+
+
+class VentaCreateView(CreateWithFormsetInlinesView):
+    model = Venta
+    form_class = VentaForm
+    template_name = 'inventory/venta_create.html'
+    inlines = [VentaDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('venta_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class VentaAnularView(DeleteView):
+    model = Venta
+    template_name = 'inventory/anular.html'
+    success_url = reverse_lazy("venta_list")
+
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        try:
+            self.object = self.get_object()
+            if self.object.esVigente == False:
+                print('entro en exepcion para anulado')
+                raise Exception("La factura ya fue anulado.")
+            else:
+                self.object.esVigente = False
+                self.object.save()
+        except  Exception as e:
+            self.error = e
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
+        return HttpResponseRedirect(success_url)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects']=deletable_objects
+        context['model_count']=dict(model_count).items()
+        context['protected']=protected
+        context['title']="Anular Venta"
+        context['description']="Está seguro de anular la Venta?"
+        context['list_url'] = 'venta_list'
+        return context
+    def get_success_url(self):
+        return reverse_lazy("venta_list")

@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, Venta, VentaDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -406,3 +406,63 @@ class ContratoForm(forms.ModelForm):
                 Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" ))
             ) 
         )
+
+# VENTAS
+class VentaForm(forms.ModelForm):
+    total = forms.DecimalField(
+        widget=calculation.SumInput('subtotal',   attrs={'readonly':True}),
+    )
+    total_iva = forms.DecimalField(
+        widget=calculation.SumInput('impuesto',   attrs={'readonly':True}),
+    )
+    class Meta:
+        model = Venta
+        fields = ['fechaDocumento','esCredito','comprobante', 'timbrado','cliente','cuenta','deposito','observacion']
+        widgets = {'fechaDocumento':DateInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['total'].label = False
+        self.fields['total_iva'].label = False
+        self.helper.layout = Layout(
+            "fechaDocumento",
+            "esCredito",
+            "comprobante",
+            "timbrado",
+            "cliente",
+            "cuenta",
+            "deposito",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "VentaDetalleInline"#, stacked=True
+                ), 
+                
+            ),
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+            ), 
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total Impuesto: </span>'), css_class="text-right"), Column("total_iva")
+            ),
+            Row(
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'compra_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class VentaDetalleForm(forms.ModelForm):
+    subtotal = forms.DecimalField(
+        widget=calculation.FormulaInput('precio*cantidad', attrs={'readonly':True}),
+        label = "SubTotal"
+    )
+    impuesto = forms.DecimalField(
+        widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
+        label = "Impuesto"
+    )
+    class Meta:
+        model = VentaDetalle
+        fields = ['item', 'cantidad','precio','porcentajeImpuesto','impuesto','subtotal']
+
