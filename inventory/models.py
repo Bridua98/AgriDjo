@@ -254,8 +254,6 @@ class AperturaCaja(models.Model):
     estaCerrado = models.BooleanField(verbose_name="Esta Cerrado?",default=False)
     montoInicio = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Monto Apertura")
     fechaHoraCierre = models.DateTimeField(auto_now_add=True,null=True, blank=True,verbose_name="Fecha Hora Cierre")
-    def __str__(self):
-        return "Fecha: "+self.fechaHoraRegistro.strftime("%m/%d/%Y, %H:%M:%S")+" / Empl: "+self.empleado.razonSocial
 
 class Arqueo(models.Model):
     empleado = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Empleado")
@@ -380,8 +378,11 @@ class ItemMovimiento(models.Model):
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True) 
     tipoMovimiento = models.CharField(max_length=50,choices=VALORESENUMTIPMOV) 
 
-# IMPLEMENTAMOS LA SEÑAL DE COMPRA
+# IMPLEMENTAMOS LAS SENAÑES
 from .signals import signalCompraGuardado
 from .signals import signalAjusteStockGuardado
 from .signals import signalAcopioGuardado
 from .signals import signalActividadAgricolaItemGuardado
+from .signals import signalVentaPreGuardado
+from .signals import signalVentaDetallePreGuardado
+from .signals import signalVentaGuardado
