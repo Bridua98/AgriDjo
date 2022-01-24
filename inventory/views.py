@@ -9,16 +9,16 @@ from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 from .widgets import DateInput
 
-from inventory.forms import AcopioForm, ActividadAgricolaForm, AjusteStockForm, CompraForm, ContratoForm, NotaCreditoRecibidaForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm, VentaForm
-from inventory.inlines import AcopioCalificacionDetalleInline, AcopioDetalleInline, ActividadAgricolaItemDetalleInline, ActividadAgricolaMaquinariaDetalleInline, AjusteStockDetalleInline, CompraDetalleInline, NotaCreditoRecibidaDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline, VentaDetalleInline
+from inventory.forms import AcopioForm, ActividadAgricolaForm, AjusteStockForm, CompraForm, ContratoForm, NotaCreditoEmitidaForm, NotaCreditoRecibidaForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm, VentaForm
+from inventory.inlines import AcopioCalificacionDetalleInline, AcopioDetalleInline, ActividadAgricolaItemDetalleInline, ActividadAgricolaMaquinariaDetalleInline, AjusteStockDetalleInline, CompraDetalleInline, NotaCreditoEmitidaDetalleInline, NotaCreditoRecibidaDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline, VentaDetalleInline
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Contrato, Cuenta, Deposito, Finca, Item,
-                              Lote, MaquinariaAgricola, Marca, NotaCreditoRecibida, OrdenCompra, PedidoCompra, Persona,
+                              Lote, MaquinariaAgricola, Marca, NotaCreditoEmitida, NotaCreditoRecibida, OrdenCompra, PedidoCompra, Persona,
                               PlanActividadZafra, TipoActividadAgricola,
                               TipoImpuesto, TipoMaquinariaAgricola, Venta, Zafra)
 from inventory.tables import (AcopioTable, ActividadAgricolaTable, AjusteStockTable, AperturaCajaTable, ArqueoTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CompraTable, ContratoTable, CuentaTable,
                               DepositoTable, FincaTable, ItemTable, LoteTable,
-                              MaquinariaAgricolaTable, MarcaTable, NotaCreditoRecibidaTable, OrdenCompraTable, PedidoCompraTable,
+                              MaquinariaAgricolaTable, MarcaTable, NotaCreditoEmitidaTable, NotaCreditoRecibidaTable, OrdenCompraTable, PedidoCompraTable,
                               PersonaTable, PlanActividadZafraTable,
                               TipoActividadAgricolaTable, TipoImpuestoTable,
                               TipoMaquinariaAgricolaTable, VentaTable, ZafraTable)
@@ -1398,4 +1398,72 @@ class NotaCreditoRecibidaAnularView(DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("nota_credito_recibida_list")
+
+
+
+#NOTAS CREDITOS EMITIDAS
+class NotaCreditoEmitidaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = NotaCreditoEmitida
+    table_class = NotaCreditoEmitidaTable
+    search_fields = ['cliente__razonSocial','comprobante','timbrado','venta__comprobante']
+    template_name = 'inventory/nota_credito_emitida_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['anular_url'] = 'nota_credito_emitida_anular'
+        return context
+
+
+class NotaCreditoEmitidaCreateView(CreateWithFormsetInlinesView):
+    model = NotaCreditoEmitida
+    form_class = NotaCreditoEmitidaForm
+    template_name = 'inventory/nota_credito_emitida_create.html'
+    inlines = [NotaCreditoEmitidaDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('nota_credito_emitida_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class NotaCreditoEmitidaAnularView(DeleteView):
+    model = NotaCreditoEmitida
+    template_name = 'inventory/anular.html'
+    success_url = reverse_lazy("nota_credito_emitida_list")
+
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        try:
+            self.object = self.get_object()
+            if self.object.esVigente == False:
+                print('entro en exepcion para anulado')
+                raise Exception("La Nota de Crédito ya fue anulado.")
+            else:
+                self.object.esVigente = False
+                self.object.save()
+        except  Exception as e:
+            self.error = e
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
+        return HttpResponseRedirect(success_url)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects']=deletable_objects
+        context['model_count']=dict(model_count).items()
+        context['protected']=protected
+        context['title']="Anular Nota de Crédito Emitida"
+        context['description']="Está seguro de anular la Nota de Crédito?"
+        context['list_url'] = 'nota_credito_emitida_list'
+        return context
+    def get_success_url(self):
+        return reverse_lazy("nota_credito_emitida_list")
 

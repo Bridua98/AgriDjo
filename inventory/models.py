@@ -351,6 +351,8 @@ class Venta(models.Model):
     @property
     def total(self):
         return sum(round(x.precio * x.cantidad)  for x in self.ventadetalle_set.all())
+    def __str__(self):
+        return self.comprobante+" - "+self.timbrado
 
 class VentaDetalle(models.Model):
     venta = models.ForeignKey(Venta, on_delete=models.DO_NOTHING)
@@ -407,6 +409,31 @@ class NotaCreditoRecibidaDetalle(models.Model):
     esDevolucion = models.BooleanField(verbose_name="Es Devolución?",default=False)
     porcentajeImpuesto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="% Impuesto")
 
+
+class NotaCreditoEmitida(models.Model):
+    cliente = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Cliente")
+    venta = models.ForeignKey(Venta, on_delete=models.DO_NOTHING,verbose_name="Venta")
+    cuenta = models.ForeignKey(Cuenta, on_delete=models.DO_NOTHING,verbose_name="Cuenta")
+    deposito = models.ForeignKey(Deposito, on_delete=models.DO_NOTHING,verbose_name="Deposito")
+    fechaDocumento = models.DateField(verbose_name="Fecha Documento")
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
+    comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
+    timbrado = models.CharField(max_length=8,verbose_name="Timbrado")
+    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=False)
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    @property
+    def total(self):
+        return sum(round(x.valor * x.cantidad)  for x in self.notacreditoemitidadetalle_set.all())
+
+class NotaCreditoEmitidaDetalle(models.Model):
+    notaCreditoEmitida = models.ForeignKey(NotaCreditoEmitida, on_delete=models.DO_NOTHING)
+    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
+    cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
+    valor = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo/Descuento")
+    esDevolucion = models.BooleanField(verbose_name="Es Devolución?",default=False)
+    porcentajeImpuesto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="% Impuesto")
+
 # IMPLEMENTAMOS LAS SENAÑES
 from .signals import signalCompraGuardado
 from .signals import signalAjusteStockGuardado
@@ -416,3 +443,4 @@ from .signals import signalVentaPreGuardado
 from .signals import signalVentaDetallePreGuardado
 from .signals import signalVentaGuardado
 from .signals import signalVentaGuardado
+from .signals import signalNotaCreditoEmitidaGuardado

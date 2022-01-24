@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+<h1>Listado de Notas de Créditos Emitidas</h1>
+
+{% block head %}
+<style>
+    .filter{
+        max-height: calc(100vh - 150px);
+    }
+    tr[registro_esVigente='False'] {
+        background-color: #6c757d!important;
+        color: white; 
+        text-decoration: line-through;
+    }
+</style>
+{% endblock %}
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        {% include 'includes/search_form.html' %}
+    </div>
+    <div class="col-md-4 col-md-offset-2">
+        <a class="btn btn-primary float-right" href="{% url 'nota_credito_emitida_create' %}"> Añadir</a>
+    </div>
+</div>
+
+{% render_table table %}
+
+{% endblock %}

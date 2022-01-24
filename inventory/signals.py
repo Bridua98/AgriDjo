@@ -1,5 +1,5 @@
 from django.db.models.signals import post_save,pre_save
-from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, CompraDetalle, Item,ItemMovimiento, NotaCreditoRecibidaDetalle, Venta, VentaDetalle
+from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, CompraDetalle, Item,ItemMovimiento, NotaCreditoEmitidaDetalle, NotaCreditoRecibidaDetalle, Venta, VentaDetalle
 from django.dispatch import receiver
 
 
@@ -116,7 +116,7 @@ def signalVentaGuardado(sender, instance, created, **kwargs):
         itMov.secuenciaOrigen = instance.venta.pk
         itMov.detalleSecuenciaOrigen = instance.pk
         itMov.esVigente = True
-        itMov.tipoMovimiento = 'DC'
+        itMov.tipoMovimiento = 'VT'
         itMov.save()
 
 
@@ -133,5 +133,21 @@ def signalNotaCreditoRecibidaGuardado(sender, instance, created, **kwargs):
         itMov.secuenciaOrigen = instance.notaCreditoRecibida.pk
         itMov.detalleSecuenciaOrigen = instance.pk
         itMov.esVigente = True
-        itMov.tipoMovimiento = 'CM'
+        itMov.tipoMovimiento = 'DC'
+        itMov.save()
+
+@receiver(post_save, sender = NotaCreditoEmitidaDetalle)
+def signalNotaCreditoEmitidaGuardado(sender, instance, created, **kwargs):
+    if created:
+        itMov = ItemMovimiento()
+        itMov.item = instance.item
+        itMov.deposito = instance.notaCreditoEmitida.deposito
+        itMov.cantidad = instance.cantidad
+        itMov.costo = instance.item.costo
+        itMov.precio = instance.valor
+        itMov.fechaDocumento = instance.notaCreditoEmitida.fechaDocumento
+        itMov.secuenciaOrigen = instance.notaCreditoEmitida.pk
+        itMov.detalleSecuenciaOrigen = instance.pk
+        itMov.esVigente = True
+        itMov.tipoMovimiento = 'DV'
         itMov.save()
