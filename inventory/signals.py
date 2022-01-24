@@ -1,6 +1,11 @@
 from django.db.models.signals import post_save,pre_save
-from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, CompraDetalle, Item,ItemMovimiento, Venta, VentaDetalle
+from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, CompraDetalle, Item,ItemMovimiento, NotaCreditoRecibidaDetalle, Venta, VentaDetalle
 from django.dispatch import receiver
+
+
+@receiver(pre_save, sender = CompraDetalle)
+def signalCompraDetallePreGuardado(sender, instance, **kwargs):
+   pass
 
 @receiver(post_save, sender = CompraDetalle)
 def signalCompraGuardado(sender, instance, created, **kwargs):
@@ -111,8 +116,22 @@ def signalVentaGuardado(sender, instance, created, **kwargs):
         itMov.secuenciaOrigen = instance.venta.pk
         itMov.detalleSecuenciaOrigen = instance.pk
         itMov.esVigente = True
-        itMov.tipoMovimiento = 'VT'
+        itMov.tipoMovimiento = 'DC'
         itMov.save()
 
 
-
+@receiver(post_save, sender = NotaCreditoRecibidaDetalle)
+def signalNotaCreditoRecibidaGuardado(sender, instance, created, **kwargs):
+    if created:
+        itMov = ItemMovimiento()
+        itMov.item = instance.item
+        itMov.deposito = instance.notaCreditoRecibida.deposito
+        itMov.cantidad = instance.cantidad
+        itMov.costo = instance.valor
+        itMov.precio = instance.valor
+        itMov.fechaDocumento = instance.notaCreditoRecibida.fechaDocumento
+        itMov.secuenciaOrigen = instance.notaCreditoRecibida.pk
+        itMov.detalleSecuenciaOrigen = instance.pk
+        itMov.esVigente = True
+        itMov.tipoMovimiento = 'CM'
+        itMov.save()

@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, Venta, VentaDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -465,4 +465,67 @@ class VentaDetalleForm(forms.ModelForm):
     class Meta:
         model = VentaDetalle
         fields = ['item', 'cantidad','precio','porcentajeImpuesto','impuesto','subtotal']
+
+
+# NOTA DE CREDITO RECIBIDA
+class NotaCreditoRecibidaForm(forms.ModelForm):
+    total = forms.DecimalField(
+        widget=calculation.SumInput('subtotal',   attrs={'readonly':True}),
+    )
+    total_iva = forms.DecimalField(
+        widget=calculation.SumInput('impuesto',   attrs={'readonly':True}),
+    )
+    class Meta:
+        model = NotaCreditoRecibida
+        fields = ['fechaDocumento','esCredito','comprobante', 'timbrado','proveedor','cuenta','deposito',"compra",'observacion']
+        widgets = {'fechaDocumento':DateInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['total'].label = False
+        self.fields['total_iva'].label = False
+        self.helper.layout = Layout(
+            "fechaDocumento",
+            "esCredito",
+            "comprobante",
+            "timbrado",
+            "proveedor",
+            "cuenta",
+            "deposito",
+            "compra",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "NotaCreditoRecibidaDetalleInline"#, stacked=True
+                ), 
+                
+            ),
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+            ), 
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total Impuesto: </span>'), css_class="text-right"), Column("total_iva")
+            ),
+            Row(
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'nota_credito_recibida_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class NotaCreditoRecibidaDetalleForm(forms.ModelForm):
+    subtotal = forms.DecimalField(
+        widget=calculation.FormulaInput('valor*cantidad', attrs={'readonly':True}),
+        label = "SubTotal"
+    )
+    impuesto = forms.DecimalField(
+        widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
+        label = "Impuesto"
+    )
+    class Meta:
+        model = NotaCreditoRecibidaDetalle
+        fields = ['esDevolucion','item', 'cantidad','valor','porcentajeImpuesto','impuesto','subtotal']
+
+
 

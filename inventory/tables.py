@@ -1,7 +1,7 @@
 import django_tables2 as tables
 
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Contrato,
-                              Cuenta, Deposito, Finca, Item, Marca, OrdenCompra,
+                              Cuenta, Deposito, Finca, Item, Marca, NotaCreditoRecibida, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
                               TipoMaquinariaAgricola, Venta, Zafra)
@@ -202,6 +202,15 @@ class VentaTable(AnulableTable):
     class Meta:
         model = Venta
         fields = ("fechaDocumento","comprobante","cliente","total","esVigente",)
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fechaDocumento"
+
+class NotaCreditoRecibidaTable(AnulableTable):
+    class Meta:
+        model = NotaCreditoRecibida
+        fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)
         row_attrs = {
             "registro_esVigente": lambda record: record.esVigente
         }
