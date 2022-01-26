@@ -25,7 +25,7 @@ from inventory.views import TipoMaquinariaAgricolaCreateView, TipoMaquinariaAgri
 from inventory.views import ItemDeleteView, ItemListView, ItemUpdateView
 from inventory.views import TipoActividadAgricolaListView, TipoActividadAgricolaCreateView, TipoActividadAgricolaUpdateView, TipoActividadAgricolaDeleteView
 from inventory.views import FincaListView, FincaCreateView, FincaUpdateView, FincaDeleteView
-from inventory.views import main, menu
+from inventory.views import main, menu, download_view
 
 urlpatterns = [
      # personas
@@ -148,6 +148,7 @@ urlpatterns = [
     path('inventory/contrato', ContratoListView.as_view(), name="contrato_list"),
     # VENTA
     path('inventory/venta/<int:pk>/anular',VentaAnularView.as_view(), name="venta_anular"),
+    path('inventory/venta/<int:pk>/descargar',download_view, name="venta_descargar"),
     path('inventory/venta/add',VentaCreateView.as_view(), name="venta_create"),
     path('inventory/venta', VentaListView.as_view(), name="venta_list"),
     # NOTA DE CREDITO RECIBIDA

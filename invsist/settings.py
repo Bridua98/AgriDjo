@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'inventory',
     'django_tables2',
     'extra_views',
@@ -135,3 +136,9 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# Impresion de facturas
+INVOICE_CSS_DIR = os.path.join(STATICFILES_DIRS[0],"site/css/invoice.css")
+INVOICE_IMG_DIR = os.path.join(STATICFILES_DIRS[0], 'site/images/logo_compy')
+

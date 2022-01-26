@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+
+{% block head  %}
+    <style>
+        .text-center {
+            text-align: center;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .text-left {
+            text-align: left;
+        }
+        .list-unstyled {
+            list-style-type: none;
+        }
+        .bg-light {
+            background-color: #ececec;
+        }
+        .bg-dark {
+            background-color: dimgrey;
+            color: white;
+        }
+        .th-1 {
+            border: 1px solid #ececec;
+        }
+        .border-light {
+            border: 1px solid white;
+        }
+        .border-light-1 {
+            border: 1px solid #ececec;
+        }
+        table {
+            width: 100%;
+        }
+        table,tr,td {
+            padding: 2px;
+        }
+        .text-bold {
+            font-weight: bold;
+        }
+        .text-small {
+            font-size: small;
+        }
+        .text-large {
+            font-size: large;
+        }
+        .text-xlarge {
+            font-size: x-large;
+        }
+        .text-xxlarge {
+            font-size: xx-large;
+        }
+        .text-larger {
+            font-size: larger;
+        }
+    </style>
+{% endblock   %}
+    
+    
+{% block content %}
+    <div>
+
+    </div>
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <a href="{% url list_url %}" class="btn btn-outline-secondary">Volver</a>
+        <h1 class="h6">{{object.number}} </h1>
+
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a class="btn btn-outline-primary " href="{% url 'factura_venta_descargar' object.pk %}"><i class="bi bi-download"></i> Descargar </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="">
+                {% include 'templates/factura_venta_cuerpo.html'  %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

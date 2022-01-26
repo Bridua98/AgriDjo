@@ -30,6 +30,13 @@ class AnulableTable(BaseTable):
         kwargs['extra_columns'] = [('anular', tables.TemplateColumn(template_name="includes/anular_button.html", verbose_name="Anular", orderable=False))]
         super().__init__(*args, **kwargs)
 
+class VentaTable(BaseTable):
+    def __init__(self, *args, **kwargs):
+        kwargs['empty_text']  =  "Sin resultados."
+        kwargs['extra_columns'] = [('anular', tables.TemplateColumn(template_name="includes/anular_button.html", verbose_name="Anular", orderable=False)),
+                                   ('descargar', tables.TemplateColumn(template_name="includes/descargar_venta_button.html", verbose_name="Descargar Factura", orderable=False))]
+        super().__init__(*args, **kwargs)
+
 class CerrarAperturaCajaTable(BaseTable):
     def __init__(self, *args, **kwargs):
         kwargs['empty_text']  =  "Sin resultados."
@@ -198,7 +205,7 @@ class ContratoTable(DeleteTable):
         fields = ("fecha","zafra","persona","costoPactado","descripcion")
 
 
-class VentaTable(AnulableTable):
+class VentaTable(VentaTable):
     class Meta:
         model = Venta
         fields = ("fechaDocumento","comprobante","cliente","total","esVigente",)

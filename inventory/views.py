@@ -1,48 +1,76 @@
+import base64
+import datetime
+import hashlib
+import imghdr
+import logging
+import os
+import pathlib
+import uuid
+from io import BytesIO
+from os import path
+
+from django.conf import settings
+from django.contrib.admin.utils import NestedObjects
+from django.contrib.staticfiles import finders
 from django.core.exceptions import ValidationError
-from django.db import transaction
+from django.core.files.base import ContentFile
+from django.db import models, transaction
 from django.forms.formsets import all_valid
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.template.loader import get_template
 from django.urls import reverse_lazy
+from django.utils.encoding import force_text
+from django.utils.text import capfirst
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
-from .widgets import DateInput
+from num2words import num2words
+from xhtml2pdf import pisa
 
-from inventory.forms import AcopioForm, ActividadAgricolaForm, AjusteStockForm, CompraForm, ContratoForm, NotaCreditoEmitidaForm, NotaCreditoRecibidaForm, OrdenCompraForm, PedidoCompraForm, PlanActividadZafraForm, VentaForm
-from inventory.inlines import AcopioCalificacionDetalleInline, AcopioDetalleInline, ActividadAgricolaItemDetalleInline, ActividadAgricolaMaquinariaDetalleInline, AjusteStockDetalleInline, CompraDetalleInline, NotaCreditoEmitidaDetalleInline, NotaCreditoRecibidaDetalleInline, OrdenCompraDetalleInline, PedidoCompraDetalleInline, PlanActividadZafraDetalleInline, VentaDetalleInline
+from inventory.forms import (AcopioForm, ActividadAgricolaForm,
+                             AjusteStockForm, CompraForm, ContratoForm,
+                             NotaCreditoEmitidaForm, NotaCreditoRecibidaForm,
+                             OrdenCompraForm, PedidoCompraForm,
+                             PlanActividadZafraForm, VentaForm)
+from inventory.inlines import (AcopioCalificacionDetalleInline,
+                               AcopioDetalleInline,
+                               ActividadAgricolaItemDetalleInline,
+                               ActividadAgricolaMaquinariaDetalleInline,
+                               AjusteStockDetalleInline, CompraDetalleInline,
+                               NotaCreditoEmitidaDetalleInline,
+                               NotaCreditoRecibidaDetalleInline,
+                               OrdenCompraDetalleInline,
+                               PedidoCompraDetalleInline,
+                               PlanActividadZafraDetalleInline,
+                               VentaDetalleInline)
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Contrato, Cuenta, Deposito, Finca, Item,
-                              Lote, MaquinariaAgricola, Marca, NotaCreditoEmitida, NotaCreditoRecibida, OrdenCompra, PedidoCompra, Persona,
-                              PlanActividadZafra, TipoActividadAgricola,
-                              TipoImpuesto, TipoMaquinariaAgricola, Venta, Zafra)
-from inventory.tables import (AcopioTable, ActividadAgricolaTable, AjusteStockTable, AperturaCajaTable, ArqueoTable, BancoTable, CalificacionAgricolaTable, CategoriaTable, CompraTable, ContratoTable, CuentaTable,
-                              DepositoTable, FincaTable, ItemTable, LoteTable,
-                              MaquinariaAgricolaTable, MarcaTable, NotaCreditoEmitidaTable, NotaCreditoRecibidaTable, OrdenCompraTable, PedidoCompraTable,
-                              PersonaTable, PlanActividadZafraTable,
+from inventory.models import (Acopio, ActividadAgricola, AjusteStock,
+                              AperturaCaja, Arqueo, Banco,
+                              CalificacionAgricola, Categoria, Compra,
+                              Contrato, Cuenta, Deposito, Finca, Item, Lote,
+                              MaquinariaAgricola, Marca, NotaCreditoEmitida,
+                              NotaCreditoRecibida, OrdenCompra, PedidoCompra,
+                              Persona, PlanActividadZafra,
+                              TipoActividadAgricola, TipoImpuesto,
+                              TipoMaquinariaAgricola, Venta, Zafra)
+from inventory.tables import (AcopioTable, ActividadAgricolaTable,
+                              AjusteStockTable, AperturaCajaTable, ArqueoTable,
+                              BancoTable, CalificacionAgricolaTable,
+                              CategoriaTable, CompraTable, ContratoTable,
+                              CuentaTable, DepositoTable, FincaTable,
+                              ItemTable, LoteTable, MaquinariaAgricolaTable,
+                              MarcaTable, NotaCreditoEmitidaTable,
+                              NotaCreditoRecibidaTable, OrdenCompraTable,
+                              PedidoCompraTable, PersonaTable,
+                              PlanActividadZafraTable,
                               TipoActividadAgricolaTable, TipoImpuestoTable,
-                              TipoMaquinariaAgricolaTable, VentaTable, ZafraTable)
+                              TipoMaquinariaAgricolaTable, VentaTable,
+                              ZafraTable)
+from inventory.utils import link_callback
 
-import os
-import uuid
-import base64
-import imghdr
-import logging
-import pathlib
-import hashlib
-from os import path
-from io import BytesIO
-
-from django.db import models
-from django.core.files.base import ContentFile
-from django.conf import settings
-from django.contrib.admin.utils import NestedObjects
-from django.contrib.staticfiles import finders
-from django.utils.text import capfirst
-from django.utils.encoding import force_text
-from django.http import HttpResponse, HttpResponseRedirect
-import datetime
-
+from .widgets import DateInput
 
 
 def main(request):
@@ -1276,6 +1304,7 @@ class VentaListView(SearchViewMixin, SingleTableMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'venta_anular'
+        context['descargar_venta_url'] = 'venta_descargar'
         return context
 
 
@@ -1331,6 +1360,53 @@ class VentaAnularView(DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("venta_list")
+
+
+#@method_decorator(subscriber_required, name="dispatch")
+# class FacturVentaDetailView(DetailView):
+#     template_name = "venta/factura_detalle.html"
+#     model = Venta
+
+#     def get_context_data(self, **kwargs):
+#         context =  super().get_context_data(**kwargs)
+#         context['list_url'] = 'invoice_list'
+#         context['invoice_code'] = str(self.object.payment.subscriber.current_plan.id)[0:8]
+#         context['number_to_words'] = str(num2words(self.object.amount, lang="es")).capitalize
+#         context['invoice_img_dir'] = "/static/site/images/logo_compy"
+#         context['only_detail'] = True
+#         context['subscriberplan'] = self.object.payment.subscriber.subscriberplan_set.all().filter(is_active = True).first()
+#         return context
+
+
+
+def download_view(request, pk):
+    """"""
+    template_path = "descargar_factura_venta.html"
+    object = Venta.objects.get(pk=pk)
+    detalles = object.ventadetalle_set.all()
+
+    context = {
+        'object':object,
+        'number_to_words': str(num2words(object.total, lang="es")).capitalize,
+        'invoice_css_dir': settings.INVOICE_CSS_DIR,
+        'invoice_img_dir': settings.INVOICE_IMG_DIR,
+        'detalles': detalles
+    }
+    # Create a Django response object, and specify content_type as pdf
+    response = HttpResponse(content_type='application/pdf') 
+    response['Content-Disposition'] = f'attachment; filename="{object.pk}.pdf"'
+    # find the template and render it.
+    template = get_template(template_path)
+    html = template.render(context)
+
+    # create a pdf
+    pisa_status = pisa.CreatePDF(
+       html, dest=response, link_callback=link_callback)
+    # if error then show some funy view
+
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 
 #NOTAS CREDITOS RECIBIDAS

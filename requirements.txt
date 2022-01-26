@@ -4,3 +4,5 @@ django-crispy-forms
 django-simple-menu
 django-calculation
 django-extra-views
+num2words
+git+https://github.com/xhtml2pdf/xhtml2pdf@master#xhtml2pdfs

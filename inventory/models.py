@@ -351,6 +351,35 @@ class Venta(models.Model):
     @property
     def total(self):
         return sum(round(x.precio * x.cantidad)  for x in self.ventadetalle_set.all())
+
+    @property
+    def imponible5(self):
+        return sum(x.imponible5 for x in self.ventadetalle_set.all())
+    @property
+    def imponible10(self):
+        return sum(x.imponible10 for x in self.ventadetalle_set.all())
+    @property
+    def imponibleExenta(self):
+        valor = sum(x.imponibleExenta for x in self.ventadetalle_set.all())
+        if valor is None:
+            valor = 0
+        return valor
+    @property
+    def iva5(self):
+        valor = sum(x.iva5 for x in self.ventadetalle_set.all())
+        if valor is None:
+            valor = 0
+        return valor
+    @property
+    def iva10(self):
+        valor = sum(x.iva10 for x in self.ventadetalle_set.all())
+        if valor is None:
+            valor = 0
+        return valor
+    @property
+    def totalIva(self):
+        return self.iva5+self.iva10
+
     def __str__(self):
         return self.comprobante+" - "+self.timbrado
 
@@ -361,6 +390,54 @@ class VentaDetalle(models.Model):
     costo = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo")
     precio = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Precio")
     porcentajeImpuesto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="% Impuesto")
+    @property
+    def subtotal(self):
+        return round(self.precio * self.cantidad)
+    @property
+    def imponible5(self):
+        if self.porcentajeImpuesto == 5:
+            valor = round(self.subtotal)
+            if valor is None:
+                valor = 0
+            return valor
+        else:
+            return 0
+    @property
+    def imponible10(self):
+        if self.porcentajeImpuesto == 10:
+            valor = round(self.subtotal)
+            if valor is None:
+                valor = 0
+            return valor
+        else:
+            return 0
+    @property
+    def imponibleExenta(self):
+        if self.porcentajeImpuesto == 0:
+            valor = round(self.subtotal)
+            if valor is None:
+                valor = 0
+            return valor
+        else:
+            return 0
+    @property
+    def iva5(self):
+        if self.porcentajeImpuesto == 5:
+            valor = round(self.subtotal/22)
+            if valor is None:
+                valor = 0
+            return valor
+        else:
+            return 0
+    @property
+    def iva10(self):
+        if self.porcentajeImpuesto == 10:
+            valor = round(self.subtotal/11)
+            if valor is None:
+                valor = 0
+            return valor
+        else:
+            return 0
 
 class ItemMovimiento(models.Model):
     VALORESENUMTIPMOV = (
