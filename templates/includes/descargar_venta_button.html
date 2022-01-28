@@ -1,1 +1,4 @@
-<a class="btn btn-sm btn-info" href="{% url descargar_venta_url record.id %}" > Descargar Factura </a>
+
+{% if record.esVigente == True %} 
+    <a class="btn btn-sm btn-info" href="{% url descargar_venta_url record.id %}" > Descargar Factura </a>
+{% endif %}
