@@ -511,6 +511,17 @@ class NotaCreditoEmitidaDetalle(models.Model):
     esDevolucion = models.BooleanField(verbose_name="Es Devolución?",default=False)
     porcentajeImpuesto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="% Impuesto")
 
+
+class TransferenciaCuenta(models.Model):
+    cuentaSalida = models.ForeignKey(Cuenta, on_delete=models.DO_NOTHING,verbose_name="Cuenta Salida",related_name='salida')
+    cuentaEntrada = models.ForeignKey(Cuenta, on_delete=models.DO_NOTHING,verbose_name="Cuenta Entrada",related_name='entrada')
+    aperturaCaja = models.ForeignKey(AperturaCaja, on_delete=models.DO_NOTHING,verbose_name="Cuenta Entrada")
+    monto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Monto a Transferir")
+    fecha = models.DateField(verbose_name="Fecha")
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    comprobante = models.CharField(max_length=15,verbose_name="Comprobante", default="" )
+
 # IMPLEMENTAMOS LAS SENAÑES
 from .signals import signalCompraGuardado
 from .signals import signalAjusteStockGuardado
@@ -521,3 +532,4 @@ from .signals import signalVentaDetallePreGuardado
 from .signals import signalVentaGuardado
 from .signals import signalVentaGuardado
 from .signals import signalNotaCreditoEmitidaGuardado
+from .signals import signalTransferenciaCuentaPreGuardado

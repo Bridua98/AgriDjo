@@ -33,7 +33,7 @@ from inventory.forms import (AcopioForm, ActividadAgricolaForm,
                              AjusteStockForm, CompraForm, ContratoForm,
                              NotaCreditoEmitidaForm, NotaCreditoRecibidaForm,
                              OrdenCompraForm, PedidoCompraForm,
-                             PlanActividadZafraForm, VentaForm)
+                             PlanActividadZafraForm, TransferenciaCuentaForm, VentaForm)
 from inventory.inlines import (AcopioCalificacionDetalleInline,
                                AcopioDetalleInline,
                                ActividadAgricolaItemDetalleInline,
@@ -54,7 +54,7 @@ from inventory.models import (Acopio, ActividadAgricola, AjusteStock,
                               NotaCreditoRecibida, OrdenCompra, PedidoCompra,
                               Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
-                              TipoMaquinariaAgricola, Venta, Zafra)
+                              TipoMaquinariaAgricola, TransferenciaCuenta, Venta, Zafra)
 from inventory.tables import (AcopioTable, ActividadAgricolaTable,
                               AjusteStockTable, AperturaCajaTable, ArqueoTable,
                               BancoTable, CalificacionAgricolaTable,
@@ -66,7 +66,7 @@ from inventory.tables import (AcopioTable, ActividadAgricolaTable,
                               PedidoCompraTable, PersonaTable,
                               PlanActividadZafraTable,
                               TipoActividadAgricolaTable, TipoImpuestoTable,
-                              TipoMaquinariaAgricolaTable, VentaTable,
+                              TipoMaquinariaAgricolaTable, TransferenciaCuentaTable, VentaTable,
                               ZafraTable)
 from inventory.utils import link_callback
 
@@ -1543,3 +1543,68 @@ class NotaCreditoEmitidaAnularView(DeleteView):
     def get_success_url(self):
         return reverse_lazy("nota_credito_emitida_list")
 
+
+
+#TRANSFERENCIA ENTRE CUENTAS
+class TransferenciaCuentaListView(SearchViewMixin, SingleTableMixin, ListView):
+    model = TransferenciaCuenta
+    table_class = TransferenciaCuentaTable
+    search_fields = ['cuentaSalida__descripcion','cuentaEntrada__descripcion','comprobante']
+    template_name = 'inventory/transferencia_cuenta_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['anular_url'] = 'transferencia_cuenta_anular'
+        return context
+
+
+class TransferenciaCuentaCreateView(CreateWithFormsetInlinesView):
+    model = TransferenciaCuenta
+    form_class = TransferenciaCuentaForm
+    template_name = 'inventory/transferencia_cuenta_create.html'
+    def get_success_url(self):
+        return reverse_lazy('transferencia_cuenta_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class TransferenciaCuentaAnularView(DeleteView):
+    model = TransferenciaCuenta
+    template_name = 'inventory/anular.html'
+    success_url = reverse_lazy("transferencia_cuenta_list")
+
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        try:
+            self.object = self.get_object()
+            if self.object.esVigente == False:
+                print('entro en exepcion para anulado')
+                raise Exception("La Transferencia ya fue anulado.")
+            else:
+                self.object.esVigente = False
+                self.object.save()
+        except  Exception as e:
+            self.error = e
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
+        return HttpResponseRedirect(success_url)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects']=deletable_objects
+        context['model_count']=dict(model_count).items()
+        context['protected']=protected
+        context['title']="Anular Transferencia entre cuentas"
+        context['description']="Está seguro de anular la Transferencia?"
+        context['list_url'] = 'transferencia_cuenta_list'
+        return context
+    def get_success_url(self):
+        return reverse_lazy("transferencia_cuenta_list")

@@ -1,5 +1,5 @@
 from django.db.models.signals import post_save,pre_save
-from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, CompraDetalle, Item,ItemMovimiento, NotaCreditoEmitidaDetalle, NotaCreditoRecibidaDetalle, Venta, VentaDetalle
+from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, CompraDetalle, Item,ItemMovimiento, NotaCreditoEmitidaDetalle, NotaCreditoRecibidaDetalle, TransferenciaCuenta, Venta, VentaDetalle
 from django.dispatch import receiver
 
 
@@ -96,6 +96,11 @@ def signalActividadAgricolaItemGuardado(sender, instance, created, **kwargs):
 
 @receiver(pre_save, sender = Venta)
 def signalVentaPreGuardado(sender, instance, **kwargs):
+    aperturaCaja = AperturaCaja.objects.filter(estaCerrado = False).order_by('-pk')[:1].first()
+    instance.aperturaCaja = aperturaCaja
+
+@receiver(pre_save, sender = TransferenciaCuenta)
+def signalTransferenciaCuentaPreGuardado(sender, instance, **kwargs):
     aperturaCaja = AperturaCaja.objects.filter(estaCerrado = False).order_by('-pk')[:1].first()
     instance.aperturaCaja = aperturaCaja
 

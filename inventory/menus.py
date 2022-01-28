@@ -52,6 +52,7 @@ hijos_movimiento_venta = (
     MenuItem("Arqueos",reverse_lazy("arqueo_list")),
     MenuItem("Ventas",reverse_lazy("venta_list")),
     MenuItem("Notas de Créditos Emitidas",reverse_lazy("nota_credito_emitida_list")),
+    MenuItem("Transferencia entre Cuentas",reverse_lazy("transferencia_cuenta_list")),
 )
 
 Menu.add_item("referencial_agricultura", MenuItem("Referenciales Agricultura",

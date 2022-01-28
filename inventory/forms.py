@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -385,7 +385,7 @@ class PedidoCompraDetalleForm(forms.ModelForm):
         fields = ['item', 'cantidad']
 
 
-# ORDEN COMPRA
+# CONTRATO FORM
 class ContratoForm(forms.ModelForm):
     class Meta:
         model = Contrato
@@ -403,7 +403,7 @@ class ContratoForm(forms.ModelForm):
             "descripcion",
             "costoPactado",
             Row(
-                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" ))
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'contrato_list' %}"> Cancelar</a>""" ))
             ) 
         )
 
@@ -449,7 +449,7 @@ class VentaForm(forms.ModelForm):
                 Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total Impuesto: </span>'), css_class="text-right"), Column("total_iva")
             ),
             Row(
-                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'compra_list' %}"> Cancelar</a>""" ))
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'venta_list' %}"> Cancelar</a>""" ))
             ) 
         )
 
@@ -591,6 +591,27 @@ class NotaCreditoEmitidaDetalleForm(forms.ModelForm):
 
 
 
+# TRANSFERENCIA CUENTA 
+class TransferenciaCuentaForm(forms.ModelForm):
+    class Meta:
+        model = TransferenciaCuenta
+        fields = ['fecha','comprobante','cuentaSalida','cuentaEntrada','monto','observacion']
+        widgets = {'fecha':DateInput}
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            "fecha",
+            "comprobante",
+            "cuentaSalida",
+            "cuentaEntrada",
+            "monto",
+            "observacion",
+            Row(
+                Div(Submit("submit", "Guardar"), HTML("""<a class="btn btn-secondary" href="{% url 'transferencia_cuenta_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
 
 

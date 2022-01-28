@@ -4,7 +4,7 @@ from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCa
                               Cuenta, Deposito, Finca, Item, Marca, NotaCreditoEmitida, NotaCreditoRecibida, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
-                              TipoMaquinariaAgricola, Venta, Zafra)
+                              TipoMaquinariaAgricola, TransferenciaCuenta, Venta, Zafra)
 
 
 class BaseTable(tables.Table):
@@ -231,3 +231,12 @@ class NotaCreditoEmitidaTable(AnulableTable):
             "registro_esVigente": lambda record: record.esVigente
         }
         order_by = "-fechaDocumento"
+
+class TransferenciaCuentaTable(AnulableTable):
+    class Meta:
+        model = TransferenciaCuenta
+        fields = ("fecha","cuentaSalida","cuentaEntrada","monto","esVigente",)
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fecha"
