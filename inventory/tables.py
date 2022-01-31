@@ -6,6 +6,7 @@ from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCa
                               TipoActividadAgricola, TipoImpuesto,
                               TipoMaquinariaAgricola, TransferenciaCuenta, Venta, Zafra)
 
+from django.contrib.humanize.templatetags.humanize import intcomma
 
 class BaseTable(tables.Table):
     def __init__(self, *args, **kwargs):
@@ -89,6 +90,8 @@ class TipoImpuestoTable(EditableDeleteTable):
         fields = ("descripcion", "porcentaje", "esIva")
 
 class ItemTable(EditableDeleteTable):
+    def render_precio(self,value):
+        return intcomma(value)
     class Meta:
         model = Item
         fields = ("codigoBarra","descripcion","tipoImpuesto", "marca","categoria","precio", "esActivo")
@@ -104,6 +107,8 @@ class LoteTable(EditableDeleteTable):
         fields = ("descripcion","zafra", "finca")
 
 class MaquinariaAgricolaTable(EditableDeleteTable):
+    def render_precio(self,value):
+        return intcomma(value)
     class Meta:
         model = Zafra
         fields = ("descripcion","tipoMaquinariaAgricola", "esImplemento","admiteImplemento","precio")
@@ -134,16 +139,28 @@ class PersonaTable(EditableDeleteTable):
         fields = ("documento","razonSocial","localidad","esCliente","esProveedor","esEmpleado")
 
 class PlanActividadZafraTable(EditableTable):
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = PlanActividadZafra
         fields = ("fecha","zafra","observacion","total")
 
 class AcopioTable(AnulableTable):
+
+    def render_pBruto(self,value):
+        return intcomma(value)
+    
+    def render_pTara(self,value):
+        return intcomma(value)
+
+    def render_pDescuento(self,value):
+        return intcomma(value)
+
     class Meta:
         model = Acopio
         fields = ("fecha","comprobante","zafra","deposito","pBruto","pTara","pDescuento","esVigente")
         row_attrs = {
-            "registro_esVigente": lambda record: record.esVigente
+        "registro_esVigente": lambda record: record.esVigente
         }
         order_by = "-fecha"
 
@@ -158,6 +175,8 @@ class PedidoCompraTable(EditableTable):
         fields = ("proveedor","fechaDocumento","fechaVencimiento","esVigente",)
 
 class OrdenCompraTable(AnulableTable):
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = OrdenCompra
         fields = ("proveedor","fechaDocumento","total","esVigente")
@@ -167,16 +186,22 @@ class OrdenCompraTable(AnulableTable):
         order_by = "-fechaDocumento"
 
 class AperturaCajaTable(CerrarAperturaCajaTable):
+    def render_montoInicio(self,value):
+        return intcomma(value)
     class Meta:
         model = AperturaCaja
         fields = ("empleado","fechaHoraApertura","fechaHoraCiere","montoInicio","estaCerrado")
 
 class ArqueoTable(DeleteTable):
+    def render_monto(self,value):
+        return intcomma(value)
     class Meta:
         model = Arqueo
         fields = ("empleado","aperturaCaja","observacion","fechaHoraRegistro","monto")
 
 class CompraTable(AnulableTable):
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = Compra
         fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)
@@ -191,6 +216,10 @@ class AjusteStockTable(EditableDeleteTable):
         fields = ("fechaDocumento","comprobante","empleado","deposito","observacion",)
 
 class ActividadAgricolaTable(AnulableTable):
+    def render_cantidadTrabajada(self,value):
+        return intcomma(value)
+    def render_cantidadTrabajada(self,value):
+        return intcomma(value)
     class Meta:
         model = ActividadAgricola
         fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","cantidadTrabajada","esServicioContratado","esVigente")
@@ -200,12 +229,16 @@ class ActividadAgricolaTable(AnulableTable):
         order_by = "-fechaDocumento"
 
 class ContratoTable(DeleteTable):
+    def render_costoPactado(self,value):
+        return intcomma(value)
     class Meta:
         model = Contrato
         fields = ("fecha","zafra","persona","costoPactado","descripcion")
 
 
 class VentaTable(VentaTable):
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = Venta
         fields = ("fechaDocumento","comprobante","cliente","total","esVigente",)
@@ -215,6 +248,8 @@ class VentaTable(VentaTable):
         order_by = "-fechaDocumento"
 
 class NotaCreditoRecibidaTable(AnulableTable):
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = NotaCreditoRecibida
         fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)
@@ -224,6 +259,8 @@ class NotaCreditoRecibidaTable(AnulableTable):
         order_by = "-fechaDocumento"
 
 class NotaCreditoEmitidaTable(AnulableTable):
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = NotaCreditoEmitida
         fields = ("fechaDocumento","comprobante","cliente","total","esVigente",)
@@ -233,6 +270,8 @@ class NotaCreditoEmitidaTable(AnulableTable):
         order_by = "-fechaDocumento"
 
 class TransferenciaCuentaTable(AnulableTable):
+    def render_monto(self,value):
+        return intcomma(value)
     class Meta:
         model = TransferenciaCuenta
         fields = ("fecha","cuentaSalida","cuentaEntrada","monto","esVigente",)
@@ -242,26 +281,62 @@ class TransferenciaCuentaTable(AnulableTable):
         order_by = "-fecha"
 
 class LibroCompraTable(BaseTable):
+    def render_iva5(self,value):
+        return intcomma(value)
+    def render_iva10(self,value):
+        return intcomma(value)
+    def render_imponibleExenta(self,value):
+        return intcomma(value)
+    def render_imponible5(self,value):
+        return intcomma(value)
+    def render_imponible10(self,value):
+        return intcomma(value)
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = Compra
         fields = ("fechaDocumento","esCredito","comprobante","proveedor","iva5","iva10","imponibleExenta","imponible5","imponible10","total",)
 
 class LibroVentaTable(BaseTable):
+    def render_iva5(self,value):
+        return intcomma(value)
+    def render_iva10(self,value):
+        return intcomma(value)
+    def render_imponibleExenta(self,value):
+        return intcomma(value)
+    def render_imponible5(self,value):
+        return intcomma(value)
+    def render_imponible10(self,value):
+        return intcomma(value)
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = Venta
         fields = ("fechaDocumento","esCredito","comprobante","cliente","iva5","iva10","imponibleExenta","imponible5","imponible10","total",)
 
 class CompraInformeTable(BaseTable):
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = Compra
         fields = ("fechaDocumento","esCredito","comprobante","proveedor","total",)
 
 class VentaInformeTable(BaseTable):
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = Venta
         fields = ("fechaDocumento","esCredito","comprobante","cliente","total",)
 
-class ProduccionAgricolaInformeTable(BaseTable):
+class ProduccionAgricolaInformeTable(BaseTable):   
+    def render_totalItem(self,value):
+        return intcomma(value)
+    
+    def render_total(self,value):
+        return intcomma(value)
+
+    def render_totalMaquinaria(self,value):
+        return intcomma(value)
     class Meta:
         model = ActividadAgricola
         fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","totalMaquinaria","totalItem","total")

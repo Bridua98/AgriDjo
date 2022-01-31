@@ -14,32 +14,40 @@ class DateTypeInput(forms.DateInput):
 class LibroCompraFilter(FilterSet):
     fecha_desde = django_filters.DateFilter(widget=DateTypeInput(attrs={'placeholder': '1970-01-01'}), field_name='fechaDocumento', lookup_expr='gte', label='Desde')
     fecha_hasta = django_filters.DateFilter(widget=DateTypeInput(), field_name='fechaDocumento', lookup_expr='lte', label='Hasta')
-    fechaDocumento = django_filters.DateRangeFilter(label='Rango')
+    # fechaDocumento = django_filters.DateRangeFilter(label='Rango')
     class Meta:
         model = Compra
-        fields = ["fecha_desde","fecha_hasta","comprobante","proveedor"]
+        fields = ["fecha_desde","fecha_hasta","comprobante","proveedor","deposito","esCredito","esVigente"]
 
 
 class LibroVentaFilter(FilterSet):
-    fechaDocumento = django_filters.DateFilter(widget=DateInput(attrs={'type':'fechaDocumento'}))
+    fecha_desde = django_filters.DateFilter(widget=DateTypeInput(attrs={'placeholder': '1970-01-01'}), field_name='fechaDocumento', lookup_expr='gte', label='Desde')
+    fecha_hasta = django_filters.DateFilter(widget=DateTypeInput(), field_name='fechaDocumento', lookup_expr='lte', label='Hasta')
+    # fechaDocumento = django_filters.DateRangeFilter(label='Rango')
     class Meta:
         model = Venta
-        fields = ["fechaDocumento","comprobante","cliente"]
+        fields = ["fecha_desde","fecha_hasta","comprobante","cliente","deposito","esCredito","esVigente"]
 
 class CompraInformeFilter(FilterSet):
-    fechaDocumento = django_filters.DateFilter(widget=DateInput(attrs={'type':'fechaDocumento'}))
+    fecha_desde = django_filters.DateFilter(widget=DateTypeInput(attrs={'placeholder': '1970-01-01'}), field_name='fechaDocumento', lookup_expr='gte', label='Desde')
+    fecha_hasta = django_filters.DateFilter(widget=DateTypeInput(), field_name='fechaDocumento', lookup_expr='lte', label='Hasta')
+    # fechaDocumento = django_filters.DateRangeFilter(label='Rango')
     class Meta:
         model = Compra
-        fields = ["fechaDocumento","comprobante","proveedor"]
+        fields = ["fecha_desde","fecha_hasta","comprobante","proveedor","deposito","cuenta","esCredito","esVigente"]
 
 class VentaInformeFilter(FilterSet):
-    fechaDocumento = django_filters.DateFilter(widget=DateInput(attrs={'type':'fechaDocumento'}))
+    fecha_desde = django_filters.DateFilter(widget=DateTypeInput(attrs={'placeholder': '1970-01-01'}), field_name='fechaDocumento', lookup_expr='gte', label='Desde')
+    fecha_hasta = django_filters.DateFilter(widget=DateTypeInput(), field_name='fechaDocumento', lookup_expr='lte', label='Hasta')
+    # fechaDocumento = django_filters.DateRangeFilter(label='Rango')
     class Meta:
         model = Venta
-        fields = ["fechaDocumento","comprobante","cliente"]
+        fields = ["fecha_desde","fecha_hasta","comprobante","cliente","deposito","cuenta","esCredito","esVigente"]
 
 class ProduccionAgricolaInformeFilter(FilterSet):
-    fechaDocumento = django_filters.DateFilter(widget=DateInput(attrs={'type':'fechaDocumento'}))
+    fecha_desde = django_filters.DateFilter(widget=DateTypeInput(attrs={'placeholder': '1970-01-01'}), field_name='fechaDocumento', lookup_expr='gte', label='Desde')
+    fecha_hasta = django_filters.DateFilter(widget=DateTypeInput(), field_name='fechaDocumento', lookup_expr='lte', label='Hasta')
+    # fechaDocumento = django_filters.DateRangeFilter(label='Rango')
     class Meta:
         model = ActividadAgricola
-        fields = ["fechaDocumento","zafra","finca"]
+        fields = ["fecha_desde","fecha_hasta","tipoActividadAgricola","zafra","finca","lote","empleado","esServicioContratado","esVigente"]
