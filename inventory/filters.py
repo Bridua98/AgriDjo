@@ -19,7 +19,6 @@ class LibroCompraFilter(FilterSet):
         model = Compra
         fields = ["fecha_desde","fecha_hasta","comprobante","proveedor","deposito","esCredito","esVigente"]
 
-
 class LibroVentaFilter(FilterSet):
     fecha_desde = django_filters.DateFilter(widget=DateTypeInput(attrs={'placeholder': '1970-01-01'}), field_name='fechaDocumento', lookup_expr='gte', label='Desde')
     fecha_hasta = django_filters.DateFilter(widget=DateTypeInput(), field_name='fechaDocumento', lookup_expr='lte', label='Hasta')

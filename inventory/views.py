@@ -1619,10 +1619,10 @@ class LibroCompraListView(SearchViewMixin, SingleTableMixin,FilterView):
     paginate_by = 10
     search_fields = ['comprobante','proveedor__razonSocial','deposito__descripcion'] #context?
     template_name = 'inventory/libro_compra_list.html'
-    #template_name = "generic/list.html"
-
+  
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['list_defecto'] = 'libro_compra_list'
         return context
 
 # LIBRO DE VENTA
@@ -1633,10 +1633,10 @@ class LibroVentaListView(SearchViewMixin, SingleTableMixin, FilterView):
     paginate_by = 10
     search_fields = ['comprobante','cliente__razonSocial','deposito__descripcion'] #context?
     template_name = 'inventory/libro_venta_list.html'
-    #template_name = "generic/list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['list_defecto'] = 'libro_venta_list'
         return context
 
 # COMPRA INFORE
@@ -1647,13 +1647,13 @@ class CompraInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
     paginate_by = 10
     search_fields = ['comprobante','proveedor__razonSocial','deposito__descripcion'] #context?
     template_name = 'inventory/compra_informe_list.html'
-    #template_name = "generic/list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['list_defecto'] = 'compra_informe_list'
         return context
 
-# LIBRO DE VENTA
+# INFORME VENTA
 class VentaInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
     model = Venta
     filterset_class = VentaInformeFilter
@@ -1661,10 +1661,10 @@ class VentaInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
     paginate_by = 10
     search_fields = ['comprobante','cliente__razonSocial','deposito__descripcion'] #context?
     template_name = 'inventory/venta_informe_list.html'
-    #template_name = "generic/list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['list_defecto'] = 'venta_informe_list'
         return context
 
 # PRODUCCION AGRICOLA
@@ -1675,10 +1675,8 @@ class ProduccionAgricolaInformeListView(SearchViewMixin, SingleTableMixin, Filte
     paginate_by = 10
     search_fields = ['tipoActividadAgricola__descripcion','zafra__descripcion','finca__descripcion'] #context?
     template_name = 'inventory/produccion_agricola_informe_list.html'
-    #template_name = "generic/list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['list_defecto'] = 'produccion_agricola_informe_list'
         return context
-
-
