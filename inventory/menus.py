@@ -45,6 +45,7 @@ hijos_movimiento_compra = (
     MenuItem("Compras",reverse_lazy("compra_list")),
     MenuItem("Ajustes Stock",reverse_lazy("ajuste_stock_list")),
     MenuItem("Notas de Créditos Recibidas",reverse_lazy("nota_credito_recibida_list")),
+    MenuItem("Libro de Compras",reverse_lazy("libro_compra_list")),
 )
 
 hijos_movimiento_venta = (
@@ -53,7 +54,15 @@ hijos_movimiento_venta = (
     MenuItem("Ventas",reverse_lazy("venta_list")),
     MenuItem("Notas de Créditos Emitidas",reverse_lazy("nota_credito_emitida_list")),
     MenuItem("Transferencia entre Cuentas",reverse_lazy("transferencia_cuenta_list")),
+    MenuItem("Libro de Ventas",reverse_lazy("libro_venta_list")),
 )
+
+hijos_informes = (
+    MenuItem("Compra Informe",reverse_lazy("compra_informe_list")),
+    MenuItem("Venta Informe",reverse_lazy("venta_informe_list")),
+    MenuItem("Producción Agrícola Informe",reverse_lazy("produccion_agricola_informe_list")),
+)
+
 
 Menu.add_item("referencial_agricultura", MenuItem("Referenciales Agricultura",
                             reverse_lazy("inventory_menu"),
@@ -74,6 +83,10 @@ Menu.add_item("movimientos_compras", MenuItem("Movimientos Compras",
 Menu.add_item("movimientos_ventas", MenuItem("Movimientos Ventas",
                             reverse_lazy("inventory_menu"),
                             children = hijos_movimiento_venta))
+Menu.add_item("informes", MenuItem("Informes",
+                            reverse_lazy("inventory_menu"),
+                            children = hijos_informes))
+
 
 
 #hijos_referenciales= (

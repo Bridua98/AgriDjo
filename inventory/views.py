@@ -28,6 +28,8 @@ from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 from num2words import num2words
 from xhtml2pdf import pisa
+from inventory.filters import CompraInformeFilter, LibroCompraFilter, LibroVentaFilter, ProduccionAgricolaInformeFilter, VentaInformeFilter
+from django_filters.views import FilterView
 
 from inventory.forms import (AcopioForm, ActividadAgricolaForm,
                              AjusteStockForm, CompraForm, ContratoForm,
@@ -58,15 +60,15 @@ from inventory.models import (Acopio, ActividadAgricola, AjusteStock,
 from inventory.tables import (AcopioTable, ActividadAgricolaTable,
                               AjusteStockTable, AperturaCajaTable, ArqueoTable,
                               BancoTable, CalificacionAgricolaTable,
-                              CategoriaTable, CompraTable, ContratoTable,
+                              CategoriaTable, CompraInformeTable, CompraTable, ContratoTable,
                               CuentaTable, DepositoTable, FincaTable,
-                              ItemTable, LoteTable, MaquinariaAgricolaTable,
+                              ItemTable, LibroCompraTable, LibroVentaTable, LoteTable, MaquinariaAgricolaTable,
                               MarcaTable, NotaCreditoEmitidaTable,
                               NotaCreditoRecibidaTable, OrdenCompraTable,
                               PedidoCompraTable, PersonaTable,
-                              PlanActividadZafraTable,
+                              PlanActividadZafraTable, ProduccionAgricolaInformeTable,
                               TipoActividadAgricolaTable, TipoImpuestoTable,
-                              TipoMaquinariaAgricolaTable, TransferenciaCuentaTable, VentaTable,
+                              TipoMaquinariaAgricolaTable, TransferenciaCuentaTable, VentaInformeTable, VentaTable,
                               ZafraTable)
 from inventory.utils import link_callback
 
@@ -1608,3 +1610,75 @@ class TransferenciaCuentaAnularView(DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("transferencia_cuenta_list")
+
+# LIBRO DE COMPRA
+class LibroCompraListView(SearchViewMixin, SingleTableMixin,FilterView):
+    model = Compra
+    filterset_class = LibroCompraFilter
+    table_class = LibroCompraTable
+    paginate_by = 10
+    search_fields = ['comprobante','proveedor__razonSocial','deposito__descripcion'] #context?
+    template_name = 'inventory/libro_compra_list.html'
+    #template_name = "generic/list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+# LIBRO DE VENTA
+class LibroVentaListView(SearchViewMixin, SingleTableMixin, FilterView):
+    model = Venta
+    filterset_class = LibroVentaFilter
+    table_class = LibroVentaTable
+    paginate_by = 10
+    search_fields = ['comprobante','cliente__razonSocial','deposito__descripcion'] #context?
+    template_name = 'inventory/libro_venta_list.html'
+    #template_name = "generic/list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+# COMPRA INFORE
+class CompraInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
+    model = Compra
+    filterset_class = CompraInformeFilter
+    table_class = CompraInformeTable
+    paginate_by = 10
+    search_fields = ['comprobante','proveedor__razonSocial','deposito__descripcion'] #context?
+    template_name = 'inventory/compra_informe_list.html'
+    #template_name = "generic/list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+# LIBRO DE VENTA
+class VentaInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
+    model = Venta
+    filterset_class = VentaInformeFilter
+    table_class = VentaInformeTable
+    paginate_by = 10
+    search_fields = ['comprobante','cliente__razonSocial','deposito__descripcion'] #context?
+    template_name = 'inventory/venta_informe_list.html'
+    #template_name = "generic/list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+# PRODUCCION AGRICOLA
+class ProduccionAgricolaInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
+    model = ActividadAgricola
+    filterset_class = ProduccionAgricolaInformeFilter
+    table_class = ProduccionAgricolaInformeTable
+    paginate_by = 10
+    search_fields = ['tipoActividadAgricola__descripcion','zafra__descripcion','finca__descripcion'] #context?
+    template_name = 'inventory/produccion_agricola_informe_list.html'
+    #template_name = "generic/list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+

@@ -240,3 +240,28 @@ class TransferenciaCuentaTable(AnulableTable):
             "registro_esVigente": lambda record: record.esVigente
         }
         order_by = "-fecha"
+
+class LibroCompraTable(BaseTable):
+    class Meta:
+        model = Compra
+        fields = ("fechaDocumento","esCredito","comprobante","proveedor","iva5","iva10","imponibleExenta","imponible5","imponible10","total",)
+
+class LibroVentaTable(BaseTable):
+    class Meta:
+        model = Venta
+        fields = ("fechaDocumento","esCredito","comprobante","cliente","iva5","iva10","imponibleExenta","imponible5","imponible10","total",)
+
+class CompraInformeTable(BaseTable):
+    class Meta:
+        model = Compra
+        fields = ("fechaDocumento","esCredito","comprobante","proveedor","total",)
+
+class VentaInformeTable(BaseTable):
+    class Meta:
+        model = Venta
+        fields = ("fechaDocumento","esCredito","comprobante","cliente","total",)
+
+class ProduccionAgricolaInformeTable(BaseTable):
+    class Meta:
+        model = ActividadAgricola
+        fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","totalMaquinaria","totalItem","total")

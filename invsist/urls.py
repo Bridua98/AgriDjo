@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path
 
 # importando vistas
-from inventory.views import AcopioAnularView, AcopioCreateView, AcopioListView, AcopioUpdateView, ActividadAgricolaAnularView, ActividadAgricolaCreateView, ActividadAgricolaListView, AjusteStockCreateView, AjusteStockDeleteView, AjusteStockListView, AjusteStockUpdateView, AperturaCajaCerrarView, AperturaCajaCreateView, AperturaCajaListView, ArqueoCreateView, ArqueoDeleteView, ArqueoListView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CompraAnularView, CompraCreateView, CompraListView, ContratoCreateView, ContratoDeleteView, ContratoListView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, NotaCreditoEmitidaAnularView, NotaCreditoEmitidaCreateView, NotaCreditoEmitidaListView, NotaCreditoRecibidaAnularView, NotaCreditoRecibidaCreateView, NotaCreditoRecibidaListView, OrdenCompraAnularView, OrdenCompraCreateView, OrdenCompraListView, OrdenCompraUpdateView, PedidoCompraCreateView, PedidoCompraListView, PedidoCompraUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, TransferenciaCuentaAnularView, TransferenciaCuentaCreateView, TransferenciaCuentaListView, VentaAnularView, VentaCreateView, VentaListView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
+from inventory.views import AcopioAnularView, AcopioCreateView, AcopioListView, AcopioUpdateView, ActividadAgricolaAnularView, ActividadAgricolaCreateView, ActividadAgricolaListView, AjusteStockCreateView, AjusteStockDeleteView, AjusteStockListView, AjusteStockUpdateView, AperturaCajaCerrarView, AperturaCajaCreateView, AperturaCajaListView, ArqueoCreateView, ArqueoDeleteView, ArqueoListView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CompraAnularView, CompraCreateView, CompraInformeListView, CompraListView, ContratoCreateView, ContratoDeleteView, ContratoListView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, ItemCreateView, LibroCompraListView, LibroVentaListView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, NotaCreditoEmitidaAnularView, NotaCreditoEmitidaCreateView, NotaCreditoEmitidaListView, NotaCreditoRecibidaAnularView, NotaCreditoRecibidaCreateView, NotaCreditoRecibidaListView, OrdenCompraAnularView, OrdenCompraCreateView, OrdenCompraListView, OrdenCompraUpdateView, PedidoCompraCreateView, PedidoCompraListView, PedidoCompraUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, ProduccionAgricolaInformeListView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, TransferenciaCuentaAnularView, TransferenciaCuentaCreateView, TransferenciaCuentaListView, VentaAnularView, VentaCreateView, VentaInformeListView, VentaListView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
 from inventory.views import MarcaCreateView, MarcaDeleteView, MarcaListView, MarcaUpdateView
 from inventory.views import TipoMaquinariaAgricolaCreateView, TipoMaquinariaAgricolaDeleteView, TipoMaquinariaAgricolaListView, TipoMaquinariaAgricolaUpdateView
 from inventory.views import ItemDeleteView, ItemListView, ItemUpdateView
@@ -163,9 +163,18 @@ urlpatterns = [
     path('inventory/transferencia_cuenta/<int:pk>/anular',TransferenciaCuentaAnularView.as_view(), name="transferencia_cuenta_anular"),
     path('inventory/transferencia_cuenta/add',TransferenciaCuentaCreateView.as_view(), name="transferencia_cuenta_create"),
     path('inventory/transferencia_cuenta', TransferenciaCuentaListView.as_view(), name="transferencia_cuenta_list"),
+    # LIBRO DE COMPRA 
+    path('inventory/libro_compra', LibroCompraListView.as_view(), name="libro_compra_list"),
+    # LIBRO DE COMPRA 
+    path('inventory/libro_venta', LibroVentaListView.as_view(), name="libro_venta_list"),
+    # INFORME DE COMPRA 
+    path('inventory/compra_informe', CompraInformeListView.as_view(), name="compra_informe_list"),
+    # INFORME DE VENTA 
+    path('inventory/venta_informe', VentaInformeListView.as_view(), name="venta_informe_list"),
+    # PRODUCCION AGRICOLA
+    path('inventory/produccion_agricola_informe', ProduccionAgricolaInformeListView.as_view(), name="produccion_agricola_informe_list"),
     # menu tonto
     path('inventory/', menu, name="inventory_menu"),
-    
     path('admin/', admin.site.urls),
     path('', main, name="main"),
 ]

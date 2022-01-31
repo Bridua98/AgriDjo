@@ -1,3 +1,4 @@
+from queue import Empty
 from django.db import models
 from datetime import datetime
 
@@ -279,6 +280,33 @@ class Compra(models.Model):
         return sum(round(x.costo * x.cantidad)  for x in self.compradetalle_set.all())
     def __str__(self):
         return self.comprobante+" - "+self.timbrado
+    @property
+    def imponible5(self):
+        return sum(x.imponible5 for x in self.compradetalle_set.all())
+    @property
+    def imponible10(self):
+        return sum(x.imponible10 for x in self.compradetalle_set.all())
+    @property
+    def imponibleExenta(self):
+        valor = sum(x.imponibleExenta for x in self.compradetalle_set.all())
+        if valor is None:
+            valor = 0
+        return valor
+    @property
+    def iva5(self):
+        valor = sum(x.iva5 for x in self.compradetalle_set.all())
+        if valor is None:
+            valor = 0
+        return valor
+    @property
+    def iva10(self):
+        valor = sum(x.iva10 for x in self.compradetalle_set.all())
+        if valor is None:
+            valor = 0
+        return valor
+    @property
+    def totalIva(self):
+        return self.iva5+self.iva10
 
 class CompraDetalle(models.Model):
     compra = models.ForeignKey(Compra, on_delete=models.DO_NOTHING)
@@ -286,6 +314,54 @@ class CompraDetalle(models.Model):
     cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
     costo = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo")
     porcentajeImpuesto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="% Impuesto")
+    @property
+    def subtotal(self):
+        return round(self.costo * self.cantidad)
+    @property
+    def imponible5(self):
+        if self.porcentajeImpuesto == 5:
+            valor = round(self.subtotal)
+            if valor is None:
+                valor = 0
+            return valor
+        else:
+            return 0
+    @property
+    def imponible10(self):
+        if self.porcentajeImpuesto == 10:
+            valor = round(self.subtotal)
+            if valor is None:
+                valor = 0
+            return valor
+        else:
+            return 0
+    @property
+    def imponibleExenta(self):
+        if self.porcentajeImpuesto == 0:
+            valor = round(self.subtotal)
+            if valor is None:
+                valor = 0
+            return valor
+        else:
+            return 0
+    @property
+    def iva5(self):
+        if self.porcentajeImpuesto == 5:
+            valor = round(self.subtotal/22)
+            if valor is None:
+                valor = 0
+            return valor
+        else:
+            return 0
+    @property
+    def iva10(self):
+        if self.porcentajeImpuesto == 10:
+            valor = round(self.subtotal/11)
+            if valor is None:
+                valor = 0
+            return valor
+        else:
+            return 0
 
 class AjusteStock(models.Model):
     empleado = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Empleado")
@@ -312,6 +388,27 @@ class ActividadAgricola(models.Model):
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
     esServicioContratado = models.BooleanField(verbose_name="Es contratado?",default=False)
     cantidadTrabajada = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cant HA Trabajada")
+    @property
+    def totalMaquinaria(self):
+        retorno = sum(round(x.precio * x.cantidad)  for x in self.actividadagricolamaquinariadetalle.all())
+        if retorno is None:
+            retorno = 0
+        return 0
+    @property    
+    def totalItem(self):
+        retorno = sum(round(x.costo * x.cantidad)  for x in self.actividadagricolaitemdetalle_set.all())
+        if retorno is None:
+            retorno = 0
+        return retorno
+    @property    
+    def total(self):
+        maquinaria = self.totalMaquinaria
+        item = self.totalItem
+        if maquinaria is None: 
+           maquinaria = 0
+        if item is None: 
+            item = 0
+        return maquinaria + item 
 
 class ActividadAgricolaMaquinariaDetalle(models.Model):
     actividadAgricola = models.ForeignKey(ActividadAgricola, on_delete=models.DO_NOTHING)

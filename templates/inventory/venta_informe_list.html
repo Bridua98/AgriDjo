@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% block title %} Informe de Ventas {% endblock %}
+{% block content %}
+<h1> Informes de Ventas </h1>
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        {% include 'includes/search_form.html' %}
+    </div>
+</div>
+
+<div class="col-lg-2 p-0">
+    <div class="card mr-1">
+        
+        <div class="card-body filter overflow-auto">
+            {% include 'includes/filter_form.html'%}
+        </div>
+    </div>
+</div>
+
+{% render_table table %}
+
+{% endblock %}
