@@ -541,6 +541,12 @@ class VentaDetalle(models.Model):
         else:
             return 0
 
+class CuotaVenta(models.Model):
+    venta = models.ForeignKey(Venta, on_delete=models.DO_NOTHING)
+    fechaVencimiento = models.DateField(verbose_name="Fecha Vencimiento")
+    monto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Monto")
+    saldo = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Saldo")
+
 class ItemMovimiento(models.Model):
     VALORESENUMTIPMOV = (
     ('CM', 'COMPRAS'),

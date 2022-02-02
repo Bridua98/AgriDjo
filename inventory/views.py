@@ -32,7 +32,7 @@ from inventory.filters import CompraInformeFilter, InventarioDepositoInformeFilt
 from django_filters.views import FilterView
 
 from inventory.forms import (AcopioForm, ActividadAgricolaForm,
-                             AjusteStockForm, CompraForm, ContratoForm, CuotaCompraForm,
+                             AjusteStockForm, CompraForm, ContratoForm, CuotaCompraForm, CuotaVentaForm,
                              NotaCreditoEmitidaForm, NotaCreditoRecibidaForm,
                              OrdenCompraForm, PedidoCompraForm,
                              PlanActividadZafraForm, TransferenciaCuentaForm, VentaForm)
@@ -40,7 +40,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
                                AcopioDetalleInline,
                                ActividadAgricolaItemDetalleInline,
                                ActividadAgricolaMaquinariaDetalleInline,
-                               AjusteStockDetalleInline, CompraDetalleInline, CuotaCompraInline,
+                               AjusteStockDetalleInline, CompraDetalleInline, CuotaCompraInline, CuotaVentaInline,
                                NotaCreditoEmitidaDetalleInline,
                                NotaCreditoRecibidaDetalleInline,
                                OrdenCompraDetalleInline,
@@ -1319,7 +1319,7 @@ class VentaCreateView(CreateWithFormsetInlinesView):
     model = Venta
     form_class = VentaForm
     template_name = 'inventory/venta_create.html'
-    inlines = [VentaDetalleInline]
+    inlines = [VentaDetalleInline,CuotaVentaInline]
 
     def get_success_url(self):
         return reverse_lazy('venta_list')

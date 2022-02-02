@@ -97,7 +97,9 @@ def signalActividadAgricolaItemGuardado(sender, instance, created, **kwargs):
 @receiver(pre_save, sender = Venta)
 def signalVentaPreGuardado(sender, instance, **kwargs):
     aperturaCaja = AperturaCaja.objects.filter(estaCerrado = False).order_by('-pk')[:1].first()
+    timbrado = '12332145'
     instance.aperturaCaja = aperturaCaja
+    instance.timbrado = timbrado
 
 @receiver(pre_save, sender = TransferenciaCuenta)
 def signalTransferenciaCuentaPreGuardado(sender, instance, **kwargs):

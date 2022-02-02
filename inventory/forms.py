@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, CuotaCompra, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -252,8 +252,6 @@ class CuotaCompraForm(forms.ModelForm):
         fields = ['fechaVencimiento','monto']
         widgets = { 'fechaVencimiento':DateInput }
 
-
-
 class AjusteStockForm(forms.ModelForm):
     class Meta:
        model = AjusteStock
@@ -427,7 +425,7 @@ class VentaForm(forms.ModelForm):
     )
     class Meta:
         model = Venta
-        fields = ['fechaDocumento','esCredito','comprobante', 'timbrado','cliente','cuenta','deposito','observacion']
+        fields = ['fechaDocumento','esCredito','comprobante','cliente','cuenta','deposito','observacion']
         widgets = {'fechaDocumento':DateInput}
 
     def __init__(self, *args, **kwargs):
@@ -436,11 +434,11 @@ class VentaForm(forms.ModelForm):
         self.helper.form_tag = False
         self.fields['total'].label = False
         self.fields['total_iva'].label = False
+        self.fields['comprobante'].widget.attrs.update({'class': 'mascara-comprobante'})
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
             "comprobante",
-            "timbrado",
             "cliente",
             "cuenta",
             "deposito",
@@ -450,7 +448,10 @@ class VentaForm(forms.ModelForm):
                 Formset(
                     "VentaDetalleInline"#, stacked=True
                 ), 
-                
+                Formset(
+                    "CuotaVentaInline",
+                    stacked=True,
+                ), 
             ),
             Row(
                 Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
@@ -476,6 +477,11 @@ class VentaDetalleForm(forms.ModelForm):
         model = VentaDetalle
         fields = ['item', 'cantidad','precio','porcentajeImpuesto','impuesto','subtotal']
 
+class CuotaVentaForm(forms.ModelForm):
+    class Meta:
+        model = CuotaVenta
+        fields = ['fechaVencimiento','monto']
+        widgets = { 'fechaVencimiento':DateInput }
 
 # NOTA DE CREDITO RECIBIDA
 class NotaCreditoRecibidaForm(forms.ModelForm):

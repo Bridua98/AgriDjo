@@ -3,9 +3,8 @@
 {% block title %} Añadir Zafra {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-
+<script src="{% static 'mascara_comprobante.js' %}"></script>
 <h1> Añadir Zafra </h1>
-
 <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
