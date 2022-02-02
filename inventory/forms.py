@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, CuotaCompra, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
 
 class PlanActividadZafraForm(forms.ModelForm):
@@ -216,8 +216,11 @@ class CompraForm(forms.ModelForm):
                 u'Detalle',
                 Formset(
                     "CompraDetalleInline"#, stacked=True
+                ),  
+                Formset(
+                    "CuotaCompraInline",
+                    stacked=True,
                 ), 
-                
             ),
             Row(
                 Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
@@ -242,6 +245,13 @@ class CompraDetalleForm(forms.ModelForm):
     class Meta:
         model = CompraDetalle
         fields = ['item', 'cantidad','costo','porcentajeImpuesto','impuesto','subtotal']
+
+class CuotaCompraForm(forms.ModelForm):
+    class Meta:
+        model = CuotaCompra
+        fields = ['fechaVencimiento','monto']
+        widgets = { 'fechaVencimiento':DateInput }
+
 
 
 class AjusteStockForm(forms.ModelForm):

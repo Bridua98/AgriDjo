@@ -46,6 +46,7 @@ hijos_movimiento_compra = (
     MenuItem("Ajustes Stock",reverse_lazy("ajuste_stock_list")),
     MenuItem("Notas de Créditos Recibidas",reverse_lazy("nota_credito_recibida_list")),
     MenuItem("Libro de Compras",reverse_lazy("libro_compra_list")),
+    MenuItem("Inventario por Deposito",reverse_lazy("inventario_deposito_list")),
 )
 
 hijos_movimiento_venta = (

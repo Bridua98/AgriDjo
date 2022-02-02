@@ -28,11 +28,11 @@ from django_tables2 import SingleTableMixin
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
 from num2words import num2words
 from xhtml2pdf import pisa
-from inventory.filters import CompraInformeFilter, LibroCompraFilter, LibroVentaFilter, ProduccionAgricolaInformeFilter, VentaInformeFilter
+from inventory.filters import CompraInformeFilter, InventarioDepositoInformeFilter, LibroCompraFilter, LibroVentaFilter, ProduccionAgricolaInformeFilter, VentaInformeFilter
 from django_filters.views import FilterView
 
 from inventory.forms import (AcopioForm, ActividadAgricolaForm,
-                             AjusteStockForm, CompraForm, ContratoForm,
+                             AjusteStockForm, CompraForm, ContratoForm, CuotaCompraForm,
                              NotaCreditoEmitidaForm, NotaCreditoRecibidaForm,
                              OrdenCompraForm, PedidoCompraForm,
                              PlanActividadZafraForm, TransferenciaCuentaForm, VentaForm)
@@ -40,7 +40,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
                                AcopioDetalleInline,
                                ActividadAgricolaItemDetalleInline,
                                ActividadAgricolaMaquinariaDetalleInline,
-                               AjusteStockDetalleInline, CompraDetalleInline,
+                               AjusteStockDetalleInline, CompraDetalleInline, CuotaCompraInline,
                                NotaCreditoEmitidaDetalleInline,
                                NotaCreditoRecibidaDetalleInline,
                                OrdenCompraDetalleInline,
@@ -51,7 +51,7 @@ from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock,
                               AperturaCaja, Arqueo, Banco,
                               CalificacionAgricola, Categoria, Compra,
-                              Contrato, Cuenta, Deposito, Finca, Item, Lote,
+                              Contrato, Cuenta, Deposito, Finca, Item, ItemMovimiento, Lote,
                               MaquinariaAgricola, Marca, NotaCreditoEmitida,
                               NotaCreditoRecibida, OrdenCompra, PedidoCompra,
                               Persona, PlanActividadZafra,
@@ -61,7 +61,7 @@ from inventory.tables import (AcopioTable, ActividadAgricolaTable,
                               AjusteStockTable, AperturaCajaTable, ArqueoTable,
                               BancoTable, CalificacionAgricolaTable,
                               CategoriaTable, CompraInformeTable, CompraTable, ContratoTable,
-                              CuentaTable, DepositoTable, FincaTable,
+                              CuentaTable, DepositoTable, FincaTable, InventarioDepositoInformeTable,
                               ItemTable, LibroCompraTable, LibroVentaTable, LoteTable, MaquinariaAgricolaTable,
                               MarcaTable, NotaCreditoEmitidaTable,
                               NotaCreditoRecibidaTable, OrdenCompraTable,
@@ -1105,7 +1105,7 @@ class CompraCreateView(CreateWithFormsetInlinesView):
     model = Compra
     form_class = CompraForm
     template_name = 'inventory/compra_create.html'
-    inlines = [CompraDetalleInline]
+    inlines = [CompraDetalleInline,CuotaCompraInline]
 
     def get_success_url(self):
         return reverse_lazy('compra_list')
@@ -1684,4 +1684,18 @@ class ProduccionAgricolaInformeListView(SearchViewMixin, SingleTableMixin, Filte
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['list_defecto'] = 'produccion_agricola_informe_list'
+        return context
+
+# INVENTARIO DEPOSITO
+class InventarioDepositoInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
+    model = ItemMovimiento
+    filterset_class = InventarioDepositoInformeFilter
+    table_class = InventarioDepositoInformeTable
+    paginate_by = 10
+    search_fields = ['item__descripcion'] #context?
+    template_name = 'inventory/inventario_deposito_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list_defecto'] = 'inventario_deposito_list'
         return context

@@ -1,7 +1,7 @@
 import django_tables2 as tables
 
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Contrato,
-                              Cuenta, Deposito, Finca, Item, Marca, NotaCreditoEmitida, NotaCreditoRecibida, OrdenCompra,
+                              Cuenta, Deposito, Finca, Item, ItemMovimiento, Marca, NotaCreditoEmitida, NotaCreditoRecibida, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
                               TipoMaquinariaAgricola, TransferenciaCuenta, Venta, Zafra)
@@ -340,3 +340,11 @@ class ProduccionAgricolaInformeTable(BaseTable):
     class Meta:
         model = ActividadAgricola
         fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","totalMaquinaria","totalItem","total")
+
+
+class InventarioDepositoInformeTable(BaseTable):   
+    def render_cantidad(self,value):
+        return intcomma(value)
+    class Meta:
+        model = ItemMovimiento
+        fields = ("fechaDocumento","deposito","item","tipoMovimiento","cantidad")

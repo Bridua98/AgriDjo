@@ -4,7 +4,7 @@ import django_filters
 from django_filters.filters import DateFilter
 # from core import widgets
 from django_filters.filterset import FilterSet
-from inventory.models import ActividadAgricola, Compra, Venta
+from inventory.models import ActividadAgricola, Compra, ItemMovimiento, Venta
 
 
 
@@ -50,3 +50,11 @@ class ProduccionAgricolaInformeFilter(FilterSet):
     class Meta:
         model = ActividadAgricola
         fields = ["fecha_desde","fecha_hasta","tipoActividadAgricola","zafra","finca","lote","empleado","esServicioContratado","esVigente"]
+
+class InventarioDepositoInformeFilter(FilterSet):
+    fecha_desde = django_filters.DateFilter(widget=DateTypeInput(attrs={'placeholder': '1970-01-01'}), field_name='fechaDocumento', lookup_expr='gte', label='Desde')
+    fecha_hasta = django_filters.DateFilter(widget=DateTypeInput(), field_name='fechaDocumento', lookup_expr='lte', label='Hasta')
+    # fechaDocumento = django_filters.DateRangeFilter(label='Rango')
+    class Meta:
+        model = ItemMovimiento
+        fields = ["fecha_desde","fecha_hasta","tipoMovimiento","item","deposito","esVigente"]

@@ -362,6 +362,11 @@ class CompraDetalle(models.Model):
             return valor
         else:
             return 0
+class CuotaCompra(models.Model):
+    compra = models.ForeignKey(Compra, on_delete=models.DO_NOTHING)
+    fechaVencimiento = models.DateField(verbose_name="Fecha Vencimiento")
+    monto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Monto")
+    saldo = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Saldo")
 
 class AjusteStock(models.Model):
     empleado = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Empleado")
