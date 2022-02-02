@@ -76,7 +76,12 @@ from .widgets import DateInput
 
 
 def main(request):
-    return render(request, template_name='home.html', context={})
+    template_path = "home.html"
+    context_p = {
+        'invoice_css_dir': settings.INVOICE_CSS_DIR,
+        'invoice_img_dir': settings.INVOICE_IMG_DIR,
+    }
+    return render(request, template_name=template_path, context=context_p)
 
 
 def menu(request):

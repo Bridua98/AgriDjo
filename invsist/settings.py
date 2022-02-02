@@ -142,5 +142,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Impresion de facturas
 INVOICE_CSS_DIR = os.path.join(STATICFILES_DIRS[0],"site/css/invoice.css")
-INVOICE_IMG_DIR = os.path.join(STATICFILES_DIRS[0], 'site/images/logo_compy')
+INVOICE_IMG_DIR = os.path.join(STATICFILES_DIRS[0], 'site/images/iconoAgroAmanecer.png')
 

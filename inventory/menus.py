@@ -89,20 +89,6 @@ Menu.add_item("informes", MenuItem("Informes",
 
 
 
-#hijos_referenciales= (
-#    MenuItem("Gestión",reverse_lazy("inventory_menu"),children= hijos_referenciales_gestion),
-#    MenuItem("Agricultura",reverse_lazy("inventory_menu"),children= hijos_referenciales_agricultura)
-#)
-
-#Menu.add_item("referenciales", MenuItem("Referenciales",
-#                               reverse_lazy("inventory_menu"),
-#                               children = hijos_referenciales
-#                               ))
-
-
-
-
-
 
 
 
