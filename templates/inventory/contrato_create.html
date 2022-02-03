@@ -10,7 +10,7 @@
     {% csrf_token %}
     {{ form|crispy }}
     <input class="btn btn-success" type="submit" value="Guardar">
-    <a class="btn btn-primary" href="{% url 'contrato_list' %}"> Cancelar </a>
+    <a class="btn btn-secondary" href="{% url 'contrato_list' %}"> Cancelar </a>
 </form>
 
 {% endblock %}

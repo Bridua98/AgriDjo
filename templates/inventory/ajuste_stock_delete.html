@@ -7,6 +7,6 @@
 <form method="post">{% csrf_token %}
     <p>Desea eliminar "{{ object }}"?</p>
     <input class="btn btn-danger" type="submit" value="Eliminar">
-    <a class="btn btn-primary" href="{% url 'ajuste_stock_list' %}"> Cancelar </a>
+    <a class="btn btn-secondary" href="{% url 'ajuste_stock_list' %}"> Cancelar </a>
 </form>
 {% endblock %}
