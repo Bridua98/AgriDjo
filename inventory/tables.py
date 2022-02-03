@@ -7,6 +7,7 @@ from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCa
                               TipoMaquinariaAgricola, TransferenciaCuenta, Venta, Zafra)
 
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.contrib.auth.models import User
 
 class BaseTable(tables.Table):
     def __init__(self, *args, **kwargs):
@@ -348,3 +349,8 @@ class InventarioDepositoInformeTable(BaseTable):
     class Meta:
         model = ItemMovimiento
         fields = ("fechaDocumento","deposito","item","tipoMovimiento","cantidad")
+
+class UserTable(EditableTable):
+    class Meta:
+        model = User
+        fields = ("username", "first_name", "Last_name", "is_active",)

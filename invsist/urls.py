@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 
 # importando vistas
 from inventory.views import AcopioAnularView, AcopioCreateView, AcopioListView, AcopioUpdateView, ActividadAgricolaAnularView, ActividadAgricolaCreateView, ActividadAgricolaListView, AjusteStockCreateView, AjusteStockDeleteView, AjusteStockListView, AjusteStockUpdateView, AperturaCajaCerrarView, AperturaCajaCreateView, AperturaCajaListView, ArqueoCreateView, ArqueoDeleteView, ArqueoListView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CompraAnularView, CompraCreateView, CompraInformeListView, CompraListView, ContratoCreateView, ContratoDeleteView, ContratoListView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, InventarioDepositoInformeListView, ItemCreateView, LibroCompraListView, LibroVentaListView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, NotaCreditoEmitidaAnularView, NotaCreditoEmitidaCreateView, NotaCreditoEmitidaListView, NotaCreditoRecibidaAnularView, NotaCreditoRecibidaCreateView, NotaCreditoRecibidaListView, OrdenCompraAnularView, OrdenCompraCreateView, OrdenCompraListView, OrdenCompraUpdateView, PedidoCompraCreateView, PedidoCompraListView, PedidoCompraUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, ProduccionAgricolaInformeListView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, TransferenciaCuentaAnularView, TransferenciaCuentaCreateView, TransferenciaCuentaListView, VentaAnularView, VentaCreateView, VentaInformeListView, VentaListView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
@@ -26,6 +26,7 @@ from inventory.views import ItemDeleteView, ItemListView, ItemUpdateView
 from inventory.views import TipoActividadAgricolaListView, TipoActividadAgricolaCreateView, TipoActividadAgricolaUpdateView, TipoActividadAgricolaDeleteView
 from inventory.views import FincaListView, FincaCreateView, FincaUpdateView, FincaDeleteView
 from inventory.views import main, menu, download_view
+from inventory.views import UserCreateView, UserListView, UserUpdateView
 
 urlpatterns = [
      # personas
@@ -175,6 +176,11 @@ urlpatterns = [
     path('inventory/produccion_agricola_informe', ProduccionAgricolaInformeListView.as_view(), name="produccion_agricola_informe_list"),
     # INVENTARIO DEPOSITO
     path('inventory/c', InventarioDepositoInformeListView.as_view(), name="inventario_deposito_list"),
+    # USUARIO
+    path('accounts/users/<int:pk>/update', UserUpdateView.as_view(), name="user_update"),
+    path("accounts/users/add", UserCreateView.as_view(), name="user_create"),
+    path("accounts/users", UserListView.as_view(), name="user_list"),
+    path("accounts/", include("django.contrib.auth.urls")),
     # menu tonto
     path('inventory/', menu, name="inventory_menu"),
     path('admin/', admin.site.urls),

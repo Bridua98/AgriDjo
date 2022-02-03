@@ -5,6 +5,9 @@ from menu import Menu, MenuItem
 Menu.add_item("main", MenuItem("Inicio",
                                reverse_lazy("main")))
 
+Menu.add_item("main", MenuItem("Usuarios",
+                               reverse_lazy("user_list")))
+
 Menu.add_item("main", MenuItem("Items",
                                reverse_lazy("item_list")))
 

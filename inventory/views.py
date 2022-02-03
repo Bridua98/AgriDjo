@@ -31,6 +31,22 @@ from xhtml2pdf import pisa
 from inventory.filters import CompraInformeFilter, InventarioDepositoInformeFilter, LibroCompraFilter, LibroVentaFilter, ProduccionAgricolaInformeFilter, VentaInformeFilter
 from django_filters.views import FilterView
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.list import ListView
+from django_tables2 import SingleTableMixin
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
+from inventory.tables import UserTable
+
+from .forms import CustomUserChangeForm, CustomUserCreationForm
+
 from inventory.forms import (AcopioForm, ActividadAgricolaForm,
                              AjusteStockForm, CompraForm, ContratoForm, CuotaCompraForm, CuotaVentaForm,
                              NotaCreditoEmitidaForm, NotaCreditoRecibidaForm,
@@ -74,7 +90,7 @@ from inventory.utils import link_callback
 
 from .widgets import DateInput
 
-
+@login_required
 def main(request):
     template_path = "home.html"
     context_p = {
@@ -204,7 +220,7 @@ class UpdateWithFormsetInlinesView(FormsetInlinesMetaMixin, UpdateWithInlinesVie
 
 
 # TIPO DE ACTIVIDAD AGRICOLA
-class TipoActividadAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
+class TipoActividadAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = TipoActividadAgricola
     table_class = TipoActividadAgricolaTable
     paginate_by = 6
@@ -217,7 +233,7 @@ class TipoActividadAgricolaListView(SearchViewMixin, SingleTableMixin, ListView)
         context['delete_url'] = 'tipo_actividad_agricola_delete'
         return context
 
-class TipoActividadAgricolaCreateView(CreateView):
+class TipoActividadAgricolaCreateView(LoginRequiredMixin,CreateView):
     model = TipoActividadAgricola
     template_name = 'inventory/tipo_actividad_agricola_create.html'
     fields = ['descripcion','esCosecha','esSiembra','esResiembra']
@@ -225,7 +241,7 @@ class TipoActividadAgricolaCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("tipo_actividad_agricola_list")
 
-class TipoActividadAgricolaUpdateView(UpdateView):
+class TipoActividadAgricolaUpdateView(LoginRequiredMixin,UpdateView):
     model = TipoActividadAgricola
     template_name = 'inventory/tipo_actividad_agricola_update.html'
     fields = ['descripcion','esCosecha','esSiembra','esResiembra']
@@ -233,7 +249,7 @@ class TipoActividadAgricolaUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("tipo_actividad_agricola_list")
 
-class TipoActividadAgricolaDeleteView(DeleteView):
+class TipoActividadAgricolaDeleteView(LoginRequiredMixin,DeleteView):
     model = TipoActividadAgricola
     template_name = 'inventory/tipo_actividad_agricola_delete.html'
 
@@ -242,7 +258,7 @@ class TipoActividadAgricolaDeleteView(DeleteView):
 
 
 # FINCA
-class FincaListView(SearchViewMixin, SingleTableMixin, ListView):
+class FincaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Finca
     table_class = FincaTable
     paginate_by = 6
@@ -255,7 +271,7 @@ class FincaListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'finca_delete'
         return context
 
-class FincaCreateView(CreateView):
+class FincaCreateView(LoginRequiredMixin,CreateView):
     model = Finca
     template_name = 'inventory/finca_create.html'
     fields = ['descripcion','dimensionHa','ubicacion']
@@ -263,7 +279,7 @@ class FincaCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("finca_list")
 
-class FincaUpdateView(UpdateView):
+class FincaUpdateView(LoginRequiredMixin,UpdateView):
     model = Finca
     template_name = 'inventory/finca_update.html'
     fields = ['descripcion','dimensionHa','ubicacion']
@@ -271,7 +287,7 @@ class FincaUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("finca_list")
 
-class FincaDeleteView(DeleteView):
+class FincaDeleteView(LoginRequiredMixin,DeleteView):
     model = Finca
     template_name = 'inventory/finca_delete.html'
 
@@ -280,7 +296,7 @@ class FincaDeleteView(DeleteView):
 
 
 # TIPO IMPUESTO
-class TipoImpuestoListView(SearchViewMixin, SingleTableMixin, ListView):
+class TipoImpuestoListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = TipoImpuesto
     table_class = TipoImpuestoTable
     paginate_by = 6
@@ -293,7 +309,7 @@ class TipoImpuestoListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'tipo_impuesto_delete'
         return context
 
-class TipoImpuestoCreateView(CreateView):
+class TipoImpuestoCreateView(LoginRequiredMixin,CreateView):
     model = TipoImpuesto
     template_name = 'inventory/tipo_impuesto_create.html'
     fields = ['descripcion','porcentaje','esIva']
@@ -301,7 +317,7 @@ class TipoImpuestoCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("tipo_impuesto_list")
 
-class TipoImpuestoUpdateView(UpdateView):
+class TipoImpuestoUpdateView(LoginRequiredMixin,UpdateView):
     model = TipoImpuesto
     template_name = 'inventory/tipo_impuesto_update.html'
     fields = ['descripcion','porcentaje','esIva']
@@ -309,7 +325,7 @@ class TipoImpuestoUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("tipo_impuesto_list")
 
-class TipoImpuestoDeleteView(DeleteView):
+class TipoImpuestoDeleteView(LoginRequiredMixin,DeleteView):
     model = TipoImpuesto
     template_name = 'inventory/tipo_impuesto_delete.html'
 
@@ -318,7 +334,7 @@ class TipoImpuestoDeleteView(DeleteView):
 
 # TIPO MAQUINARIA AGRICOLA
 
-class TipoMaquinariaAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
+class TipoMaquinariaAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = TipoMaquinariaAgricola
     table_class = TipoMaquinariaAgricolaTable
     paginate_by = 6
@@ -331,7 +347,7 @@ class TipoMaquinariaAgricolaListView(SearchViewMixin, SingleTableMixin, ListView
         context['delete_url'] = 'tipo_maquinaria_agricola_delete'
         return context
 
-class TipoMaquinariaAgricolaCreateView(CreateView):
+class TipoMaquinariaAgricolaCreateView(LoginRequiredMixin,CreateView):
     model = TipoMaquinariaAgricola
     template_name = 'inventory/tipo_maquinaria_agricola_create.html'
     fields = ['descripcion']
@@ -339,7 +355,7 @@ class TipoMaquinariaAgricolaCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("tipo_maquinaria_agricola_list")
 
-class TipoMaquinariaAgricolaUpdateView(UpdateView):
+class TipoMaquinariaAgricolaUpdateView(LoginRequiredMixin,UpdateView):
     model = TipoMaquinariaAgricola
     template_name = 'inventory/tipo_maquinaria_agricola_update.html'
     fields = ['descripcion']
@@ -347,7 +363,7 @@ class TipoMaquinariaAgricolaUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("tipo_maquinaria_agricola_list")
 
-class TipoMaquinariaAgricolaDeleteView(DeleteView):
+class TipoMaquinariaAgricolaDeleteView(LoginRequiredMixin,DeleteView):
     model = TipoMaquinariaAgricola
     template_name = 'inventory/tipo_maquinaria_agricola_delete.html'
 
@@ -356,7 +372,7 @@ class TipoMaquinariaAgricolaDeleteView(DeleteView):
 
 
 # MARCA
-class MarcaListView(SearchViewMixin, SingleTableMixin, ListView):
+class MarcaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Marca
     table_class = MarcaTable
     paginate_by = 6
@@ -369,7 +385,7 @@ class MarcaListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'marca_delete'
         return context
 
-class MarcaCreateView(CreateView):
+class MarcaCreateView(LoginRequiredMixin,CreateView):
     model = Marca
     template_name = 'inventory/marca_create.html'
     fields = ['descripcion']
@@ -377,7 +393,7 @@ class MarcaCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("marca_list")
 
-class MarcaUpdateView(UpdateView):
+class MarcaUpdateView(LoginRequiredMixin,UpdateView):
     model = Marca
     template_name = 'inventory/marca_update.html'
     fields = ['descripcion']
@@ -385,7 +401,7 @@ class MarcaUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("marca_list")
 
-class MarcaDeleteView(DeleteView):
+class MarcaDeleteView(LoginRequiredMixin,DeleteView):
     model = Marca
     template_name = 'inventory/marca_delete.html'
 
@@ -394,7 +410,7 @@ class MarcaDeleteView(DeleteView):
 
 
 # BANCO
-class BancoListView(SearchViewMixin, SingleTableMixin, ListView):
+class BancoListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Banco
     table_class = BancoTable
     paginate_by = 6
@@ -407,7 +423,7 @@ class BancoListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'banco_delete'
         return context
 
-class BancoCreateView(CreateView):
+class BancoCreateView(LoginRequiredMixin,CreateView):
     model = Banco
     template_name = 'inventory/banco_create.html'
     fields = ['descripcion']
@@ -415,7 +431,7 @@ class BancoCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("banco_list")
 
-class BancoUpdateView(UpdateView):
+class BancoUpdateView(LoginRequiredMixin,UpdateView):
     model = Banco
     template_name = 'inventory/banco_update.html'
     fields = ['descripcion']
@@ -423,14 +439,14 @@ class BancoUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("banco_list")
 
-class BancoDeleteView(DeleteView):
+class BancoDeleteView(LoginRequiredMixin,DeleteView):
     model = Banco
     template_name = 'inventory/banco_delete.html'
 
     def get_success_url(self):
         return reverse_lazy("banco_list")
 # CUENTA
-class CuentaListView(SearchViewMixin, SingleTableMixin, ListView):
+class CuentaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Cuenta
     table_class = CuentaTable
     paginate_by = 6
@@ -443,7 +459,7 @@ class CuentaListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'cuenta_delete'
         return context
 
-class CuentaCreateView(CreateView):
+class CuentaCreateView(LoginRequiredMixin,CreateView):
     model = Cuenta
     template_name = 'inventory/cuenta_create.html'
     fields = ['descripcion','esBanco','banco','nroCuenta']
@@ -451,7 +467,7 @@ class CuentaCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("cuenta_list")
 
-class CuentaUpdateView(UpdateView):
+class CuentaUpdateView(LoginRequiredMixin,UpdateView):
     model = Cuenta
     template_name = 'inventory/cuenta_update.html'
     fields = ['descripcion','esBanco','banco','nroCuenta']
@@ -459,7 +475,7 @@ class CuentaUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("cuenta_list")
 
-class CuentaDeleteView(DeleteView):
+class CuentaDeleteView(LoginRequiredMixin,DeleteView):
     model = Cuenta
     template_name = 'inventory/cuenta_delete.html'
 
@@ -467,7 +483,7 @@ class CuentaDeleteView(DeleteView):
         return reverse_lazy("cuenta_list")
 
 # DEPOSITO
-class DepositoListView(SearchViewMixin, SingleTableMixin, ListView):
+class DepositoListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Deposito
     table_class = DepositoTable
     paginate_by = 6
@@ -480,7 +496,7 @@ class DepositoListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'deposito_delete'
         return context
 
-class DepositoCreateView(CreateView):
+class DepositoCreateView(LoginRequiredMixin,CreateView):
     model = Deposito
     template_name = 'inventory/deposito_create.html'
     fields = ['descripcion','esPlantaAcopiadora']
@@ -488,7 +504,7 @@ class DepositoCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("deposito_list")
 
-class DepositoUpdateView(UpdateView):
+class DepositoUpdateView(LoginRequiredMixin,UpdateView):
     model = Deposito
     template_name = 'inventory/deposito_update.html'
     fields = ['descripcion','esPlantaAcopiadora']
@@ -496,7 +512,7 @@ class DepositoUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("deposito_list")
 
-class DepositoDeleteView(DeleteView):
+class DepositoDeleteView(LoginRequiredMixin,DeleteView):
     model = Deposito
     template_name = 'inventory/deposito_delete.html'
 
@@ -504,7 +520,7 @@ class DepositoDeleteView(DeleteView):
         return reverse_lazy("deposito_list")
 
 # CATEGORIA 
-class CategoriaListView(SearchViewMixin, SingleTableMixin, ListView):
+class CategoriaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Categoria
     table_class = CategoriaTable
     search_fields = ['descripcion']
@@ -516,7 +532,7 @@ class CategoriaListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'categoria_delete'
         return context
 
-class CategoriaCreateView(CreateView):
+class CategoriaCreateView(LoginRequiredMixin,CreateView):
     model = Categoria
     template_name = 'inventory/categoria_create.html'
     fields = ['descripcion']
@@ -524,7 +540,7 @@ class CategoriaCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("categoria_list")
 
-class CategoriaUpdateView(UpdateView):
+class CategoriaUpdateView(LoginRequiredMixin,UpdateView):
     model = Categoria
     template_name = 'inventory/categoria_update.html'
     fields = ['descripcion']
@@ -532,7 +548,7 @@ class CategoriaUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("categoria_list")
 
-class CategoriaDeleteView(DeleteView):
+class CategoriaDeleteView(LoginRequiredMixin,DeleteView):
     model = Categoria
     template_name = 'inventory/categoria_delete.html'
 
@@ -540,7 +556,7 @@ class CategoriaDeleteView(DeleteView):
         return reverse_lazy("categoria_list")
 
 # PERSONA 
-class PersonaListView(SearchViewMixin, SingleTableMixin, ListView):
+class PersonaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Persona
     table_class = PersonaTable
     search_fields = ['documento','razonSocial','localidad__descripcion']
@@ -552,7 +568,7 @@ class PersonaListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'persona_delete'
         return context
 
-class PersonaCreateView(CreateView):
+class PersonaCreateView(LoginRequiredMixin,CreateView):
     model = Persona
     template_name = 'inventory/persona_create.html'
     fields = ['razonSocial','documento','pais','localidad','direccion','celular','esCliente','esProveedor','esEmpleado']
@@ -560,7 +576,7 @@ class PersonaCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("persona_list")
 
-class PersonaUpdateView(UpdateView):
+class PersonaUpdateView(LoginRequiredMixin,UpdateView):
     model = Persona
     template_name = 'inventory/persona_update.html'
     fields = ['razonSocial','documento','pais','localidad','direccion','celular','esCliente','esProveedor','esEmpleado']
@@ -568,7 +584,7 @@ class PersonaUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("persona_list")
 
-class PersonaDeleteView(DeleteView):
+class PersonaDeleteView(LoginRequiredMixin,DeleteView):
     model = Persona
     template_name = 'inventory/persona_delete.html'
 
@@ -577,7 +593,7 @@ class PersonaDeleteView(DeleteView):
 
 
 #ITEM
-class ItemListView(SearchViewMixin, SingleTableMixin, ListView):
+class ItemListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Item
     table_class = ItemTable
     search_fields = ['descripcion', 'codigoBarra','marca__descripcion','"categoria__descripcion','tipo_item__descripcion','tipo_impuesto__descripcion']
@@ -589,7 +605,7 @@ class ItemListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'item_delete'
         return context
 
-class ItemCreateView(CreateView):
+class ItemCreateView(LoginRequiredMixin,CreateView):
     model = Item
     template_name = 'inventory/item_create.html'
     fields = ['codigoBarra','descripcion','tipoItem','tipoImpuesto','categoria','marca','precio','esActivo']
@@ -597,7 +613,7 @@ class ItemCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("item_list")
 
-class ItemUpdateView(UpdateView):
+class ItemUpdateView(LoginRequiredMixin,UpdateView):
     model = Item
     template_name = 'inventory/item_update.html'
     fields = ['codigoBarra','descripcion','tipoImpuesto','categoria','marca','precio','esActivo']
@@ -605,7 +621,7 @@ class ItemUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("item_list")
 
-class ItemDeleteView(DeleteView):
+class ItemDeleteView(LoginRequiredMixin,DeleteView):
     model = Item
     template_name = 'inventory/item_delete.html'
 
@@ -614,7 +630,7 @@ class ItemDeleteView(DeleteView):
 
 
 #ZAFRA
-class ZafraListView(SearchViewMixin, SingleTableMixin, ListView):
+class ZafraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Zafra
     table_class = ZafraTable
     search_fields = ['descripcion', 'item__descripcion']
@@ -626,7 +642,7 @@ class ZafraListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'zafra_delete'
         return context
 
-class ZafraCreateView(CreateView):
+class ZafraCreateView(LoginRequiredMixin,CreateView):
     model = Zafra
     template_name = 'inventory/zafra_create.html'
     fields = ['descripcion','item','anho','esZafrinha','kgEstimado']
@@ -634,14 +650,14 @@ class ZafraCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("zafra_list")
 
-class ZafraUpdateView(UpdateView):
+class ZafraUpdateView(LoginRequiredMixin,UpdateView):
     model = Zafra
     template_name = 'inventory/zafra_update.html'
     fields = ['descripcion','item','anho','esZafrinha','kgEstimado']
     def get_success_url(self):
         return reverse_lazy("zafra_list")
 
-class ZafraDeleteView(DeleteView):
+class ZafraDeleteView(LoginRequiredMixin,DeleteView):
     model = Zafra
     template_name = 'inventory/zafra_delete.html'
 
@@ -649,7 +665,7 @@ class ZafraDeleteView(DeleteView):
         return reverse_lazy("zafra_list")
 
 # FINCA
-class LoteListView(SearchViewMixin, SingleTableMixin, ListView):
+class LoteListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Lote
     table_class = LoteTable
     paginate_by = 6
@@ -662,7 +678,7 @@ class LoteListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'lote_delete'
         return context
 
-class LoteCreateView(CreateView):
+class LoteCreateView(LoginRequiredMixin,CreateView):
     model = Lote
     template_name = 'inventory/lote_create.html'
     fields = ['descripcion','zafra','finca','dimension']
@@ -670,7 +686,7 @@ class LoteCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("lote_list")
 
-class LoteUpdateView(UpdateView):
+class LoteUpdateView(LoginRequiredMixin,UpdateView):
     model = Lote
     template_name = 'inventory/lote_update.html'
     fields = ['descripcion','zafra','finca','dimension']
@@ -678,7 +694,7 @@ class LoteUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("lote_list")
 
-class LoteDeleteView(DeleteView):
+class LoteDeleteView(LoginRequiredMixin,DeleteView):
     model = Lote
     template_name = 'inventory/lote_delete.html'
 
@@ -687,7 +703,7 @@ class LoteDeleteView(DeleteView):
 
 
 # MAQUINARIA AGRICOLA
-class MaquinariaAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
+class MaquinariaAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = MaquinariaAgricola
     table_class = MaquinariaAgricolaTable
     paginate_by = 6
@@ -700,7 +716,7 @@ class MaquinariaAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'maquinaria_agricola_delete'
         return context
 
-class MaquinariaAgricolaCreateView(CreateView):
+class MaquinariaAgricolaCreateView(LoginRequiredMixin,CreateView):
     model = MaquinariaAgricola
     template_name = 'inventory/maquinaria_agricola_create.html'
     fields = ['descripcion','tipoMaquinariaAgricola','esImplemento','admiteImplemento','precio']
@@ -708,7 +724,7 @@ class MaquinariaAgricolaCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("maquinaria_agricola_list")
 
-class MaquinariaAgricolaUpdateView(UpdateView):
+class MaquinariaAgricolaUpdateView(LoginRequiredMixin,UpdateView):
     model = MaquinariaAgricola
     template_name = 'inventory/maquinaria_agricola_update.html'
     fields = ['descripcion','tipoMaquinariaAgricola','esImplemento','admiteImplemento','precio']
@@ -716,7 +732,7 @@ class MaquinariaAgricolaUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("maquinaria_agricola_list")
 
-class MaquinariaAgricolaDeleteView(DeleteView):
+class MaquinariaAgricolaDeleteView(LoginRequiredMixin,DeleteView):
     model = MaquinariaAgricola
     template_name = 'inventory/maquinaria_agricola_delete.html'
 
@@ -724,7 +740,7 @@ class MaquinariaAgricolaDeleteView(DeleteView):
         return reverse_lazy("maquinaria_agricola_list")
 
 # CALIFICACION AGRICOLA
-class CalificacionAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
+class CalificacionAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = CalificacionAgricola
     table_class = CalificacionAgricolaTable
     paginate_by = 6
@@ -737,7 +753,7 @@ class CalificacionAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'calificacion_agricola_delete'
         return context
 
-class CalificacionAgricolaCreateView(CreateView):
+class CalificacionAgricolaCreateView(LoginRequiredMixin,CreateView):
     model = CalificacionAgricola
     template_name = 'inventory/calificacion_agricola_create.html'
     fields = ['descripcion',]
@@ -745,7 +761,7 @@ class CalificacionAgricolaCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("calificacion_agricola_list")
 
-class CalificacionAgricolaUpdateView(UpdateView):
+class CalificacionAgricolaUpdateView(LoginRequiredMixin,UpdateView):
     model = CalificacionAgricola
     template_name = 'inventory/calificacion_agricola_update.html'
     fields = ['descripcion',]
@@ -753,7 +769,7 @@ class CalificacionAgricolaUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("calificacion_agricola_list")
 
-class CalificacionAgricolaDeleteView(DeleteView):
+class CalificacionAgricolaDeleteView(LoginRequiredMixin,DeleteView):
     model = CalificacionAgricola
     template_name = 'inventory/calificacion_agricola_delete.html'
 
@@ -761,7 +777,7 @@ class CalificacionAgricolaDeleteView(DeleteView):
         return reverse_lazy("calificacion_agricola_list")
 
 #PLAN ACTIVIDAD ZAFRA
-class PlanActividadZafraListView(SearchViewMixin, SingleTableMixin, ListView):
+class PlanActividadZafraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = PlanActividadZafra
     table_class = PlanActividadZafraTable
     search_fields = ['zafra__descripcion', 'observacion']
@@ -773,7 +789,7 @@ class PlanActividadZafraListView(SearchViewMixin, SingleTableMixin, ListView):
         return context
 
 
-class PlanActividadZafraCreateView(CreateWithFormsetInlinesView):
+class PlanActividadZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = PlanActividadZafra
     form_class = PlanActividadZafraForm
     template_name = 'inventory/plan_actividad_zafra_create.html'
@@ -790,7 +806,7 @@ class PlanActividadZafraCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class PlanActividadZafraUpdateView(UpdateWithFormsetInlinesView):
+class PlanActividadZafraUpdateView(LoginRequiredMixin,UpdateWithFormsetInlinesView):
     model = PlanActividadZafra
     form_class = PlanActividadZafraForm
     template_name = 'inventory/plan_actividad_zafra_update.html'
@@ -808,7 +824,7 @@ class PlanActividadZafraUpdateView(UpdateWithFormsetInlinesView):
         return context
 
 #ACOPIOS
-class AcopioListView(SearchViewMixin, SingleTableMixin, ListView):
+class AcopioListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Acopio
     table_class = AcopioTable
     search_fields = ['zafra__descripcion', 'comprobante','deposito__descripcion']
@@ -821,7 +837,7 @@ class AcopioListView(SearchViewMixin, SingleTableMixin, ListView):
         return context
 
 
-class AcopioCreateView(CreateWithFormsetInlinesView):
+class AcopioCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = Acopio
     form_class = AcopioForm
     template_name = 'inventory/acopio_create.html'
@@ -838,7 +854,7 @@ class AcopioCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class AcopioUpdateView(UpdateWithFormsetInlinesView):
+class AcopioUpdateView(LoginRequiredMixin,UpdateWithFormsetInlinesView):
     model = Acopio
     form_class = AcopioForm
     template_name = 'inventory/acopio_update.html'
@@ -855,7 +871,7 @@ class AcopioUpdateView(UpdateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class AcopioAnularView(DeleteView):
+class AcopioAnularView(LoginRequiredMixin,DeleteView):
     model = Acopio
     template_name = 'inventory/anular.html'
     success_url = reverse_lazy("acopio_list")
@@ -891,7 +907,7 @@ class AcopioAnularView(DeleteView):
         return reverse_lazy("acopio_list")
 
 #PEDIDOS DE COMPRAS
-class PedidoCompraListView(SearchViewMixin, SingleTableMixin, ListView):
+class PedidoCompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = PedidoCompra
     table_class = PedidoCompraTable
     search_fields = ['proveedor__razonSocial',]
@@ -903,7 +919,7 @@ class PedidoCompraListView(SearchViewMixin, SingleTableMixin, ListView):
         return context
 
 
-class PedidoCompraCreateView(CreateWithFormsetInlinesView):
+class PedidoCompraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = PedidoCompra
     form_class = PedidoCompraForm
     template_name = 'inventory/pedido_compra_create.html'
@@ -920,7 +936,7 @@ class PedidoCompraCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class PedidoCompraUpdateView(UpdateWithFormsetInlinesView):
+class PedidoCompraUpdateView(LoginRequiredMixin,UpdateWithFormsetInlinesView):
     model = PedidoCompra
     form_class = PedidoCompraForm
     template_name = 'inventory/pedido_compra_update.html'
@@ -938,7 +954,7 @@ class PedidoCompraUpdateView(UpdateWithFormsetInlinesView):
         return context
 
 #ORDENES DE COMPRAS
-class OrdenCompraListView(SearchViewMixin, SingleTableMixin, ListView):
+class OrdenCompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = OrdenCompra
     table_class = OrdenCompraTable
     search_fields = ['proveedor__razonSocial',]
@@ -951,7 +967,7 @@ class OrdenCompraListView(SearchViewMixin, SingleTableMixin, ListView):
         return context
 
 
-class OrdenCompraCreateView(CreateWithFormsetInlinesView):
+class OrdenCompraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = OrdenCompra
     form_class = OrdenCompraForm
     template_name = 'inventory/orden_compra_create.html'
@@ -968,7 +984,7 @@ class OrdenCompraCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class OrdenCompraUpdateView(UpdateWithFormsetInlinesView):
+class OrdenCompraUpdateView(LoginRequiredMixin,UpdateWithFormsetInlinesView):
     model = OrdenCompra
     form_class = OrdenCompraForm
     template_name = 'inventory/orden_compra_update.html'
@@ -985,7 +1001,7 @@ class OrdenCompraUpdateView(UpdateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class OrdenCompraAnularView(DeleteView):
+class OrdenCompraAnularView(LoginRequiredMixin,DeleteView):
     model = OrdenCompra
     template_name = 'inventory/anular.html'
     success_url = reverse_lazy("orden_compra_list")
@@ -1012,7 +1028,7 @@ class OrdenCompraAnularView(DeleteView):
         return reverse_lazy("orden_compra_list")
 
 #APERTURA CIERRE DE CAJAS
-class AperturaCajaListView(SearchViewMixin, SingleTableMixin, ListView):
+class AperturaCajaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = AperturaCaja
     table_class = AperturaCajaTable
     paginate_by = 6
@@ -1024,7 +1040,7 @@ class AperturaCajaListView(SearchViewMixin, SingleTableMixin, ListView):
         context['cerrar_url'] = 'apertura_caja_cerrar'
         return context
 
-class AperturaCajaCreateView(CreateView):
+class AperturaCajaCreateView(LoginRequiredMixin,CreateView):
     model = AperturaCaja
     template_name = 'inventory/apertura_caja_create.html'
     fields = ['empleado','observacion','montoInicio']
@@ -1032,7 +1048,7 @@ class AperturaCajaCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("apertura_caja_list")
 
-class AperturaCajaCerrarView(DeleteView):
+class AperturaCajaCerrarView(LoginRequiredMixin,DeleteView):
     model = AperturaCaja
     template_name = 'inventory/cerrar.html'
     success_url = reverse_lazy("apertura_caja_list")
@@ -1060,7 +1076,7 @@ class AperturaCajaCerrarView(DeleteView):
         return reverse_lazy("apertura_caja_list")
 
 # ARQUEO
-class ArqueoListView(SearchViewMixin, SingleTableMixin, ListView):
+class ArqueoListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Arqueo
     table_class = ArqueoTable
     paginate_by = 6
@@ -1072,7 +1088,7 @@ class ArqueoListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'arqueo_delete'
         return context
 
-class ArqueoCreateView(CreateView):
+class ArqueoCreateView(LoginRequiredMixin,CreateView):
     model = Arqueo
     template_name = 'inventory/arqueo_create.html'
     fields = ['empleado','aperturaCaja','observacion','monto']
@@ -1080,7 +1096,7 @@ class ArqueoCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("arqueo_list")
 
-class ArqueoDeleteView(DeleteView):
+class ArqueoDeleteView(LoginRequiredMixin,DeleteView):
     model = Arqueo
     template_name = 'inventory/arqueo_delete.html'
 
@@ -1089,7 +1105,7 @@ class ArqueoDeleteView(DeleteView):
 
 
 #COMPRAS
-class CompraListView(SearchViewMixin, SingleTableMixin, ListView):
+class CompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Compra
     table_class = CompraTable
     search_fields = ['proveedor__razonSocial','comprobante','timbrado','observacion']
@@ -1101,7 +1117,7 @@ class CompraListView(SearchViewMixin, SingleTableMixin, ListView):
         return context
 
 
-class CompraCreateView(CreateWithFormsetInlinesView):
+class CompraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = Compra
     form_class = CompraForm
     template_name = 'inventory/compra_create.html'
@@ -1118,7 +1134,7 @@ class CompraCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class CompraAnularView(DeleteView):
+class CompraAnularView(LoginRequiredMixin,DeleteView):
     model = Compra
     template_name = 'inventory/anular.html'
     success_url = reverse_lazy("compra_list")
@@ -1155,7 +1171,7 @@ class CompraAnularView(DeleteView):
         return reverse_lazy("compra_list")
 
 # AJUSTE DE STOCK
-class AjusteStockListView(SearchViewMixin, SingleTableMixin, ListView):
+class AjusteStockListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = AjusteStock
     table_class = AjusteStockTable
     paginate_by = 6
@@ -1168,7 +1184,7 @@ class AjusteStockListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'ajuste_stock_delete'
         return context
 
-class AjusteStockCreateView(CreateWithFormsetInlinesView):
+class AjusteStockCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = AjusteStock
     form_class = AjusteStockForm
     template_name = 'inventory/ajuste_stock_create.html'
@@ -1184,7 +1200,7 @@ class AjusteStockCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class AjusteStockUpdateView(UpdateWithFormsetInlinesView):
+class AjusteStockUpdateView(LoginRequiredMixin,UpdateWithFormsetInlinesView):
     model = AjusteStock
     form_class = AjusteStockForm
     template_name = 'inventory/ajuste_stock_update.html'
@@ -1209,7 +1225,7 @@ class AjusteStockDeleteView(DeleteView):
 
 
 #ACTIVIDAD AGRICOLA
-class ActividadAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
+class ActividadAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = ActividadAgricola
     table_class = ActividadAgricolaTable
     search_fields = ['zafra__descripcion','finca__descripcion','lote__descripcion', 'empleado__razonSocial','deposito__descripcion']
@@ -1221,7 +1237,7 @@ class ActividadAgricolaListView(SearchViewMixin, SingleTableMixin, ListView):
         return context
 
 
-class ActividadAgricolaCreateView(CreateWithFormsetInlinesView):
+class ActividadAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = ActividadAgricola
     form_class = ActividadAgricolaForm
     template_name = 'inventory/actividad_agricola_create.html'
@@ -1238,7 +1254,7 @@ class ActividadAgricolaCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class ActividadAgricolaAnularView(DeleteView):
+class ActividadAgricolaAnularView(LoginRequiredMixin,DeleteView):
     model = ActividadAgricola
     template_name = 'inventory/anular.html'
     success_url = reverse_lazy("actividad_agricola_list")
@@ -1274,7 +1290,7 @@ class ActividadAgricolaAnularView(DeleteView):
         return reverse_lazy("actividad_agricola_list")
 
 # CONTRATO 
-class ContratoListView(SearchViewMixin, SingleTableMixin, ListView):
+class ContratoListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Contrato
     table_class = ContratoTable
     paginate_by = 6
@@ -1286,7 +1302,7 @@ class ContratoListView(SearchViewMixin, SingleTableMixin, ListView):
         context['delete_url'] = 'contrato_delete'
         return context
 
-class ContratoCreateView(CreateView):
+class ContratoCreateView(LoginRequiredMixin,CreateView):
   
     model = Contrato
     template_name = 'inventory/contrato_create.html'
@@ -1294,7 +1310,7 @@ class ContratoCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("contrato_list")
 
-class ContratoDeleteView(DeleteView):
+class ContratoDeleteView(LoginRequiredMixin,DeleteView):
     model = Contrato
     template_name = 'inventory/contrato_delete.html'
 
@@ -1302,7 +1318,7 @@ class ContratoDeleteView(DeleteView):
         return reverse_lazy("contrato_list")
 
 #VENTAS
-class VentaListView(SearchViewMixin, SingleTableMixin, ListView):
+class VentaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Venta
     table_class = VentaTable
     search_fields = ['cliente__razonSocial','comprobante','timbrado','observacion']
@@ -1315,7 +1331,7 @@ class VentaListView(SearchViewMixin, SingleTableMixin, ListView):
         return context
 
 
-class VentaCreateView(CreateWithFormsetInlinesView):
+class VentaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = Venta
     form_class = VentaForm
     template_name = 'inventory/venta_create.html'
@@ -1332,7 +1348,7 @@ class VentaCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class VentaAnularView(DeleteView):
+class VentaAnularView(LoginRequiredMixin,DeleteView):
     model = Venta
     template_name = 'inventory/anular.html'
     success_url = reverse_lazy("venta_list")
@@ -1417,7 +1433,7 @@ def download_view(request, pk):
 
 
 #NOTAS CREDITOS RECIBIDAS
-class NotaCreditoRecibidaListView(SearchViewMixin, SingleTableMixin, ListView):
+class NotaCreditoRecibidaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = NotaCreditoRecibida
     table_class = NotaCreditoRecibidaTable
     search_fields = ['proveedor__razonSocial','comprobante','timbrado','compra__comprobante']
@@ -1429,7 +1445,7 @@ class NotaCreditoRecibidaListView(SearchViewMixin, SingleTableMixin, ListView):
         return context
 
 
-class NotaCreditoRecibidaCreateView(CreateWithFormsetInlinesView):
+class NotaCreditoRecibidaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = NotaCreditoRecibida
     form_class = NotaCreditoRecibidaForm
     template_name = 'inventory/nota_credito_recibida_create.html'
@@ -1446,7 +1462,7 @@ class NotaCreditoRecibidaCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class NotaCreditoRecibidaAnularView(DeleteView):
+class NotaCreditoRecibidaAnularView(LoginRequiredMixin,DeleteView):
     model = NotaCreditoRecibida
     template_name = 'inventory/anular.html'
     success_url = reverse_lazy("nota_credito_recibida_list")
@@ -1485,7 +1501,7 @@ class NotaCreditoRecibidaAnularView(DeleteView):
 
 
 #NOTAS CREDITOS EMITIDAS
-class NotaCreditoEmitidaListView(SearchViewMixin, SingleTableMixin, ListView):
+class NotaCreditoEmitidaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = NotaCreditoEmitida
     table_class = NotaCreditoEmitidaTable
     search_fields = ['cliente__razonSocial','comprobante','timbrado','venta__comprobante']
@@ -1497,7 +1513,7 @@ class NotaCreditoEmitidaListView(SearchViewMixin, SingleTableMixin, ListView):
         return context
 
 
-class NotaCreditoEmitidaCreateView(CreateWithFormsetInlinesView):
+class NotaCreditoEmitidaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = NotaCreditoEmitida
     form_class = NotaCreditoEmitidaForm
     template_name = 'inventory/nota_credito_emitida_create.html'
@@ -1514,7 +1530,7 @@ class NotaCreditoEmitidaCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class NotaCreditoEmitidaAnularView(DeleteView):
+class NotaCreditoEmitidaAnularView(LoginRequiredMixin,DeleteView):
     model = NotaCreditoEmitida
     template_name = 'inventory/anular.html'
     success_url = reverse_lazy("nota_credito_emitida_list")
@@ -1553,7 +1569,7 @@ class NotaCreditoEmitidaAnularView(DeleteView):
 
 
 #TRANSFERENCIA ENTRE CUENTAS
-class TransferenciaCuentaListView(SearchViewMixin, SingleTableMixin, ListView):
+class TransferenciaCuentaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = TransferenciaCuenta
     table_class = TransferenciaCuentaTable
     search_fields = ['cuentaSalida__descripcion','cuentaEntrada__descripcion','comprobante']
@@ -1565,7 +1581,7 @@ class TransferenciaCuentaListView(SearchViewMixin, SingleTableMixin, ListView):
         return context
 
 
-class TransferenciaCuentaCreateView(CreateWithFormsetInlinesView):
+class TransferenciaCuentaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = TransferenciaCuenta
     form_class = TransferenciaCuentaForm
     template_name = 'inventory/transferencia_cuenta_create.html'
@@ -1580,7 +1596,7 @@ class TransferenciaCuentaCreateView(CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
-class TransferenciaCuentaAnularView(DeleteView):
+class TransferenciaCuentaAnularView(LoginRequiredMixin,DeleteView):
     model = TransferenciaCuenta
     template_name = 'inventory/anular.html'
     success_url = reverse_lazy("transferencia_cuenta_list")
@@ -1617,7 +1633,7 @@ class TransferenciaCuentaAnularView(DeleteView):
         return reverse_lazy("transferencia_cuenta_list")
 
 # LIBRO DE COMPRA
-class LibroCompraListView(SearchViewMixin, SingleTableMixin,FilterView):
+class LibroCompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin,FilterView):
     model = Compra
     filterset_class = LibroCompraFilter
     table_class = LibroCompraTable
@@ -1631,7 +1647,7 @@ class LibroCompraListView(SearchViewMixin, SingleTableMixin,FilterView):
         return context
 
 # LIBRO DE VENTA
-class LibroVentaListView(SearchViewMixin, SingleTableMixin, FilterView):
+class LibroVentaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, FilterView):
     model = Venta
     filterset_class = LibroVentaFilter
     table_class = LibroVentaTable
@@ -1645,7 +1661,7 @@ class LibroVentaListView(SearchViewMixin, SingleTableMixin, FilterView):
         return context
 
 # COMPRA INFORE
-class CompraInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
+class CompraInformeListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, FilterView):
     model = Compra
     filterset_class = CompraInformeFilter
     table_class = CompraInformeTable
@@ -1659,7 +1675,7 @@ class CompraInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
         return context
 
 # INFORME VENTA
-class VentaInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
+class VentaInformeListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, FilterView):
     model = Venta
     filterset_class = VentaInformeFilter
     table_class = VentaInformeTable
@@ -1673,7 +1689,7 @@ class VentaInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
         return context
 
 # PRODUCCION AGRICOLA
-class ProduccionAgricolaInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
+class ProduccionAgricolaInformeListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, FilterView):
     model = ActividadAgricola
     filterset_class = ProduccionAgricolaInformeFilter
     table_class = ProduccionAgricolaInformeTable
@@ -1687,7 +1703,7 @@ class ProduccionAgricolaInformeListView(SearchViewMixin, SingleTableMixin, Filte
         return context
 
 # INVENTARIO DEPOSITO
-class InventarioDepositoInformeListView(SearchViewMixin, SingleTableMixin, FilterView):
+class InventarioDepositoInformeListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, FilterView):
     model = ItemMovimiento
     filterset_class = InventarioDepositoInformeFilter
     table_class = InventarioDepositoInformeTable
@@ -1699,3 +1715,31 @@ class InventarioDepositoInformeListView(SearchViewMixin, SingleTableMixin, Filte
         context = super().get_context_data(**kwargs)
         context['list_defecto'] = 'inventario_deposito_list'
         return context
+
+class UserListView(LoginRequiredMixin, SearchViewMixin, SingleTableMixin, ListView):
+    model = User
+    table_class = UserTable
+    search_fields = ['username', 'first_name']
+    template_name = 'registration/user_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['update_url'] = 'user_update'
+        return context
+
+class UserCreateView(LoginRequiredMixin, CreateView):
+    model = User
+    form_class = CustomUserCreationForm
+    template_name = 'registration/user_create.html'
+
+    def get_success_url(self):
+        return reverse_lazy('user_list')
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = CustomUserChangeForm
+    template_name = 'registration/user_update.html'
+
+    def get_success_url(self):
+        return reverse_lazy("user_list")

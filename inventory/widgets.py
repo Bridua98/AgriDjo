@@ -1,6 +1,8 @@
 import json 
 from django import forms
 
+from inventory.models import Persona
+
 
 class DateInput(forms.DateInput):
     input_type = 'date'

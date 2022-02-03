@@ -10,6 +10,15 @@ from django.db.models import fields
 from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
 
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "email",)
+
+class CustomUserChangeForm(UserChangeForm):
+    """ Custom UserChangeForm """
+
 class PlanActividadZafraForm(forms.ModelForm):
     total = forms.DecimalField(
         widget=calculation.SumInput('costo',   attrs={'readonly':True}),
