@@ -1,6 +1,6 @@
 import calculation
 from .layout import CancelButton, DeleteButton, Formset
-from .widgets import DateInput
+from .widgets import DateInput, DecimalMaskInput, InvoiceMaskInput
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fieldset,
                                  Layout, Row, Submit, Field)
@@ -203,6 +203,7 @@ class CompraForm(forms.ModelForm):
         self.helper.form_tag = False
         self.fields['total'].label = False
         self.fields['total_iva'].label = False
+        self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -434,7 +435,7 @@ class VentaForm(forms.ModelForm):
         self.helper.form_tag = False
         self.fields['total'].label = False
         self.fields['total_iva'].label = False
-        self.fields['comprobante'].widget.attrs.update({'class': 'mascara-comprobante'})
+        self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
