@@ -47,7 +47,7 @@ class PlanActividadZafraDetalleForm(forms.ModelForm):
     class Meta:
         model = PlanActividadZafraDetalle
         fields = ['fechaActividad', 'finca', 'tipoActividadAgricola', 'descripcion','costo']
-        widgets = { 'fechaActividad':DateInput }
+        widgets = { 'fechaActividad':DateInput,'costo': DecimalMaskInput }
 
 
 
@@ -55,7 +55,7 @@ class AcopioForm(forms.ModelForm):
     class Meta:
         model = Acopio
         fields = ['fecha', 'zafra', 'deposito', 'conductor','conductor','camion','comprobante','pBruto','pTara','pDescuento','pBonificacion','esTransportadoraPropia','observacion']
-        widgets = {'fecha':DateInput}
+        widgets = {'fecha':DateInput,'pBruto':DecimalMaskInput,'pTara':DecimalMaskInput,'pDescuento':DecimalMaskInput,'pBonificacion':DecimalMaskInput}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -92,11 +92,13 @@ class AcopioDetalleForm(forms.ModelForm):
     class Meta:
         model = AcopioDetalle
         fields = ['acopio', 'finca', 'lote', 'peso']
+        widgets = {'peso':DateInput}
 
 class AcopioCalificacionForm(forms.ModelForm):
     class Meta:
         model = AcopioCalificacion
         fields = ['acopio', 'calificacionAgricola', 'grado', 'porcentaje', 'peso']
+        widgets = {'grado':DecimalMaskInput,'porcentaje':DecimalMaskInput,'peso':DecimalMaskInput}
 
 # PEDIDO COMPRA
 class PedidoCompraForm(forms.ModelForm):
@@ -137,6 +139,7 @@ class PedidoCompraDetalleForm(forms.ModelForm):
     class Meta:
         model = PedidoCompraDetalle
         fields = ['item', 'cantidad']
+        widgets = {'cantidad':DecimalMaskInput}
 
 
 # ORDEN COMPRA
@@ -182,6 +185,7 @@ class OrdenCompraDetalleForm(forms.ModelForm):
     class Meta:
         model = OrdenCompraDetalle
         fields = ['item', 'cantidad','precio','descuento']
+        widgets = {'cantidad':DecimalMaskInput,'precio':DecimalMaskInput,'descuento':DecimalMaskInput}
 
 
 # COMPRA
@@ -246,12 +250,13 @@ class CompraDetalleForm(forms.ModelForm):
     class Meta:
         model = CompraDetalle
         fields = ['item', 'cantidad','costo','porcentajeImpuesto','impuesto','subtotal']
+        widgets = {'costo':DecimalMaskInput,'cantidad':DecimalMaskInput,'porcentajeImpuesto':DecimalMaskInput,'impuesto':DecimalMaskInput,'subtotal':DecimalMaskInput}
 
 class CuotaCompraForm(forms.ModelForm):
     class Meta:
         model = CuotaCompra
         fields = ['fechaVencimiento','monto']
-        widgets = { 'fechaVencimiento':DateInput }
+        widgets = { 'fechaVencimiento':DateInput,'monto':DecimalMaskInput}
 
 class AjusteStockForm(forms.ModelForm):
     class Meta:
@@ -284,6 +289,7 @@ class AjusteStockDetalleForm(forms.ModelForm):
     class Meta:
         model = AjusteStockDetalle
         fields = ['item', 'cantidad',]
+        widgets = {'cantidad':DecimalMaskInput}
 
 
 # ACTIVIDADES AGRICOLAS
@@ -297,7 +303,8 @@ class ActividadAgricolaForm(forms.ModelForm):
     class Meta:
         model = ActividadAgricola
         fields = ['fechaDocumento','tipoActividadAgricola','zafra', 'finca','lote','esServicioContratado','empleado','cantidadTrabajada','observacion']
-        widgets = {'fechaDocumento':DateInput}
+        widgets = {'fechaDocumento':DateInput,'cantidadTrabajada': DecimalMaskInput}
+        
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -343,6 +350,7 @@ class ActividadAgricolaMaquinariaDetalleForm(forms.ModelForm):
     class Meta:
         model = ActividadAgricolaMaquinariaDetalle
         fields = ['maquinaria', 'haTrabajada','precio','subtotalMaquinaria']
+        widgets = {'haTrabajada':DecimalMaskInput,'precio':DecimalMaskInput,'subtotalMaquinaria':DecimalMaskInput}
 
 class ActividadAgricolaItemDetalleForm(forms.ModelForm):
     subtotalItem = forms.DecimalField(
@@ -352,6 +360,7 @@ class ActividadAgricolaItemDetalleForm(forms.ModelForm):
     class Meta:
         model = ActividadAgricolaItemDetalle
         fields = ['item', 'deposito','dosis','costo','cantidad','porcentajeImpuesto','subtotalItem']
+        widgets = {'dosis':DecimalMaskInput,'costo':DecimalMaskInput,'cantidad':DecimalMaskInput,'porcentajeImpuesto':DecimalMaskInput,'subtotalItem':DecimalMaskInput}
 
 # PEDIDO COMPRA
 class PedidoCompraForm(forms.ModelForm):
@@ -392,6 +401,7 @@ class PedidoCompraDetalleForm(forms.ModelForm):
     class Meta:
         model = PedidoCompraDetalle
         fields = ['item', 'cantidad']
+        widgets = {'cantidad':DecimalMaskInput}
 
 
 # CONTRATO FORM
@@ -405,6 +415,7 @@ class ContratoForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.fields['costoPactado'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "fecha",
             "zafra",
@@ -477,6 +488,7 @@ class VentaDetalleForm(forms.ModelForm):
     class Meta:
         model = VentaDetalle
         fields = ['item', 'cantidad','precio','porcentajeImpuesto','impuesto','subtotal']
+        widgets = {'cantidad':DecimalMaskInput,'precio':DecimalMaskInput,'porcentajeImpuesto':DecimalMaskInput,'impuesto':DecimalMaskInput,'subtotal':DecimalMaskInput}
 
 class CuotaVentaForm(forms.ModelForm):
     class Meta:
@@ -543,6 +555,7 @@ class NotaCreditoRecibidaDetalleForm(forms.ModelForm):
     class Meta:
         model = NotaCreditoRecibidaDetalle
         fields = ['esDevolucion','item', 'cantidad','valor','porcentajeImpuesto','impuesto','subtotal']
+        widgets = {'cantidad':DecimalMaskInput,'valor':DecimalMaskInput,'porcentajeImpuesto':DecimalMaskInput,'impuesto':DecimalMaskInput,'subtotal':DecimalMaskInput}
 
 
 
@@ -605,6 +618,7 @@ class NotaCreditoEmitidaDetalleForm(forms.ModelForm):
     class Meta:
         model = NotaCreditoEmitidaDetalle
         fields = ['esDevolucion','item', 'cantidad','valor','porcentajeImpuesto','impuesto','subtotal']
+        widgets = {'cantidad':DecimalMaskInput,'valor':DecimalMaskInput,'porcentajeImpuesto':DecimalMaskInput,'impuesto':DecimalMaskInput,'subtotal':DecimalMaskInput}
 
 
 
