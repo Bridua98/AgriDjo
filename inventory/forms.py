@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -711,4 +711,44 @@ class CobroMedioForm(forms.ModelForm):
         fields = ['numero','comprobante','medioCobro','observacion','monto']
         widgets = {'cancelacion':DecimalMaskInput}
 
-        
+# LIQUIDACION AGRICOLA
+class LiquidacionAgricolaForm(forms.ModelForm):
+    total = forms.DecimalField(
+        widget=calculation.SumInput('subtotal',   attrs={'readonly':True}),
+    )
+    class Meta:
+        model = LiquidacionAgricola
+        fields = ['fechaDocumento','tipo','zafra','proveedor','precioUnitario','observacion']
+        widgets = {'fechaDocumento':DateInput,'precioUnitario':DecimalMaskInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['total'].label = False
+        self.helper.layout = Layout(
+            "fechaDocumento",
+            "tipo",
+            "zafra",
+            "proveedor",
+            "precioUnitario",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "liquidacionAgricolaDetalleInline"#, stacked=True
+                )
+            ),
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+            ), 
+            Row(
+                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'cobro_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class LiquidacionAgricolaDetalleForm(forms.ModelForm):
+    class Meta:
+        model = LiquidacionAgricolaDetalle
+        fields = ['finca','lote','cantidad']
+        widgets = {'cantidad':DecimalMaskInput}

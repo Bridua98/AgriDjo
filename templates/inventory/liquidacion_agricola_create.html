@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Registrar Liquidación Agrícola {% endblock %}
+
+{% block content %}
+<script src="{% static 'site/js/inputmask.min.js' %}"></script>
+<script src="{% static 'site/js/mask.js' %}"></script>
+<h1> Añadir Liquidación Agrícola </h1>
+<form method="post" enctype="multipart/form-data">
+{% crispy form %}
+{{form.errors}}
+</form>
+{% endblock %}

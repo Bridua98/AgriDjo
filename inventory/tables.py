@@ -365,3 +365,14 @@ class CobroTable(AnulableTable):
             "registro_esVigente": lambda record: record.esVigente
         }
         order_by = "-fechaDocumento"
+
+class LiquidacionAgricolaTable(AnulableTable):
+    def render_total(self,value):
+        return intcomma(value)
+    class Meta:
+        model = Cobro
+        fields = ("fechaDocumento","tipo","zafra","proveedor","esVigente")
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fechaDocumento"

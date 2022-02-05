@@ -43,9 +43,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.tables import CobroTable, UserTable
+from inventory.tables import CobroTable, LiquidacionAgricolaTable, UserTable
 
-from .forms import CobroForm, CustomUserChangeForm, CustomUserCreationForm
+from .forms import CobroForm, CustomUserChangeForm, CustomUserCreationForm, LiquidacionAgricolaForm
 
 from inventory.forms import (AcopioForm, ActividadAgricolaForm,
                              AjusteStockForm, CompraForm, ContratoForm, CuotaCompraForm, CuotaVentaForm,
@@ -56,7 +56,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
                                AcopioDetalleInline,
                                ActividadAgricolaItemDetalleInline,
                                ActividadAgricolaMaquinariaDetalleInline,
-                               AjusteStockDetalleInline, CobroDetalleInline, CobroMedioInline, CompraDetalleInline, CuotaCompraInline, CuotaVentaInline,
+                               AjusteStockDetalleInline, CobroDetalleInline, CobroMedioInline, CompraDetalleInline, CuotaCompraInline, CuotaVentaInline, LiquidacionAgricolaDetalleInline,
                                NotaCreditoEmitidaDetalleInline,
                                NotaCreditoRecibidaDetalleInline,
                                OrdenCompraDetalleInline,
@@ -67,7 +67,7 @@ from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock,
                               AperturaCaja, Arqueo, Banco,
                               CalificacionAgricola, Categoria, Cobro, CobroDetalle, Compra,
-                              Contrato, Cuenta, Deposito, Finca, Item, ItemMovimiento, Lote,
+                              Contrato, Cuenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, Lote,
                               MaquinariaAgricola, Marca, NotaCreditoEmitida,
                               NotaCreditoRecibida, OrdenCompra, PedidoCompra,
                               Persona, PlanActividadZafra,
@@ -1757,7 +1757,6 @@ class CobroListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListVi
         context['anular_url'] = 'cobro_anular'
         return context
 
-
 class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = Cobro
     form_class = CobroForm
@@ -1810,3 +1809,69 @@ class CobroAnularView(LoginRequiredMixin,DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("cobro_list")
+
+
+#LIQUIDACION AGRICOLA
+class LiquidacionAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
+    model = LiquidacionAgricola
+    table_class = LiquidacionAgricolaTable
+    search_fields = ['proveedor__razonSocial','zafra__descripcion','tipo']
+    template_name = 'inventory/liquidacion_agricola_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['anular_url'] = 'liquidacion_agricola_anular'
+        return context
+
+class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
+    model = LiquidacionAgricola
+    form_class = LiquidacionAgricolaForm
+    template_name = 'inventory/liquidacion_agricola_create.html'
+    inlines = [LiquidacionAgricolaDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('liquidacion_agricola_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class LiquidacionAgricolaAnularView(LoginRequiredMixin,DeleteView):
+    model = LiquidacionAgricola
+    template_name = 'inventory/anular.html'
+    success_url = reverse_lazy("liquidacion_agricola_list")
+
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        try:
+            self.object = self.get_object()
+            if self.object.esVigente == False:
+                print('entro en exepcion para anulado')
+                raise Exception("La liquidación ya fue anulado.")
+            else:
+                self.object.esVigente = False
+                self.object.save()
+        except  Exception as e:
+            self.error = e
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
+        return HttpResponseRedirect(success_url)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects']=deletable_objects
+        context['model_count']=dict(model_count).items()
+        context['protected']=protected
+        context['title']="Anular Liquidación Agrícola"
+        context['description']="Está seguro de anular la Liquidación?"
+        context['list_url'] = 'liquidacion_agricola_list'
+        return context
+    def get_success_url(self):
+        return reverse_lazy("liquidacion_agricola_list")

@@ -657,7 +657,7 @@ class CierreZafra(models.Model):
     fecha = models.DateField(verbose_name="Fecha")
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
 
-class LiquidacionAgricolaDetalle(models.Model):
+class CierreZafraDetalle(models.Model):
     cierreZafra = models.ForeignKey(CierreZafra, on_delete=models.DO_NOTHING)
     finca = models.ForeignKey(Finca, on_delete=models.DO_NOTHING,verbose_name="Finca")
     haCultivada = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="HA Cultivada")
@@ -666,7 +666,6 @@ class LiquidacionAgricolaDetalle(models.Model):
     costoTotal = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Total")
     costoHA = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo HA")
     costoUnit = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Unit.")
-
 
 class Cobro(models.Model):
     cobrador = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Cobrador",related_name='cobrador')

@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
             field=models.DecimalField(decimal_places=2, default=0, max_digits=15, verbose_name='Saldo'),
         ),
         migrations.CreateModel(
-            name='LiquidacionAgricolaDetalle',
+            name='CierreZafraDetalle',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('haCultivada', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='HA Cultivada')),
