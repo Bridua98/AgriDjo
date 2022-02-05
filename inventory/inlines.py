@@ -1,7 +1,7 @@
 from extra_views.advanced import InlineFormSetFactory
 
-from .models import AcopioCalificacion, AcopioDetalle, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStockDetalle, CompraDetalle, CuotaCompra, CuotaVenta, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle, VentaDetalle
-from .forms import AcopioCalificacionForm, AcopioDetalleForm, ActividadAgricolaItemDetalleForm, ActividadAgricolaMaquinariaDetalleForm, AjusteStockDetalleForm, CompraDetalleForm, CuotaCompraForm, CuotaVentaForm, NotaCreditoEmitidaDetalleForm, NotaCreditoRecibidaDetalleForm, NotaCreditoRecibidaForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm, VentaDetalleForm
+from .models import AcopioCalificacion, AcopioDetalle, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStockDetalle, CobroDetalle, CobroMedio, CompraDetalle, CuotaCompra, CuotaVenta, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle, VentaDetalle
+from .forms import AcopioCalificacionForm, AcopioDetalleForm, ActividadAgricolaItemDetalleForm, ActividadAgricolaMaquinariaDetalleForm, AjusteStockDetalleForm, CobroDetalleForm, CobroMedioForm, CompraDetalleForm, CuotaCompraForm, CuotaVentaForm, NotaCreditoEmitidaDetalleForm, NotaCreditoRecibidaDetalleForm, NotaCreditoRecibidaForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm, VentaDetalleForm
 
 class PlanActividadZafraDetalleInline(InlineFormSetFactory):
     model = PlanActividadZafraDetalle
@@ -86,3 +86,15 @@ class NotaCreditoEmitidaDetalleInline(InlineFormSetFactory):
     form_class = NotaCreditoEmitidaDetalleForm
     factory_kwargs = {'extra':1 }
     fields = ['esDevolucion','item', 'cantidad','valor','porcentajeImpuesto',]
+
+class CobroDetalleInline(InlineFormSetFactory):
+    model = CobroDetalle
+    form_class = CobroDetalleForm
+    factory_kwargs = {'extra':1 }
+    fields = ['cancelacion',]
+
+class CobroMedioInline(InlineFormSetFactory):
+    model = CobroMedio
+    form_class = CobroMedioForm
+    factory_kwargs = {'extra':1 }
+    fields = ['numero','comprobante','medioCobro','observacion','monto',]

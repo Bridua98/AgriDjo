@@ -683,7 +683,7 @@ class Cobro(models.Model):
 class CobroDetalle(models.Model):
     cobro = models.ForeignKey(Cobro, on_delete=models.DO_NOTHING)
     cancelacion = models.DecimalField(max_digits=15, decimal_places=0,verbose_name="Cancelacion")
-    cuotaCompra = models.ForeignKey(CuotaCompra, on_delete=models.DO_NOTHING,verbose_name="Cuota Compra")
+    cuotaVenta = models.ForeignKey(CuotaVenta, on_delete=models.DO_NOTHING,verbose_name="Cuota Venta",default= None,null=True)
 
 class CobroMedio(models.Model):
     VALORESENUMTIPMOV = (
@@ -697,7 +697,7 @@ class CobroMedio(models.Model):
     comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
     monto = models.DecimalField(max_digits=15, decimal_places=0,verbose_name="Monto")
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
-    medioCobro = models.CharField(max_length=50,choices=VALORESENUMTIPMOV,verbose_name="Tipo Liquidación") 
+    medioCobro = models.CharField(max_length=50,choices=VALORESENUMTIPMOV,verbose_name="Medio Cobro") 
 
 # IMPLEMENTAMOS LAS SENAÑES
 from .signals import signalCompraGuardado

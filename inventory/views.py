@@ -43,9 +43,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.tables import UserTable
+from inventory.tables import CobroTable, UserTable
 
-from .forms import CustomUserChangeForm, CustomUserCreationForm
+from .forms import CobroForm, CustomUserChangeForm, CustomUserCreationForm
 
 from inventory.forms import (AcopioForm, ActividadAgricolaForm,
                              AjusteStockForm, CompraForm, ContratoForm, CuotaCompraForm, CuotaVentaForm,
@@ -56,7 +56,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
                                AcopioDetalleInline,
                                ActividadAgricolaItemDetalleInline,
                                ActividadAgricolaMaquinariaDetalleInline,
-                               AjusteStockDetalleInline, CompraDetalleInline, CuotaCompraInline, CuotaVentaInline,
+                               AjusteStockDetalleInline, CobroDetalleInline, CobroMedioInline, CompraDetalleInline, CuotaCompraInline, CuotaVentaInline,
                                NotaCreditoEmitidaDetalleInline,
                                NotaCreditoRecibidaDetalleInline,
                                OrdenCompraDetalleInline,
@@ -66,7 +66,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock,
                               AperturaCaja, Arqueo, Banco,
-                              CalificacionAgricola, Categoria, Compra,
+                              CalificacionAgricola, Categoria, Cobro, CobroDetalle, Compra,
                               Contrato, Cuenta, Deposito, Finca, Item, ItemMovimiento, Lote,
                               MaquinariaAgricola, Marca, NotaCreditoEmitida,
                               NotaCreditoRecibida, OrdenCompra, PedidoCompra,
@@ -1743,3 +1743,70 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy("user_list")
+
+
+#COBROS
+class CobroListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
+    model = Cobro
+    table_class = CobroTable
+    search_fields = ['cliente__razonSocial','comprobante','cobrador__razonSocial']
+    template_name = 'inventory/cobro_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['anular_url'] = 'cobro_anular'
+        return context
+
+
+class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
+    model = Cobro
+    form_class = CobroForm
+    template_name = 'inventory/cobro_create.html'
+    inlines = [CobroDetalleInline,CobroMedioInline]
+
+    def get_success_url(self):
+        return reverse_lazy('cobro_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class CobroAnularView(LoginRequiredMixin,DeleteView):
+    model = Cobro
+    template_name = 'inventory/anular.html'
+    success_url = reverse_lazy("cobro_list")
+
+    @transaction.atomic
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        try:
+            self.object = self.get_object()
+            if self.object.esVigente == False:
+                print('entro en exepcion para anulado')
+                raise Exception("El cobro ya fue anulado.")
+            else:
+                self.object.esVigente = False
+                self.object.save()
+        except  Exception as e:
+            self.error = e
+            context = self.get_context_data(object=self.object)
+            return self.render_to_response(context)
+        return HttpResponseRedirect(success_url)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects']=deletable_objects
+        context['model_count']=dict(model_count).items()
+        context['protected']=protected
+        context['title']="Anular Cobro"
+        context['description']="Está seguro de anular el cobro?"
+        context['list_url'] = 'cobro_list'
+        return context
+    def get_success_url(self):
+        return reverse_lazy("cobro_list")

@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Compra, Contrato,
+from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Cobro, Compra, Contrato,
                               Cuenta, Deposito, Finca, Item, ItemMovimiento, Marca, NotaCreditoEmitida, NotaCreditoRecibida, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
@@ -354,3 +354,14 @@ class UserTable(EditableTable):
     class Meta:
         model = User
         fields = ("username", "first_name", "Last_name", "is_active",)
+
+class CobroTable(AnulableTable):
+    def render_montoASaldar(self,value):
+        return intcomma(value)
+    class Meta:
+        model = Cobro
+        fields = ("fechaDocumento","comprobante","cuenta","cliente",'cobrador',"montoASaldar","esVigente")
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fechaDocumento"

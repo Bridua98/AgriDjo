@@ -59,6 +59,7 @@ hijos_movimiento_venta = (
     MenuItem("Notas de Créditos Emitidas",reverse_lazy("nota_credito_emitida_list")),
     MenuItem("Transferencia entre Cuentas",reverse_lazy("transferencia_cuenta_list")),
     MenuItem("Libro de Ventas",reverse_lazy("libro_venta_list")),
+    MenuItem("Cobros",reverse_lazy("cobro_list")),
 )
 
 hijos_informes = (
