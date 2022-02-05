@@ -736,7 +736,7 @@ class LiquidacionAgricolaForm(forms.ModelForm):
             Fieldset(
                 u'Detalle',
                 Formset(
-                    "liquidacionAgricolaDetalleInline"#, stacked=True
+                    "LiquidacionAgricolaDetalleInline"#, stacked=True
                 )
             ),
             Row(
