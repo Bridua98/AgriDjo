@@ -630,6 +630,75 @@ class TransferenciaCuenta(models.Model):
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
     comprobante = models.CharField(max_length=15,verbose_name="Comprobante", default="" )
 
+
+class LiquidacionAgricola(models.Model):
+    VALORESENUMTIPMOV = (
+    ('ACOPIOS', 'LIQUIDACION DE ACOPIOS'),
+    ('ACTIVIDADES AGRICOLAS', 'LIQUIDACION DE ACTIVIDADES AGRICOLAS'),
+    )
+    zafra = models.ForeignKey(Zafra, on_delete=models.DO_NOTHING,verbose_name="Zafra")
+    fechaDocumento = models.DateField(verbose_name="Fecha")
+    proveedor = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Proveedor")
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    precioUnitario = models.DecimalField(max_digits=15, decimal_places=0,verbose_name="Precio")
+    tipo = models.CharField(max_length=50,choices=VALORESENUMTIPMOV,verbose_name="Tipo Liquidación") 
+
+class LiquidacionAgricolaDetalle(models.Model):
+    liquidacionAgricola = models.ForeignKey(LiquidacionAgricola, on_delete=models.DO_NOTHING)
+    cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
+    lote = models.ForeignKey(Lote, on_delete=models.DO_NOTHING,verbose_name="Lote")
+    finca = models.ForeignKey(Finca, on_delete=models.DO_NOTHING,verbose_name="Finca")
+    secuenciaOrigen = models.IntegerField()
+
+class CierreZafra(models.Model):
+    zafra = models.ForeignKey(Zafra, on_delete=models.DO_NOTHING,verbose_name="Zafra")
+    fecha = models.DateField(verbose_name="Fecha")
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+
+class LiquidacionAgricolaDetalle(models.Model):
+    cierreZafra = models.ForeignKey(CierreZafra, on_delete=models.DO_NOTHING)
+    finca = models.ForeignKey(Finca, on_delete=models.DO_NOTHING,verbose_name="Finca")
+    haCultivada = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="HA Cultivada")
+    cantidadAcopioNeto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cant. Acopio")
+    rendimiento = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Rendimiento")
+    costoTotal = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Total")
+    costoHA = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo HA")
+    costoUnit = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Unit.")
+
+
+class Cobro(models.Model):
+    cobrador = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Cobrador",related_name='cobrador')
+    cuenta = models.ForeignKey(Cuenta, on_delete=models.DO_NOTHING,verbose_name="Cuenta")
+    aperturaCaja = models.ForeignKey(AperturaCaja, on_delete=models.DO_NOTHING,verbose_name="Apertura Caja")
+    fechaDocumento = models.DateField(verbose_name="Fecha")
+    cliente = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Cliente",related_name='cliente')
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    montoASaldar = models.DecimalField(max_digits=15, decimal_places=0,verbose_name="Monto A Saldar")
+    comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
+
+class CobroDetalle(models.Model):
+    cobro = models.ForeignKey(Cobro, on_delete=models.DO_NOTHING)
+    cancelacion = models.DecimalField(max_digits=15, decimal_places=0,verbose_name="Cancelacion")
+    cuotaCompra = models.ForeignKey(CuotaCompra, on_delete=models.DO_NOTHING,verbose_name="Cuota Compra")
+
+class CobroMedio(models.Model):
+    VALORESENUMTIPMOV = (
+    ('CHEQUE DIF', 'CHEQUE DIFERIDO'),
+    ('CHEQUE DIA', 'CHEQUE AL DIA'),
+    ('EFECTIVO', 'EFECTIVO'),
+    ('TRANSFERENCIA', 'TRANSFERENCIA BANCARIA'),
+    )
+    cobro = models.ForeignKey(Cobro, on_delete=models.DO_NOTHING)
+    numero = models.CharField(max_length=15,verbose_name="N°")
+    comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
+    monto = models.DecimalField(max_digits=15, decimal_places=0,verbose_name="Monto")
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    medioCobro = models.CharField(max_length=50,choices=VALORESENUMTIPMOV,verbose_name="Tipo Liquidación") 
+
 # IMPLEMENTAMOS LAS SENAÑES
 from .signals import signalCompraGuardado
 from .signals import signalAjusteStockGuardado
