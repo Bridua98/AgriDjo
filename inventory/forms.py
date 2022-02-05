@@ -7,7 +7,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -515,7 +515,7 @@ class NotaCreditoRecibidaForm(forms.ModelForm):
     )
     class Meta:
         model = NotaCreditoRecibida
-        fields = ['fechaDocumento','esCredito','comprobante', 'timbrado','proveedor','cuenta','deposito',"compra",'observacion']
+        fields = ['fechaDocumento','esCredito','comprobante','timbrado','proveedor','cuenta','deposito',"compra",'observacion']
         widgets = {'fechaDocumento':DateInput}
 
     def __init__(self, *args, **kwargs):
@@ -587,6 +587,7 @@ class NotaCreditoEmitidaForm(forms.ModelForm):
         self.helper.form_tag = False
         self.fields['total'].label = False
         self.fields['total_iva'].label = False
+        self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -655,3 +656,59 @@ class TransferenciaCuentaForm(forms.ModelForm):
         )
 
 
+
+# COBROS
+class CobroForm(forms.ModelForm):
+    total = forms.DecimalField(
+        widget=calculation.SumInput('cancelacion',   attrs={'readonly':True}),
+    )
+    class Meta:
+        model = Cobro
+        fields = ['fechaDocumento','comprobante','cliente','cuenta','cobrador','montoASaldar','observacion']
+        widgets = {'fechaDocumento':DateInput,'montoASaldar':DecimalMaskInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['total'].label = False
+        self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.helper.layout = Layout(
+            "fechaDocumento",
+            "comprobante",
+            "cliente",
+            "cuenta",
+            "cobrador",
+            "montoASaldar",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "CobroDetalleInline"#, stacked=True
+                ), 
+                Formset(
+                    "CobroMedioInline",
+                    stacked=True,
+                ), 
+            ),
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+            ), 
+            Row(
+                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'cobro_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class CobroDetalleForm(forms.ModelForm):
+    class Meta:
+        model = CobroDetalle
+        fields = ['cancelacion']
+        widgets = {'cancelacion':DecimalMaskInput}
+
+class CobroMedioForm(forms.ModelForm):
+    class Meta:
+        model = CobroMedio
+        fields = ['numero','comprobante','medioCobro','observacion','monto']
+        widgets = {'cancelacion':DecimalMaskInput}
+
+        
