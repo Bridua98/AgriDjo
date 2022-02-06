@@ -49,6 +49,7 @@ hijos_movimiento_compra = (
     MenuItem("Compras",reverse_lazy("compra_list")),
     MenuItem("Ajustes Stock",reverse_lazy("ajuste_stock_list")),
     MenuItem("Notas de Créditos Recibidas",reverse_lazy("nota_credito_recibida_list")),
+    MenuItem("Notas de Débito Recibidas",reverse_lazy("nota_debito_recibida_list")),
     MenuItem("Libro de Compras",reverse_lazy("libro_compra_list")),
     MenuItem("Inventario por Deposito",reverse_lazy("inventario_deposito_list")),
 )
@@ -58,6 +59,7 @@ hijos_movimiento_venta = (
     MenuItem("Arqueos",reverse_lazy("arqueo_list")),
     MenuItem("Ventas",reverse_lazy("venta_list")),
     MenuItem("Notas de Créditos Emitidas",reverse_lazy("nota_credito_emitida_list")),
+    MenuItem("Notas de Débito Emitidas",reverse_lazy("nota_debito_emitida_list")),
     MenuItem("Transferencia entre Cuentas",reverse_lazy("transferencia_cuenta_list")),
     MenuItem("Libro de Ventas",reverse_lazy("libro_venta_list")),
     MenuItem("Cobros",reverse_lazy("cobro_list")),

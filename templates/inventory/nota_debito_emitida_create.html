@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Registrar Nota de Débito Emitida {% endblock %}
+
+{% block content %}
+<h1> Añadir Nota de Débito Emitida </h1>
+<form method="post" enctype="multipart/form-data">
+{% crispy form %}
+{{form.errors}}
+</form>
+{% endblock %}

@@ -698,6 +698,52 @@ class CobroMedio(models.Model):
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
     medioCobro = models.CharField(max_length=50,choices=VALORESENUMTIPMOV,verbose_name="Medio Cobro") 
 
+class NotaDebitoRecibida(models.Model):
+    proveedor = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Proveedor")
+    compra = models.ForeignKey(Compra, on_delete=models.DO_NOTHING,verbose_name="Compra")
+    cuenta = models.ForeignKey(Cuenta, on_delete=models.DO_NOTHING,verbose_name="Cuenta")
+    deposito = models.ForeignKey(Deposito, on_delete=models.DO_NOTHING,verbose_name="Deposito")
+    fechaDocumento = models.DateField(verbose_name="Fecha Documento")
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
+    comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
+    timbrado = models.CharField(max_length=8,verbose_name="Timbrado")
+    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=False)
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    @property
+    def total(self):
+        return sum(round(x.valor * x.cantidad)  for x in self.notadebitorecibidadetalle_set.all())
+
+class NotaDebitoRecibidaDetalle(models.Model):
+    notaDebitoRecibida = models.ForeignKey(NotaDebitoRecibida, on_delete=models.DO_NOTHING)
+    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
+    cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
+    valor = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Precio/Aumento")
+    porcentajeImpuesto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="% Impuesto")
+
+class NotaDebitoEmitida(models.Model):
+    cliente = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Cliente")
+    venta = models.ForeignKey(Venta, on_delete=models.DO_NOTHING,verbose_name="Venta")
+    cuenta = models.ForeignKey(Cuenta, on_delete=models.DO_NOTHING,verbose_name="Cuenta")
+    deposito = models.ForeignKey(Deposito, on_delete=models.DO_NOTHING,verbose_name="Deposito")
+    fechaDocumento = models.DateField(verbose_name="Fecha Documento")
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
+    comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
+    timbrado = models.CharField(max_length=8,verbose_name="Timbrado")
+    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=False)
+    esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
+    observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    @property
+    def total(self):
+        return sum(round(x.valor * x.cantidad)  for x in self.notadebitoemitidadetalle_set.all())
+
+class NotaDebitoEmitidaDetalle(models.Model):
+    notaDebitoEmitida = models.ForeignKey(NotaDebitoEmitida, on_delete=models.DO_NOTHING)
+    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING,verbose_name="Item")
+    cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
+    valor = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo/Descuento")
+    porcentajeImpuesto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="% Impuesto")
+
 # IMPLEMENTAMOS LAS SENAÑES
 from .signals import signalCompraGuardado
 from .signals import signalAjusteStockGuardado

@@ -1,7 +1,7 @@
 import django_tables2 as tables
 
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Cobro, Compra, Contrato,
-                              Cuenta, Deposito, Finca, Item, ItemMovimiento, Marca, NotaCreditoEmitida, NotaCreditoRecibida, OrdenCompra,
+                              Cuenta, Deposito, Finca, Item, ItemMovimiento, Marca, NotaCreditoEmitida, NotaCreditoRecibida, NotaDebitoRecibida, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
                               TipoMaquinariaAgricola, TransferenciaCuenta, Venta, Zafra)
@@ -372,6 +372,28 @@ class LiquidacionAgricolaTable(AnulableTable):
     class Meta:
         model = Cobro
         fields = ("fechaDocumento","tipo","zafra","proveedor","esVigente")
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fechaDocumento"
+
+class NotaDebitoRecibidaTable(AnulableTable):
+    def render_total(self,value):
+        return intcomma(value)
+    class Meta:
+        model = NotaDebitoRecibida
+        fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)
+        row_attrs = {
+            "registro_esVigente": lambda record: record.esVigente
+        }
+        order_by = "-fechaDocumento"
+
+class NotaDebitoEmitidaTable(AnulableTable):
+    def render_total(self,value):
+        return intcomma(value)
+    class Meta:
+        model = NotaDebitoRecibida
+        fields = ("fechaDocumento","comprobante","cliente","total","esVigente",)
         row_attrs = {
             "registro_esVigente": lambda record: record.esVigente
         }

@@ -1,7 +1,7 @@
 from extra_views.advanced import InlineFormSetFactory
 
-from .models import AcopioCalificacion, AcopioDetalle, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStockDetalle, CobroDetalle, CobroMedio, CompraDetalle, CuotaCompra, CuotaVenta, LiquidacionAgricolaDetalle, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle, VentaDetalle
-from .forms import AcopioCalificacionForm, AcopioDetalleForm, ActividadAgricolaItemDetalleForm, ActividadAgricolaMaquinariaDetalleForm, AjusteStockDetalleForm, CobroDetalleForm, CobroMedioForm, CompraDetalleForm, CuotaCompraForm, CuotaVentaForm, LiquidacionAgricolaDetalleForm, NotaCreditoEmitidaDetalleForm, NotaCreditoRecibidaDetalleForm, NotaCreditoRecibidaForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm, VentaDetalleForm
+from .models import AcopioCalificacion, AcopioDetalle, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStockDetalle, CobroDetalle, CobroMedio, CompraDetalle, CuotaCompra, CuotaVenta, LiquidacionAgricolaDetalle, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitidaDetalle, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle, VentaDetalle
+from .forms import AcopioCalificacionForm, AcopioDetalleForm, ActividadAgricolaItemDetalleForm, ActividadAgricolaMaquinariaDetalleForm, AjusteStockDetalleForm, CobroDetalleForm, CobroMedioForm, CompraDetalleForm, CuotaCompraForm, CuotaVentaForm, LiquidacionAgricolaDetalleForm, NotaCreditoEmitidaDetalleForm, NotaCreditoRecibidaDetalleForm, NotaCreditoRecibidaForm, NotaDebitoEmitidaDetalleForm, NotaDebitoRecibidaDetalleForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm, VentaDetalleForm
 
 class PlanActividadZafraDetalleInline(InlineFormSetFactory):
     model = PlanActividadZafraDetalle
@@ -104,3 +104,16 @@ class LiquidacionAgricolaDetalleInline(InlineFormSetFactory):
     form_class = LiquidacionAgricolaDetalleForm
     factory_kwargs = {'extra':1 }
     fields = ['finca','lote','cantidad',]
+
+class NotaDebitoRecibidaDetalleInline(InlineFormSetFactory):
+    model = NotaDebitoRecibidaDetalle
+    form_class = NotaDebitoRecibidaDetalleForm
+    factory_kwargs = {'extra':1 }
+    fields = ['item', 'cantidad','valor','porcentajeImpuesto',]
+
+
+class NotaDebitoEmitidaDetalleInline(InlineFormSetFactory):
+    model = NotaDebitoEmitidaDetalle
+    form_class = NotaDebitoEmitidaDetalleForm
+    factory_kwargs = {'extra':1 }
+    fields = ['item', 'cantidad','valor','porcentajeImpuesto',]
