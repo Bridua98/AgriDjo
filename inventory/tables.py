@@ -95,7 +95,7 @@ class ItemTable(EditableDeleteTable):
         return intcomma(value)
     class Meta:
         model = Item
-        fields = ("codigoBarra","descripcion","tipoImpuesto", "marca","categoria","precio", "esActivo")
+        fields = ("codigoBarra","descripcion","tipoImpuesto", "marca","categoria","costo","ultimoCosto","precio", "esActivo")
 
 class ZafraTable(EditableDeleteTable):
     class Meta:

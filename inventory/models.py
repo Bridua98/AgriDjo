@@ -64,13 +64,13 @@ class Item(models.Model):
     descripcion = models.CharField(max_length=200, verbose_name="Descripcion")
     precio = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Precio")
     costo = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Costo",default=0)
-    ultimoCosto = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Último Costo",default=0)
-    esActivo = models.BooleanField(verbose_name="es Activo?")
-    codigoBarra = models.CharField(max_length=20, verbose_name="Código de Barra")
+    ultimoCosto = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Ult. Costo",default=0)
+    esActivo = models.BooleanField(verbose_name="Activo?")
+    codigoBarra = models.CharField(max_length=20, verbose_name="Cód Barra")
     marca = models.ForeignKey(Marca, on_delete=models.DO_NOTHING, verbose_name="Marca")
     categoria = models.ForeignKey(Categoria, on_delete=models.DO_NOTHING, verbose_name="Categoria")
     tipoItem = models.ForeignKey(TipoItem, on_delete=models.DO_NOTHING, verbose_name="Tipo Item")
-    tipoImpuesto = models.ForeignKey(TipoImpuesto, on_delete=models.DO_NOTHING, verbose_name="Tipo Impuesto")
+    tipoImpuesto = models.ForeignKey(TipoImpuesto, on_delete=models.DO_NOTHING, verbose_name="Tipo Imp.")
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

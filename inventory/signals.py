@@ -23,6 +23,12 @@ def signalCompraGuardado(sender, instance, created, **kwargs):
         itMov.tipoMovimiento = 'CM'
         itMov.save()
 
+        item = Item.objects.get(pk=instance.item.pk)
+        print("esta es la descripcion "+item.descripcion)
+        item.ultimoCosto = instance.costo
+        item.costo = instance.costo
+        item.save()
+
 #@receiver(post_save, sender = CompraDetalle)
 #def signalCompraGuardado(sender, instance, created, **kwargs):
 #    if created:

@@ -3,6 +3,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,8 +22,8 @@
 <body>
     <div class="container">
         <div class="mx-auto jumbotron" style="width:400px;margin-top:100px;" >
-            <h2 align="center">Acceder </h2>
-            <img style="width: 35%;padding: 0%;" class="center" src="{% static 'site/images/iconoAgroAmanecer.png' %}" width="100">
+            <h2 align="center">Iniciar Sesión</h2>
+            <img  align="center" src="{% static 'site/images/iconoAgroAmanecer.png' %}" width="100" style="width:50%">
             <form method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
