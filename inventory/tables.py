@@ -9,6 +9,8 @@ from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCa
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.contrib.auth.models import User
 
+from inventory.widgets import DecimalMaskInput
+
 class BaseTable(tables.Table):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -191,7 +193,7 @@ class AperturaCajaTable(CerrarAperturaCajaTable):
         return intcomma(value)
     class Meta:
         model = AperturaCaja
-        fields = ("empleado","fechaHoraApertura","fechaHoraCiere","montoInicio","estaCerrado")
+        fields = ("empleado","fechaHoraRegistro","fechaHoraCierre","montoInicio","estaCerrado")
 
 class ArqueoTable(DeleteTable):
     def render_monto(self,value):

@@ -251,10 +251,13 @@ class OrdenCompraDetalle(models.Model):
 class AperturaCaja(models.Model):
     empleado = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Empleado")
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
-    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
+    fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fec Hr Apertura")
     estaCerrado = models.BooleanField(verbose_name="Esta Cerrado?",default=False)
     montoInicio = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Monto Apertura")
-    fechaHoraCierre = models.DateTimeField(auto_now_add=True,null=True, blank=True,verbose_name="Fecha Hora Cierre")
+    fechaHoraCierre = models.DateTimeField(auto_now_add=True,null=True, blank=True,verbose_name="Fec Hr Cierre")
+    def __str__(self):
+        date_time = self.fechaHoraRegistro.strftime("%m/%d/%Y, %H:%M:%S")
+        return date_time+" Obs: "+self.observacion
 
 class Arqueo(models.Model):
     empleado = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Empleado")
@@ -262,7 +265,6 @@ class Arqueo(models.Model):
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
     fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
     monto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Monto Retirado")
-
 
 class Compra(models.Model):
     proveedor = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Proveedor")
@@ -567,7 +569,7 @@ class ItemMovimiento(models.Model):
     secuenciaOrigen = models.IntegerField()
     detalleSecuenciaOrigen = models.IntegerField()
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True) 
-    tipoMovimiento = models.CharField(max_length=50,choices=VALORESENUMTIPMOV) 
+    tipoMovimiento = models.CharField(max_length=50,choices=VALORESENUMTIPMOV,verbose_name="Tipo Mov.") 
 
 
 class NotaCreditoRecibida(models.Model):

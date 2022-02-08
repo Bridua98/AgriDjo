@@ -24,7 +24,6 @@ def signalCompraGuardado(sender, instance, created, **kwargs):
         itMov.save()
 
         item = Item.objects.get(pk=instance.item.pk)
-        print("esta es la descripcion "+item.descripcion)
         item.ultimoCosto = instance.costo
         item.costo = instance.costo
         item.save()
