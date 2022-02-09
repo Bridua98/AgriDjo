@@ -12,3 +12,17 @@
 {{form.errors}}
 </form>
 {% endblock %}
+
+{% block footer %}
+<script>
+    $(document).ready(function(){
+        $("#id_esCredito").change(function(){
+            if($(this).is(":checked")){
+                $(".None").removeClass("d-none");
+            }else{
+                $(".None").addClass("d-none");
+            }
+        });
+    });
+</script>
+{% endblock%}

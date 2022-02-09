@@ -1784,18 +1784,16 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
             if f.cleaned_data.get('check'):
                 totalCuota = f.cleaned_data.get('cancelacion')
                 existeUnSeleccionado = True
+                
         totalMedioCobro = 0
-
         for f in mediocobrodetalleinline:
             totalMedioCobro = f.cleaned_data.get('monto')
-
+        montoASaldarValor = form.cleaned_data['montoASaldar']
         if existeUnSeleccionado == False:
             form.add_error(None, 'Seleccione al menos un detalle a cobrar')
-        if totalCuota != form.cleaned_data['montoASaldar']:  
+        if totalCuota != montoASaldarValor:  
             form.add_error('montoASaldar', 'El Monto A Saldar difiere de la suma de las cancelaciones de las cuotas')
-        if totalMedioCobro == 0 or totalMedioCobro is None: 
-               form.add_error(None, 'Cargue los Medios de Cobros')
-        if totalMedioCobro != form.cleaned_data['montoASaldar']:  
+        if totalMedioCobro != montoASaldarValor:    
             form.add_error('montoASaldar', 'El Monto A Saldar difiere de la suma de los medios de cobros')
 
     def get_inlines(self):

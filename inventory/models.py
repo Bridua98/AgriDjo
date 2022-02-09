@@ -274,7 +274,7 @@ class Compra(models.Model):
     fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
     comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
     timbrado = models.CharField(max_length=8,verbose_name="Timbrado")
-    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=False)
+    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=True)
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
     @property
@@ -449,7 +449,7 @@ class Venta(models.Model):
     fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
     comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
     timbrado = models.CharField(max_length=8,verbose_name="Timbrado")
-    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=False)
+    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=True)
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
     @property
