@@ -1771,6 +1771,32 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         return form
+        
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+
+        cobrodetalleinline = inlines[0]
+        mediocobrodetalleinline = inlines[1]
+
+        existeUnSeleccionado = False
+        totalCuota = 0
+        for f in cobrodetalleinline:
+            if f.cleaned_data.get('check'):
+                totalCuota = f.cleaned_data.get('cancelacion')
+                existeUnSeleccionado = True
+        totalMedioCobro = 0
+
+        for f in mediocobrodetalleinline:
+            totalMedioCobro = f.cleaned_data.get('monto')
+
+        if existeUnSeleccionado == False:
+            form.add_error(None, 'Seleccione al menos un detalle a cobrar')
+        if totalCuota != form.cleaned_data['montoASaldar']:  
+            form.add_error('montoASaldar', 'El Monto A Saldar difiere de la suma de las cancelaciones de las cuotas')
+        if totalMedioCobro == 0 or totalMedioCobro is None: 
+               form.add_error(None, 'Cargue los Medios de Cobros')
+        if totalMedioCobro != form.cleaned_data['montoASaldar']:  
+            form.add_error('montoASaldar', 'El Monto A Saldar difiere de la suma de los medios de cobros')
 
     def get_inlines(self):
         initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True).exclude(saldo = 0) ]
