@@ -1777,6 +1777,7 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         cobrodetalleinline = self.inlines[0]
         cobrodetalleinline.initial = initial
         cobrodetalleinline.factory_kwargs['extra'] = len(initial)
+        cobrodetalleinline.factory_kwargs['can_delete'] = False
         return self.inlines
     
 

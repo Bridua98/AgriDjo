@@ -96,7 +96,7 @@ class CobroDetalleInline(InlineFormSetFactory):
 class CobroMedioInline(InlineFormSetFactory):
     model = CobroMedio
     form_class = CobroMedioForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {'extra':1}
     fields = ['numero','comprobante','medioCobro','observacion','monto',]
 
 class LiquidacionAgricolaDetalleInline(InlineFormSetFactory):

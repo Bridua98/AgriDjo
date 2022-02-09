@@ -83,7 +83,7 @@
 		{% endescapescript %}
 	</script>
     {# max_num #}
-    {% if formset.max_num != 1 or not formset.max_num %}
+    {% if formset.can_delete %}
 	<div class="mb-2">
 		<a href="javascript:void(0)" type="button" class="btn btn-light btn-block" data-formset-add>Agregar</a>
 	</div>

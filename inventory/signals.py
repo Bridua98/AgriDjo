@@ -28,22 +28,6 @@ def signalCompraGuardado(sender, instance, created, **kwargs):
         item.costo = instance.costo
         item.save()
 
-#@receiver(post_save, sender = CompraDetalle)
-#def signalCompraGuardado(sender, instance, created, **kwargs):
-#    if created:
-#        itMov = ItemMovimiento()
-#        itMov.item = instance.item
-#        itMov.deposito = instance.compra.deposito
-#        itMov.cantidad = instance.cantidad
-#        itMov.costo = instance.costo
-#        itMov.precio = 0
-#        itMov.fechaDocumento = instance.compra.fechaDocumento
-#        itMov.secuenciaOrigen = instance.compra.pk
-##        itMov.detalleSecuenciaOrigen = instance.pk
-#        itMov.esVigente = True
-#        itMov.tipoMovimiento = 'CM'
-#        itMov.save()
-
 @receiver(post_save, sender = AjusteStockDetalle)
 def signalAjusteStockGuardado(sender, instance, created, **kwargs):
     if created:
@@ -173,12 +157,13 @@ def signalCobroPreGuardado(sender, instance, **kwargs):
 
 @receiver(pre_save, sender = CuotaVenta)
 def signalPreGuardadoCuotaVenta(sender, instance, **kwargs):
-    instance.saldo =  instance.monto
+    if instance.pk is None:
+        instance.saldo =  instance.monto
 
 
 @receiver(post_save, sender = CobroDetalle)
 def signalCobroDetalleSave(sender, instance, created, **kwargs):
     if created:
-        cuota = instance.cuotaVenta
+        cuota = CuotaVenta.objects.get(pk=instance.cuotaVenta.pk)
         cuota.saldo = cuota.saldo - instance.cancelacion
         cuota.save()
