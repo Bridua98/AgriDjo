@@ -102,7 +102,7 @@ class AcopioDetalleForm(forms.ModelForm):
     class Meta:
         model = AcopioDetalle
         fields = ['acopio', 'finca', 'lote', 'peso']
-        widgets = {'peso':DateInput}
+        widgets = {'peso':DecimalMaskInput}
 
 class AcopioCalificacionForm(forms.ModelForm):
     class Meta:

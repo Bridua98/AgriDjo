@@ -856,6 +856,22 @@ class AcopioCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+
+        acopioDetalle = inlines[0]
+        totalPeso = 0
+        existeRegistro = False
+        pesoEncabezado =  (form.cleaned_data.get('pBruto') + form.cleaned_data.get('pBonificacion')) - (form.cleaned_data.get('pTara') + form.cleaned_data.get('pDescuento'))
+        for f in acopioDetalle:
+            totalPeso = f.cleaned_data.get('peso')
+            existeRegistro = True
+                       
+        if existeRegistro == False or totalPeso == 0 or totalPeso is None:
+            form.add_error(None, 'Registre al menos un detalle del acopio')
+        if pesoEncabezado != totalPeso:  
+            form.add_error('pBruto', 'El neto (Peso Bruto + Peso Bonificacion ) - ( Peso Tara + Peso Descuento) no es igual a los detalles cargados')
+
 class AcopioUpdateView(LoginRequiredMixin,UpdateWithFormsetInlinesView):
     model = Acopio
     form_class = AcopioForm

@@ -223,9 +223,11 @@ class ActividadAgricolaTable(AnulableTable):
         return intcomma(value)
     def render_cantidadTrabajada(self,value):
         return intcomma(value)
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = ActividadAgricola
-        fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","cantidadTrabajada","esServicioContratado","esVigente")
+        fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","cantidadTrabajada","esServicioContratado","total","esVigente")
         row_attrs = {
             "registro_esVigente": lambda record: record.esVigente
         }
