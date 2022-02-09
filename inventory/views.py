@@ -2082,10 +2082,13 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         return form
-    
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        return context
+    def get_inlines(self):
+        #initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True).exclude(saldo = 0) ]
+        detalle = self.inlines[0]
+        #cobrodetalleinline.initial = initial
+        #cobrodetalleinline.factory_kwargs['extra'] = len(initial)
+        detalle.factory_kwargs['can_delete'] = False
+        return self.inlines
 
 class CierreZafraDeleteView(LoginRequiredMixin,DeleteView):
     model = CierreZafra

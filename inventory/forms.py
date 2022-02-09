@@ -34,6 +34,7 @@ class PlanActividadZafraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        self.fields['total'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "fecha",
             "zafra",
@@ -125,6 +126,7 @@ class PedidoCompraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['cantidad'].label = False
+        self.fields['cantidad'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "proveedor",
             "fechaDocumento",
@@ -167,6 +169,7 @@ class OrdenCompraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        self.fields['total'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "pedidoCompra",
             "proveedor",
@@ -216,7 +219,9 @@ class CompraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -271,7 +276,6 @@ class CuotaCompraForm(forms.ModelForm):
 class AjusteStockForm(forms.ModelForm):
     class Meta:
        model = AjusteStock
-       #template_name = 'inventory/ajuste_stock_create.html'
        fields = ['fechaDocumento','comprobante','empleado','deposito','observacion',]
        widgets = { 'fechaDocumento':DateInput }
     def __init__(self, *args, **kwargs):
@@ -321,7 +325,9 @@ class ActividadAgricolaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['totalMaquinaria'].label = False
+        self.fields['totalMaquinaria'].widget = DecimalMaskInput()
         self.fields['totalItem'].label = False
+        self.fields['totalItem'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
             "tipoActividadAgricola",
@@ -387,6 +393,7 @@ class PedidoCompraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['cantidad'].label = False
+        self.fields['cantidad'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "proveedor",
             "fechaDocumento",
@@ -455,7 +462,9 @@ class VentaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -524,7 +533,9 @@ class NotaCreditoRecibidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -588,7 +599,9 @@ class NotaCreditoEmitidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -674,6 +687,7 @@ class CobroForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        self.fields['total'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -737,6 +751,7 @@ class LiquidacionAgricolaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        self.fields['total'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
             "tipo",
@@ -784,7 +799,9 @@ class NotaDebitoRecibidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -848,7 +865,9 @@ class NotaDebitoEmitidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -895,8 +914,15 @@ class NotaDebitoEmitidaDetalleForm(forms.ModelForm):
 
 # CIERRE DE ZAFRAS
 class CierreZafraForm(forms.ModelForm):
-    total = forms.DecimalField(
-        widget=calculation.SumInput('totalCosto',   attrs={'readonly':True}),
+
+    totalCostoV = forms.DecimalField(
+        widget=calculation.SumInput('costoTotal',   attrs={'readonly':True}),
+    )
+    totalAcopiadoV = forms.DecimalField(
+        widget=calculation.SumInput('cantidadAcopioNeto',   attrs={'readonly':True}),
+    )
+    totalCultivadoV = forms.DecimalField(
+        widget=calculation.SumInput('haCultivada',   attrs={'readonly':True}),
     )
     class Meta:
         model = CierreZafra
@@ -907,7 +933,12 @@ class CierreZafraForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.fields['total'].label = False
+        self.fields['totalCostoV'].label = False
+        self.fields['totalCostoV'].widget = DecimalMaskInput()
+        self.fields['totalAcopiadoV'].label = False
+        self.fields['totalAcopiadoV'].widget = DecimalMaskInput()
+        self.fields['totalCultivadoV'].label = False
+        self.fields['totalCultivadoV'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "fecha",
             "zafra",
@@ -919,7 +950,13 @@ class CierreZafraForm(forms.ModelForm):
                 ),  
             ),
             Row(
-                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total HA Cultivada: </span>'), css_class="text-right"), Column("totalCultivadoV"),
+            ), 
+             Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total Acopiado: </span>'), css_class="text-right"), Column("totalAcopiadoV"),
+            ), 
+             Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total Costo: </span>'), css_class="text-right"), Column("totalCostoV")
             ), 
             Row(
                 Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'cierre_zafra_list' %}"> Cancelar</a>""" ))
