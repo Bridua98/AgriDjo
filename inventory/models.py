@@ -754,9 +754,10 @@ from .signals import signalActividadAgricolaItemGuardado
 from .signals import signalVentaPreGuardado
 from .signals import signalVentaDetallePreGuardado
 from .signals import signalVentaGuardado
-from .signals import signalVentaGuardado
 from .signals import signalNotaCreditoEmitidaGuardado
 from .signals import signalTransferenciaCuentaPreGuardado
- 
+from .signals import signalCobroPreGuardado
+from .signals import signalCobroDetalleSave
+from .signals import signalPreGuardadoCuotaVenta
 
  

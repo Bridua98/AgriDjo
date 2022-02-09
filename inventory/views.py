@@ -67,7 +67,7 @@ from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock,
                               AperturaCaja, Arqueo, Banco,
                               CalificacionAgricola, Categoria, Cobro, CobroDetalle, Compra,
-                              Contrato, Cuenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, Lote,
+                              Contrato, Cuenta, CuotaVenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, Lote,
                               MaquinariaAgricola, Marca, NotaCreditoEmitida,
                               NotaCreditoRecibida, NotaDebitoEmitida, NotaDebitoRecibida, OrdenCompra, PedidoCompra,
                               Persona, PlanActividadZafra,
@@ -87,6 +87,8 @@ from inventory.tables import (AcopioTable, ActividadAgricolaTable,
                               TipoMaquinariaAgricolaTable, TransferenciaCuentaTable, VentaInformeTable, VentaTable,
                               ZafraTable)
 from inventory.utils import link_callback
+
+from django.db.models import Q
 
 from .widgets import DateInput
 
@@ -1769,10 +1771,14 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         return form
+
+    def get_inlines(self):
+        initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True).exclude(saldo = 0) ]
+        cobrodetalleinline = self.inlines[0]
+        cobrodetalleinline.initial = initial
+        cobrodetalleinline.factory_kwargs['extra'] = len(initial)
+        return self.inlines
     
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        return context
 
 class CobroAnularView(LoginRequiredMixin,DeleteView):
     model = Cobro

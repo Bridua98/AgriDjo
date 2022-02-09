@@ -1,5 +1,5 @@
 from django.db.models.signals import post_save,pre_save
-from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, CompraDetalle, Item,ItemMovimiento, NotaCreditoEmitidaDetalle, NotaCreditoRecibidaDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, Cobro, CobroDetalle, CompraDetalle, CuotaVenta, Item,ItemMovimiento, NotaCreditoEmitidaDetalle, NotaCreditoRecibidaDetalle, TransferenciaCuenta, Venta, VentaDetalle
 from django.dispatch import receiver
 
 
@@ -163,3 +163,22 @@ def signalNotaCreditoEmitidaGuardado(sender, instance, created, **kwargs):
         itMov.esVigente = True
         itMov.tipoMovimiento = 'DV'
         itMov.save()
+
+
+@receiver(pre_save, sender = Cobro)
+def signalCobroPreGuardado(sender, instance, **kwargs):
+    aperturaCaja = AperturaCaja.objects.filter(estaCerrado = False).order_by('-pk')[:1].first()
+    instance.aperturaCaja = aperturaCaja
+
+
+@receiver(pre_save, sender = CuotaVenta)
+def signalPreGuardadoCuotaVenta(sender, instance, **kwargs):
+    instance.saldo =  instance.monto
+
+
+@receiver(post_save, sender = CobroDetalle)
+def signalCobroDetalleSave(sender, instance, created, **kwargs):
+    if created:
+        cuota = instance.cuotaVenta
+        cuota.saldo = cuota.saldo - instance.cancelacion
+        cuota.save()

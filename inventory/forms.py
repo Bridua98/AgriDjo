@@ -1,3 +1,4 @@
+from email.policy import default
 import calculation
 from .layout import CancelButton, DeleteButton, Formset
 from .widgets import DateInput, DecimalMaskInput, InvoiceMaskInput
@@ -701,10 +702,19 @@ class CobroForm(forms.ModelForm):
         )
 
 class CobroDetalleForm(forms.ModelForm):
+    check = forms.BooleanField(label='Sel.',required=False)
+    comprobante = forms.CharField(max_length=30,disabled = True)
+    monto = forms.DecimalField(max_digits=15,disabled = True)
+    saldo = forms.DecimalField(max_digits=15,disabled = True)
     class Meta:
         model = CobroDetalle
-        fields = ['cancelacion']
-        widgets = {'cancelacion':DecimalMaskInput}
+        fields = ['cuotaVenta','check','cancelacion']
+        widgets = {
+            'cancelacion':DecimalMaskInput,
+            'monto':DecimalMaskInput,
+            'saldo':DecimalMaskInput,
+            'cuotaVenta': forms.HiddenInput
+        }
 
 class CobroMedioForm(forms.ModelForm):
     class Meta:
