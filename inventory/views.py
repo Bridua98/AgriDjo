@@ -43,9 +43,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.tables import CobroTable, LiquidacionAgricolaTable, NotaDebitoEmitidaTable, NotaDebitoRecibidaTable, UserTable
+from inventory.tables import CierreZafraTable, CobroTable, LiquidacionAgricolaTable, NotaDebitoEmitidaTable, NotaDebitoRecibidaTable, UserTable
 
-from .forms import CobroForm, CustomUserChangeForm, CustomUserCreationForm, LiquidacionAgricolaForm, NotaDebitoEmitidaForm, NotaDebitoRecibidaForm
+from .forms import CierreZafraForm, CobroForm, CustomUserChangeForm, CustomUserCreationForm, LiquidacionAgricolaForm, NotaDebitoEmitidaForm, NotaDebitoRecibidaForm
 
 from inventory.forms import (AcopioForm, ActividadAgricolaForm,
                              AjusteStockForm, CompraForm, ContratoForm, CuotaCompraForm, CuotaVentaForm,
@@ -56,7 +56,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
                                AcopioDetalleInline,
                                ActividadAgricolaItemDetalleInline,
                                ActividadAgricolaMaquinariaDetalleInline,
-                               AjusteStockDetalleInline, CobroDetalleInline, CobroMedioInline, CompraDetalleInline, CuotaCompraInline, CuotaVentaInline, LiquidacionAgricolaDetalleInline,
+                               AjusteStockDetalleInline, CierreZafraDetalleInline, CobroDetalleInline, CobroMedioInline, CompraDetalleInline, CuotaCompraInline, CuotaVentaInline, LiquidacionAgricolaDetalleInline,
                                NotaCreditoEmitidaDetalleInline,
                                NotaCreditoRecibidaDetalleInline, NotaDebitoEmitidaDetalleInline, NotaDebitoRecibidaDetalleInline,
                                OrdenCompraDetalleInline,
@@ -66,7 +66,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock,
                               AperturaCaja, Arqueo, Banco,
-                              CalificacionAgricola, Categoria, Cobro, CobroDetalle, Compra,
+                              CalificacionAgricola, Categoria, CierreZafra, Cobro, CobroDetalle, Compra,
                               Contrato, Cuenta, CuotaVenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, Lote,
                               MaquinariaAgricola, Marca, NotaCreditoEmitida,
                               NotaCreditoRecibida, NotaDebitoEmitida, NotaDebitoRecibida, OrdenCompra, PedidoCompra,
@@ -2056,3 +2056,40 @@ class NotaDebitoEmitidaAnularView(LoginRequiredMixin,DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("nota_debito_emitida_list")
+
+# CIERRE ZAFRA
+class CierreZafraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
+    model = CierreZafra
+    table_class = CierreZafraTable
+    paginate_by = 6
+    search_fields = ['zafra__descripcion',]
+    template_name = 'inventory/cierre_zafra_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['delete_url'] = 'cierre_zafra_delete'
+        return context
+
+class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
+    model = CierreZafra
+    form_class = CierreZafraForm
+    template_name = 'inventory/cierre_zafra_create.html'
+    inlines = [CierreZafraDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('cierre_zafra_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        return context
+
+class CierreZafraDeleteView(LoginRequiredMixin,DeleteView):
+    model = CierreZafra
+    template_name = 'inventory/cierre_zafra_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("cierre_zafra_list")

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} Cerrar Zafra {% endblock %}
+
+{% block content %}
+<h1> Cerrar Zafra </h1>
+<form method="post" enctype="multipart/form-data">
+{% crispy form %}
+</form>
+{% endblock %}

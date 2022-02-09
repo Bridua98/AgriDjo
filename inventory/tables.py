@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Cobro, Compra, Contrato,
+from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, CierreZafra, Cobro, Compra, Contrato,
                               Cuenta, Deposito, Finca, Item, ItemMovimiento, Marca, NotaCreditoEmitida, NotaCreditoRecibida, NotaDebitoRecibida, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
@@ -402,3 +402,16 @@ class NotaDebitoEmitidaTable(AnulableTable):
             "registro_esVigente": lambda record: record.esVigente
         }
         order_by = "-fechaDocumento"
+
+
+class CierreZafraTable(DeleteTable):
+    def render_totalCultivado(self,value):
+        return intcomma(value)
+    def render_totalAcopiado(self,value):
+        return intcomma(value)
+    def render_totalCosto(self,value):
+        return intcomma(value)
+    class Meta:
+        model = CierreZafra
+        fields = ("fecha","zafra","totalCultivado","totalAcopiado","totalCosto",)
+        order_by = "-fecha"

@@ -41,6 +41,7 @@ hijos_movimiento_agricultura = (
     MenuItem("Actividades Agrícolas",reverse_lazy("actividad_agricola_list")),
     MenuItem("Contratos",reverse_lazy("contrato_list")),
     MenuItem("Liquidación Agrícola Contratas",reverse_lazy("liquidacion_agricola_list")),
+    MenuItem("Cierres de Zafras",reverse_lazy("cierre_zafra_list")),
 )
 
 hijos_movimiento_compra = (

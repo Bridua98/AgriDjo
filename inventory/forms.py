@@ -8,7 +8,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -893,3 +893,41 @@ class NotaDebitoEmitidaDetalleForm(forms.ModelForm):
         widgets = {'cantidad':DecimalMaskInput,'valor':DecimalMaskInput,'porcentajeImpuesto':DecimalMaskInput,'impuesto':DecimalMaskInput,'subtotal':DecimalMaskInput}
 
 
+# CIERRE DE ZAFRAS
+class CierreZafraForm(forms.ModelForm):
+    total = forms.DecimalField(
+        widget=calculation.SumInput('totalCosto',   attrs={'readonly':True}),
+    )
+    class Meta:
+        model = CierreZafra
+        fields = ['fecha', 'zafra', 'observacion']
+        widgets = {'fecha':DateInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['total'].label = False
+        self.helper.layout = Layout(
+            "fecha",
+            "zafra",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "CierreZafraDetalleInline"#, stacked=True
+                ),  
+            ),
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+            ), 
+            Row(
+                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'cierre_zafra_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class CierreZafraDetalleForm(forms.ModelForm):
+    class Meta:
+        model = CierreZafraDetalle
+        fields = ['finca','haCultivada','cantidadAcopioNeto','rendimiento','costoTotal','costoHA','costoUnit']
+        widgets = {'haCultivada':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'rendimiento':DecimalMaskInput,'costoTotal':DecimalMaskInput,'costoHA':DecimalMaskInput,'costoUnit':DecimalMaskInput}
