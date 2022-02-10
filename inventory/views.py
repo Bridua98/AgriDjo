@@ -1914,7 +1914,7 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
             form.add_error('montoASaldar', 'El Monto A Saldar difiere de la suma de los medios de cobros')
 
     def get_inlines(self):
-        initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True).exclude(saldo = 0) ]
+        initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True,venta__cliente__pk = self.request.GET.get('cliente')).exclude(saldo = 0) ]
         cobrodetalleinline = self.inlines[0]
         cobrodetalleinline.initial = initial
         cobrodetalleinline.factory_kwargs['extra'] = len(initial)
