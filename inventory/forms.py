@@ -544,6 +544,7 @@ class NotaCreditoRecibidaForm(forms.ModelForm):
         self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
+        self.fields["compra"].queryset =  compra = Compra.objects.filter(esVigente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -611,6 +612,7 @@ class NotaCreditoEmitidaForm(forms.ModelForm):
         self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
+        self.fields["venta"].queryset =  venta = Venta.objects.filter(esVigente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -815,6 +817,7 @@ class NotaDebitoRecibidaForm(forms.ModelForm):
         self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
+        self.fields["compra"].queryset =  compra = Compra.objects.filter(esVigente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -882,6 +885,7 @@ class NotaDebitoEmitidaForm(forms.ModelForm):
         self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
+        self.fields["venta"].queryset =  venta = Venta.objects.filter(esVigente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
