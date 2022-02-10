@@ -166,6 +166,11 @@ class CreateWithFormsetInlinesView(FormsetInlinesMetaMixin, CreateWithInlinesVie
     def run_form_extra_validation(self, form, inlines):
         """ ejecutar validaciones adicionales de formularios """
 
+    def run_form_extra_validation_form_master(self, form):
+        """ ejecutar validaciones adicionales de formularios """
+        return True
+
+
     def post(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()
@@ -174,7 +179,7 @@ class CreateWithFormsetInlinesView(FormsetInlinesMetaMixin, CreateWithInlinesVie
         inlines = self.construct_inlines()
         try:
             with transaction.atomic():
-                if form.is_valid():
+                if form.is_valid() and self.run_form_extra_validation_form_master(form):
                     self.object = form.save(commit=False)
                     form_validated = True
                 else:
@@ -1405,6 +1410,13 @@ class VentaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
+    def run_form_extra_validation_form_master(self,form):
+        aperturaCaja = AperturaCaja.objects.filter(estaCerrado = False).order_by('-pk')[:1].first()
+        if aperturaCaja is None:
+            form.add_error(None, 'No existe una apertura de Caja en estado ABIERTO')
+            return False
+        return True
+
     def run_form_extra_validation(self, form, inlines):
         """ ejecutar validaciones adicionales de formularios """
         ventaDetalle = inlines[0]
@@ -1412,18 +1424,19 @@ class VentaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         totalDetalle = 0
         totalCuota = 0
         existeRegistro = False
+
         for f in ventaDetalle:
-            totalDetalle = totalDetalle + f.cleaned_data.get('subtotal')
+            totalDetalle += f.cleaned_data.get('subtotal')
             existeRegistro = True
+
         for f in cuotaDetalle:
-            totalCuota = totalCuota + f.cleaned_data.get('monto')
+            valor = 0 
+            if f.cleaned_data.get('monto') is None:
+                valor = 0
+            else:
+                valor = f.cleaned_data.get('monto')
+            totalCuota += valor
 
-        aperturaCaja = AperturaCaja.objects.filter(estaCerrado = False).order_by('-pk')[:1].first()
-
-        print("esta es la apertura caja",aperturaCaja)
-        
-        if aperturaCaja is None:
-             form.add_error(None, 'No existe una apertura de caja en estado ABIERTO')
         if existeRegistro == False or totalDetalle == 0 or totalDetalle is None:
             form.add_error(None, 'Registre al menos un Detalle')
         if form.cleaned_data.get('esCredito') and (totalDetalle!=totalCuota) :  
