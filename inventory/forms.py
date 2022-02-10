@@ -1,3 +1,4 @@
+from django.shortcuts import reverse
 from email.policy import default
 import calculation
 from .layout import CancelButton, DeleteButton, Formset
@@ -7,6 +8,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
                                  Layout, Row, Submit, Field)
 from django import forms
 from django.db.models import fields
+from django.contrib.auth.models import User
 
 from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, Item, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, Persona, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
@@ -14,11 +16,73 @@ from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 class CustomUserCreationForm(UserCreationForm):
+    """
+    Custom user register form
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs['autofocus'] = True
+        self.helper = FormHelper()
+        self.helper.form_show_labels = True
+        self.helper.layout = Layout(
+
+            Row(
+                Column('first_name'),
+                Column('last_name'),
+                
+            ),
+            Row(
+                Column('username'),
+                Column('email'),
+            ),
+            Row(
+                Column('password1'),
+                Column('password2'), 
+            ),
+            "is_active",
+            ButtonHolder(
+                Submit('submit', 'Guardar',  css_class='btn btn-success'),
+                CancelButton()
+            )
+            
+        )
+
     class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "email",)
+        model = User
+        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "email","is_active",)
+
 
 class CustomUserChangeForm(UserChangeForm):
-    """ Custom UserChangeForm """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = True
+        self.fields['password'].help_text = "Las contraseñas no se almacenan en bruto, así que no hay manera de ver la contraseña del usuario, pero se puede cambiar la contraseña mediante <a href='%s'>este formulario.</a>"%reverse("password_change")
+        self.helper.layout = Layout(
+
+            Row(
+                Column('first_name'),
+                Column('last_name'),
+                
+            ),
+            Row(
+                Column('username'),
+                Column('email'),
+            ),
+            Row(
+                Column('password'),
+            ),
+            "is_active",
+            ButtonHolder(
+                Submit('submit', 'Guardar',  css_class='btn btn-success'),
+                CancelButton(),
+            )
+            
+        )
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "email","is_active",)
 
 class PlanActividadZafraForm(forms.ModelForm):
     total = forms.DecimalField(
@@ -532,6 +596,23 @@ class VentaDetalleForm(forms.ModelForm):
         widgets = {'cantidad':DecimalMaskInput,'precio':DecimalMaskInput,'porcentajeImpuesto':DecimalMaskInput,'impuesto':DecimalMaskInput,'subtotal':DecimalMaskInput}
 
 class CuotaVentaForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.disable_csrf = True
+        self.helper.form_tag = False
+        self.helper.include_media = False
+        self.helper.layout = Layout(
+            Row(
+                Column("fechaVencimiento"),  
+                Column("monto"),   
+            ),
+            Column(
+                'DELETE',
+                hidden='hidden'
+            ),
+            Button("button",  "Eliminar", css_class="btn btn-block btn-danger",data_formset_delete_button=""),
+        )
     class Meta:
         model = CuotaVenta
         fields = ['fechaVencimiento','monto']

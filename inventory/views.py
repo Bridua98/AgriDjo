@@ -91,7 +91,7 @@ from inventory.tables import (AcopioTable, ActividadAgricolaTable,
 from inventory.utils import link_callback
 
 from django.db.models import Q
-
+from django.contrib.auth.views import PasswordChangeDoneView, PasswordChangeView, PasswordResetView
 from .widgets import DateInput
 
 @login_required
@@ -1819,17 +1819,29 @@ class UserListView(LoginRequiredMixin, SearchViewMixin, SingleTableMixin, ListVi
     model = User
     table_class = UserTable
     search_fields = ['username', 'first_name']
-    template_name = 'registration/user_list.html'
+    template_name = 'generic/list.html'
     paginate_by = 10
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['update_url'] = 'user_update'
+        context['create_url'] = "user_create"
+        context['delete_url'] = 'user_remove'
+        context['title'] = "Listado de usuarios"
         return context
 
 class UserCreateView(LoginRequiredMixin, CreateView):
+    
     model = User
     form_class = CustomUserCreationForm
-    template_name = 'registration/user_create.html'
+    template_name = 'generic/edit.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['helper'] = None
+        context['title'] = "Agregar Usuario"
+        context['list_url'] = 'user_list'
+        return context
 
     def get_success_url(self):
         return reverse_lazy('user_list')
@@ -1838,11 +1850,44 @@ class UserCreateView(LoginRequiredMixin, CreateView):
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = CustomUserChangeForm
-    template_name = 'registration/user_update.html'
+    template_name = 'generic/edit.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['helper'] =  None
+        context['list_url'] = 'user_list'
+        context['title'] = 'Actualizar usuario'
+        return context
 
     def get_success_url(self):
         return reverse_lazy("user_list")
 
+class UserDeleteView(LoginRequiredMixin, CustomDeleteView): 
+    model = User
+    template_name = "generic/remove.html"
+    success_url = "user_list"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list_url'] = 'user_list'
+        deletable_objects, model_count, protected = get_deleted_objects([self.object])
+        context['deletable_objects']=deletable_objects
+        context['model_count']=dict(model_count).items()
+        context['protected']=protected
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy("user_list")
+
+class CustomPasswordResetView(PasswordResetView):
+    """form_class = CustomPasswordResetForm"""
+
+
+class CustomPasswordChangeView(PasswordChangeView):
+    """"""
+
+class CustomPasswordChangeDoneView(PasswordChangeDoneView):
+    """"""
 
 #COBROS
 class CobroListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
