@@ -867,7 +867,7 @@ class AcopioCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         existeRegistro = False
         pesoEncabezado =  (form.cleaned_data.get('pBruto') + form.cleaned_data.get('pBonificacion')) - (form.cleaned_data.get('pTara') + form.cleaned_data.get('pDescuento'))
         for f in acopioDetalle:
-            totalPeso = f.cleaned_data.get('peso')
+            totalPeso = totalPeso + f.cleaned_data.get('peso')
             existeRegistro = True
                        
         if existeRegistro == False or totalPeso == 0 or totalPeso is None:
@@ -1160,9 +1160,23 @@ class CompraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         form = super().get_form(form_class)
         return form
     
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        return context
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+        comrpaDetalle = inlines[0]
+        cuotaDetalle = inlines[1]
+        totalDetalle = 0
+        totalCuota = 0
+        existeRegistro = False
+        for f in comrpaDetalle:
+            totalDetalle = totalDetalle +f.cleaned_data.get('subtotal')
+            existeRegistro = True
+        for f in cuotaDetalle:
+            totalCuota = totalCuota + f.cleaned_data.get('monto')
+                     
+        if existeRegistro == False or totalDetalle == 0 or totalDetalle is None:
+            form.add_error(None, 'Registre al menos un Detalle')
+        if form.cleaned_data.get('esCredito') and (totalDetalle!=totalCuota ) :  
+            form.add_error(None, 'Los montos de las cuotas difieren al total de la compra')
 
 class CompraAnularView(LoginRequiredMixin,DeleteView):
     model = Compra
@@ -1388,15 +1402,21 @@ class VentaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         totalCuota = 0
         existeRegistro = False
         for f in ventaDetalle:
-            totalDetalle = f.cleaned_data.get('subtotal')
+            totalDetalle = totalDetalle + f.cleaned_data.get('subtotal')
             existeRegistro = True
         for f in cuotaDetalle:
-            totalCuota = f.cleaned_data.get('monto')
-                     
+            totalCuota = totalCuota + f.cleaned_data.get('monto')
+
+        aperturaCaja = AperturaCaja.objects.filter(estaCerrado = False).order_by('-pk')[:1].first()
+
+        print("esta es la apertura caja",aperturaCaja)
+        
+        if aperturaCaja is None:
+             form.add_error(None, 'No existe una apertura de caja en estado ABIERTO')
         if existeRegistro == False or totalDetalle == 0 or totalDetalle is None:
             form.add_error(None, 'Registre al menos un Detalle')
-        if form.cleaned_data.get('esCredito') and (totalDetalle!=totalCuota ) :  
-            form.add_error(None, 'Los montos de las cuotas difieren al total de venta')
+        if form.cleaned_data.get('esCredito') and (totalDetalle!=totalCuota) :  
+            form.add_error(None, 'Los montos de las cuotas difieren al total de la venta')
 
 class VentaAnularView(LoginRequiredMixin,DeleteView):
     model = Venta
@@ -1836,12 +1856,12 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         totalCuota = 0
         for f in cobrodetalleinline:
             if f.cleaned_data.get('check'):
-                totalCuota = f.cleaned_data.get('cancelacion')
+                totalCuota = totalCuota +f.cleaned_data.get('cancelacion')
                 existeUnSeleccionado = True
                 
         totalMedioCobro = 0
         for f in mediocobrodetalleinline:
-            totalMedioCobro = f.cleaned_data.get('monto')
+            totalMedioCobro = totalMedioCobro + f.cleaned_data.get('monto')
         montoASaldarValor = form.cleaned_data['montoASaldar']
         if existeUnSeleccionado == False:
             form.add_error(None, 'Seleccione al menos un detalle a cobrar')

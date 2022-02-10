@@ -8,7 +8,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, Persona, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, Item, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, Persona, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -149,6 +149,10 @@ class PedidoCompraForm(forms.ModelForm):
         )
 
 class PedidoCompraDetalleForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields["item"].queryset =  item = Item.objects.filter(tipoItem__pk=2) # sea igual a normal
     class Meta:
         model = PedidoCompraDetalle
         fields = ['item', 'cantidad']
@@ -197,6 +201,10 @@ class OrdenCompraDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('(cantidad*(precio-descuento))', attrs={'readonly':True}),
         label = "SubTotal"
     )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields["item"].queryset =  item = Item.objects.filter(tipoItem__pk=2) # sea igual a normal
     class Meta:
         model = OrdenCompraDetalle
         fields = ['item', 'cantidad','precio','descuento']
@@ -265,6 +273,10 @@ class CompraDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
         label = "Impuesto"
     )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields["item"].queryset =  item = Item.objects.filter(tipoItem__pk=2) # sea igual a normal
     class Meta:
         model = CompraDetalle
         fields = ['item', 'cantidad','costo','porcentajeImpuesto','impuesto','subtotal']
@@ -420,6 +432,10 @@ class PedidoCompraForm(forms.ModelForm):
         )
 
 class PedidoCompraDetalleForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields["item"].queryset =  item = Item.objects.filter(tipoItem__pk=2) # sea igual a normal
     class Meta:
         model = PedidoCompraDetalle
         fields = ['item', 'cantidad']
