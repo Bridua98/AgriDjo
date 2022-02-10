@@ -19,9 +19,9 @@ from django.forms.formsets import all_valid
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import get_template
-from django.urls import reverse_lazy
 from django.utils.encoding import force_text
 from django.utils.text import capfirst
+from django.views.generic import FormView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from django_tables2 import SingleTableMixin
@@ -42,10 +42,12 @@ from django_tables2 import SingleTableMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
+from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin, SelectionMixin
 from inventory.tables import CierreZafraTable, CobroTable, LiquidacionAgricolaTable, NotaDebitoEmitidaTable, NotaDebitoRecibidaTable, UserTable
 
 from .forms import CierreZafraForm, CobroForm, CustomUserChangeForm, CustomUserCreationForm, LiquidacionAgricolaForm, NotaDebitoEmitidaForm, NotaDebitoRecibidaForm
+from .forms import LiquidacionAgricolaSelectionForm
+
 
 from inventory.forms import (AcopioForm, ActividadAgricolaForm,
                              AjusteStockForm, CompraForm, ContratoForm, CuotaCompraForm, CuotaVentaForm,
@@ -85,7 +87,7 @@ from inventory.tables import (AcopioTable, ActividadAgricolaTable,
                               PlanActividadZafraTable, ProduccionAgricolaInformeTable,
                               TipoActividadAgricolaTable, TipoImpuestoTable,
                               TipoMaquinariaAgricolaTable, TransferenciaCuentaTable, VentaInformeTable, VentaTable,
-                              ZafraTable)
+                              ZafraTable, PersonaSelectionTable)
 from inventory.utils import link_callback
 
 from django.db.models import Q
@@ -104,6 +106,15 @@ def main(request):
 
 def menu(request):
     return render(request, template_name="menu_dummy.html", context={})
+
+
+class SelectionListView(SelectionMixin, SearchViewMixin, SingleTableMixin, ListView):
+    """ Vista de seleccion de tipo listado """
+
+
+class SelectionFormView(SelectionMixin, FormView):
+    """ Vista de seleccion de tipo formulario """
+
 
 class CustomDeleteView(DeleteView):
     error = None
@@ -1786,6 +1797,16 @@ class CobroListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListVi
         context['anular_url'] = 'cobro_anular'
         return context
 
+
+class PersonaSelectionListView(LoginRequiredMixin, SelectionListView):
+    model = Persona
+    table_class = PersonaSelectionTable
+    search_fields = ['razonSocial']
+    next_url = "cobro_create"
+    back_url = "cobro_list"
+    params_name = 'cliente'
+
+
 class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = Cobro
     form_class = CobroForm
@@ -1797,6 +1818,9 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
+        if self.request.GET.get('cliente', None):
+            form.fields['cliente'].initial = self.request.GET.get('cliente', None)
+            form.fields['cliente'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
         return form
         
     def run_form_extra_validation(self, form, inlines):
@@ -1881,6 +1905,13 @@ class LiquidacionAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTabl
         context['anular_url'] = 'liquidacion_agricola_anular'
         return context
 
+class LiquidacionAgricolaSelectionView(LoginRequiredMixin, SelectionFormView):
+    form_class = LiquidacionAgricolaSelectionForm
+    next_url = 'liquidacion_agricola_create'
+    back_url = 'liquidacion_agricola_list'
+    title = 'Complete los filtros para continuar'
+
+
 class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = LiquidacionAgricola
     form_class = LiquidacionAgricolaForm
@@ -1892,6 +1923,12 @@ class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesV
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
+        if self.request.GET.get('zafra', None):
+            form.fields['zafra'].initial = self.request.GET.get('zafra', None)
+            form.fields['zafra'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        if self.request.GET.get('proveedor', None):
+            form.fields['proveedor'].initial = self.request.GET.get('proveedor', None)
+            form.fields['proveedor'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
         return form
     
     def get_context_data(self, *args, **kwargs):
