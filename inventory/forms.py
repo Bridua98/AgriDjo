@@ -8,7 +8,7 @@ from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fields
 from django import forms
 from django.db.models import fields
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, Persona, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -127,6 +127,7 @@ class PedidoCompraForm(forms.ModelForm):
         self.helper.form_tag = False
         self.fields['cantidad'].label = False
         self.fields['cantidad'].widget = DecimalMaskInput()
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.helper.layout = Layout(
             "proveedor",
             "fechaDocumento",
@@ -168,6 +169,7 @@ class OrdenCompraForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.fields['total'].label = False
         self.fields['total'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
@@ -218,6 +220,7 @@ class CompraForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.fields['total'].label = False
         self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
@@ -282,6 +285,7 @@ class AjusteStockForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.fields["empleado"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "comprobante",
@@ -328,6 +332,7 @@ class ActividadAgricolaForm(forms.ModelForm):
         self.fields['totalMaquinaria'].widget = DecimalMaskInput()
         self.fields['totalItem'].label = False
         self.fields['totalItem'].widget = DecimalMaskInput()
+        self.fields["empleado"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "tipoActividadAgricola",
@@ -466,6 +471,7 @@ class VentaForm(forms.ModelForm):
         self.fields['total_iva'].label = False
         self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -537,6 +543,7 @@ class NotaCreditoRecibidaForm(forms.ModelForm):
         self.fields['total_iva'].label = False
         self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -603,6 +610,7 @@ class NotaCreditoEmitidaForm(forms.ModelForm):
         self.fields['total_iva'].label = False
         self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -689,6 +697,8 @@ class CobroForm(forms.ModelForm):
         self.fields['total'].label = False
         self.fields['total'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
+        self.fields["cobrador"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "comprobante",
@@ -752,6 +762,7 @@ class LiquidacionAgricolaForm(forms.ModelForm):
         self.helper.form_tag = False
         self.fields['total'].label = False
         self.fields['total'].widget = DecimalMaskInput()
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "tipo",
@@ -803,6 +814,7 @@ class NotaDebitoRecibidaForm(forms.ModelForm):
         self.fields['total_iva'].label = False
         self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -869,6 +881,7 @@ class NotaDebitoEmitidaForm(forms.ModelForm):
         self.fields['total_iva'].label = False
         self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",

@@ -1062,7 +1062,10 @@ class AperturaCajaCreateView(LoginRequiredMixin,CreateView):
     model = AperturaCaja
     template_name = 'inventory/apertura_caja_create.html'
     fields = ['empleado','observacion','montoInicio']
-
+    def get_form(self, form_class=None):
+        form = super().get_form()
+        form.fields["empleado"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
+        return form
     def get_success_url(self):
         return reverse_lazy("apertura_caja_list")
 
@@ -1110,7 +1113,10 @@ class ArqueoCreateView(LoginRequiredMixin,CreateView):
     model = Arqueo
     template_name = 'inventory/arqueo_create.html'
     fields = ['empleado','aperturaCaja','observacion','monto']
-
+    def get_form(self, form_class=None):      
+        form = super().get_form()
+        form.fields["empleado"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
+        return form
     def get_success_url(self):
         return reverse_lazy("arqueo_list")
 
@@ -1649,7 +1655,7 @@ class TransferenciaCuentaAnularView(LoginRequiredMixin,DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("transferencia_cuenta_list")
-
+    
 # LIBRO DE COMPRA
 class LibroCompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin,FilterView):
     model = Compra
@@ -1658,7 +1664,12 @@ class LibroCompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin,F
     paginate_by = 10
     search_fields = ['comprobante','proveedor__razonSocial','deposito__descripcion'] #context?
     template_name = 'inventory/libro_compra_list.html'
-  
+   
+    #def get_form(self, form_class=None):      
+    #    form = super().get_form()
+    #    form.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
+    #    return form
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['list_defecto'] = 'libro_compra_list'
