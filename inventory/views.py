@@ -66,7 +66,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
                                PlanActividadZafraDetalleInline,
                                VentaDetalleInline)
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import (Acopio, ActividadAgricola, AjusteStock,
+from inventory.models import (Acopio, AcopioDetalle, ActividadAgricola, AjusteStock,
                               AperturaCaja, Arqueo, Banco,
                               CalificacionAgricola, Categoria, CierreZafra, Cobro, CobroDetalle, Compra,
                               Contrato, Cuenta, CuotaVenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, Lote,
@@ -2044,15 +2044,36 @@ class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesV
         if self.request.GET.get('tipo', None):
             form.fields['tipo'].initial = self.request.GET.get('tipo', None)
             form.fields['tipo'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        if self.request.GET.get('precioUnitario', None):
+            form.fields['precioUnitario'].initial = self.request.GET.get('precioUnitario', None)
+            form.fields['precioUnitario'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
         return form
 
     def get_inlines(self):
-        #initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True).exclude(saldo = 0) ]
+        zafraSel = self.request.GET.get('zafra', None)
+        tipoSel = self.request.GET.get('tipo', None)
+        precio = self.request.GET.get('precioUnitario', None)
+        if tipoSel == 'ACTIVIDADES AGRICOLAS':
+            initial = [ {'precio':precio,'secuenciaOrigen':x.pk ,'check': False,'movimiento': x.tipoActividadAgricola.descripcion ,'finca': x.finca, 'lote': x.lote, 'cantidad': x.cantidadTrabajada, 'subTotal':  (float(x.cantidadTrabajada) * float(precio)) } for x in ActividadAgricola.objects.filter(esVigente = True,esServicioContratado = True)]
+        else:
+             initial = [ {'precio':precio,'secuenciaOrigen':x.pk ,'check': False,'movimiento': "Comp:"+ x.acopio.comprobante +" Conductor "+x.acopio.conductor.razonSocial ,'finca': x.finca, 'lote': x.lote, 'cantidad': x.acopio.pBruto, 'subTotal':  (float(x.acopio.pBruto) * float(precio)) } for x in AcopioDetalle.objects.filter(acopio__esVigente = True,acopio__esTransportadoraPropia = False)]
         detalle = self.inlines[0]
-        #cobrodetalleinline.initial = initial
-        #cobrodetalleinline.factory_kwargs['extra'] = len(initial)
+        detalle.initial = initial
+        detalle.factory_kwargs['extra'] = len(initial)
         detalle.factory_kwargs['can_delete'] = False
         return self.inlines
+
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+        detalle = inlines[0]
+        existeUnSeleccionado = False
+
+        for f in detalle:
+            if f.cleaned_data.get('check'):
+                existeUnSeleccionado = True
+
+        if existeUnSeleccionado == False:
+            form.add_error(None, 'Seleccione al menos un detalle a liquidar')
 
 class LiquidacionAgricolaAnularView(LoginRequiredMixin,DeleteView):
     model = LiquidacionAgricola

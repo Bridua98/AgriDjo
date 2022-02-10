@@ -850,12 +850,14 @@ class CobroMedioForm(forms.ModelForm):
 class LiquidacionAgricolaSelectionForm(forms.ModelForm):
     class Meta:
         model = LiquidacionAgricola
-        fields = ['tipo','zafra','proveedor']
+        fields = ['tipo','zafra','proveedor','precioUnitario']
+        widgets = {'precioUnitario':DecimalMaskInput}
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['zafra'].required = True
         self.fields['zafra'].required = True
         self.fields['tipo'].required = True
+        self.fields['precioUnitario'].required = True
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
 
 class LiquidacionAgricolaForm(forms.ModelForm):
@@ -896,12 +898,25 @@ class LiquidacionAgricolaForm(forms.ModelForm):
         )
 
 class LiquidacionAgricolaDetalleForm(forms.ModelForm):
+    check = forms.BooleanField(label='Sel.',required=False)
+    movimiento = forms.CharField(max_length=300,disabled = True)
+    subTotal = forms.DecimalField(max_digits=15,disabled = True)
+    subTotal.label = "Sub Total"
     class Meta:
         model = LiquidacionAgricolaDetalle
-        fields = ['finca','lote','cantidad']
-        widgets = {'cantidad':DecimalMaskInput}
-
-
+        fields = ['secuenciaOrigen','finca','lote','cantidad']
+        widgets = {
+            'secuenciaOrigen': forms.HiddenInput,
+            'cantidad':DecimalMaskInput,
+            'subTotal':DecimalMaskInput,   
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['finca'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        self.fields['lote'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        self.fields['cantidad'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
 
 # NOTA DEBITO RECIBIDA
 class NotaDebitoRecibidaForm(forms.ModelForm):

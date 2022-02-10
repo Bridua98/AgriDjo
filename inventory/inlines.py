@@ -103,7 +103,7 @@ class LiquidacionAgricolaDetalleInline(InlineFormSetFactory):
     model = LiquidacionAgricolaDetalle
     form_class = LiquidacionAgricolaDetalleForm
     factory_kwargs = {'extra':1 }
-    fields = ['finca','lote','cantidad',]
+    fields = ['secuenciaOrigen','check','movimiento', 'finca', 'lote','cantidad','subTotal']
 
 class NotaDebitoRecibidaDetalleInline(InlineFormSetFactory):
     model = NotaDebitoRecibidaDetalle
