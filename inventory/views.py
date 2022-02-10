@@ -1859,12 +1859,18 @@ class CobroListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListVi
 
 
 class PersonaSelectionListView(LoginRequiredMixin, SelectionListView):
+
     model = Persona
     table_class = PersonaSelectionTable
     search_fields = ['razonSocial']
     next_url = "cobro_create"
     back_url = "cobro_list"
     params_name = 'cliente'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(esCliente = True)
+        return qs
 
 
 class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
@@ -1966,11 +1972,12 @@ class LiquidacionAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTabl
         return context
 
 class LiquidacionAgricolaSelectionView(LoginRequiredMixin, SelectionFormView):
+    model = LiquidacionAgricola
     form_class = LiquidacionAgricolaSelectionForm
     next_url = 'liquidacion_agricola_create'
     back_url = 'liquidacion_agricola_list'
     title = 'Complete los filtros para continuar'
-
+    #params_name = 'cliente'
 
 class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = LiquidacionAgricola
