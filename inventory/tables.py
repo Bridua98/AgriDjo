@@ -61,6 +61,13 @@ class DeleteTable(BaseTable):
         super().__init__(*args, **kwargs)
 
 
+class SelectionTable(BaseTable):
+    def __init__(self, *args, **kwargs):
+        kwargs['empty_text']  =  "Sin resultados."
+        kwargs['extra_columns'] = [('seleccionar', tables.TemplateColumn(template_name="includes/seleccionar_button.html", verbose_name="Seleccionar", orderable=False))]
+        super().__init__(*args, **kwargs)
+
+
 ## definiciones
 class TipoActividadAgricolaTable(EditableDeleteTable):
     class Meta:
@@ -415,3 +422,8 @@ class CierreZafraTable(DeleteTable):
         model = CierreZafra
         fields = ("fecha","zafra","totalCultivado","totalAcopiado","totalCosto",)
         order_by = "-fecha"
+
+class PersonaSelectionTable(SelectionTable):
+    class Meta:
+        model = Persona
+        fields = ("razonSocial", "documento", )

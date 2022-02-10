@@ -765,6 +765,16 @@ class CobroMedioForm(forms.ModelForm):
         widgets = {'cancelacion':DecimalMaskInput}
 
 # LIQUIDACION AGRICOLA
+
+
+class LiquidacionAgricolaSelectionForm(forms.ModelForm):
+    class Meta:
+        model = LiquidacionAgricola
+        fields = ['zafra','proveedor']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['zafra'].required = False
+
 class LiquidacionAgricolaForm(forms.ModelForm):
     total = forms.DecimalField(
         widget=calculation.SumInput('subtotal',   attrs={'readonly':True}),
@@ -1001,3 +1011,5 @@ class CierreZafraDetalleForm(forms.ModelForm):
         model = CierreZafraDetalle
         fields = ['finca','haCultivada','cantidadAcopioNeto','rendimiento','costoTotal','costoHA','costoUnit']
         widgets = {'haCultivada':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'rendimiento':DecimalMaskInput,'costoTotal':DecimalMaskInput,'costoHA':DecimalMaskInput,'costoUnit':DecimalMaskInput}
+
+

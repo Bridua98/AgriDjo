@@ -27,6 +27,7 @@ from inventory.views import TipoActividadAgricolaListView, TipoActividadAgricola
 from inventory.views import FincaListView, FincaCreateView, FincaUpdateView, FincaDeleteView
 from inventory.views import main, menu, download_view
 from inventory.views import UserCreateView, UserListView, UserUpdateView
+from inventory.views import PersonaSelectionListView, LiquidacionAgricolaSelectionView
 
 urlpatterns = [
      # personas
@@ -184,10 +185,12 @@ urlpatterns = [
     # COBRO
     path('inventory/cobro/<int:pk>/anular',CobroAnularView.as_view(), name="cobro_anular"),
     path('inventory/cobro/add',CobroCreateView.as_view(), name="cobro_create"),
+    path('inventory/cobro/seleccionar-persona', PersonaSelectionListView.as_view(), name="cobro_persona_selecction_list"),
     path('inventory/cobro', CobroListView.as_view(), name="cobro_list"),
     # LIQUIDACION AGRICOLA
     path('inventory/liquidacion_agricola/<int:pk>/anular',LiquidacionAgricolaAnularView.as_view(), name="liquidacion_agricola_anular"),
     path('inventory/liquidacion_agricola/add',LiquidacionAgricolaCreateView.as_view(), name="liquidacion_agricola_create"),
+    path('inventory/liquidacion_agricola/selection',LiquidacionAgricolaSelectionView.as_view(), name="liquidacion_agricola_select"),
     path('inventory/liquidacion_agricola', LiquidacionAgricolaListView.as_view(), name="liquidacion_agricola_list"),
     # NOTA DE DEBITO RECIBIDA
     path('inventory/nota_debito_recibida/<int:pk>/anular',NotaDebitoRecibidaAnularView.as_view(), name="nota_debito_recibida_anular"),
