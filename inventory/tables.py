@@ -352,10 +352,10 @@ class InventarioDepositoInformeTable(BaseTable):
         model = ItemMovimiento
         fields = ("fechaDocumento","deposito","item","tipoMovimiento","cantidad")
 
-class UserTable(EditableTable):
+class UserTable(EditableDeleteTable):
     class Meta:
         model = User
-        fields = ("username", "first_name", "Last_name", "is_active",)
+        fields = ("username", "first_name", "last_name", "is_active",)
 
 class CobroTable(AnulableTable):
     def render_montoASaldar(self,value):
