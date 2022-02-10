@@ -19,9 +19,9 @@ from django.forms.formsets import all_valid
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template.loader import get_template
-from django.urls import reverse_lazy
 from django.utils.encoding import force_text
 from django.utils.text import capfirst
+from django.views.generic import FormView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from django_tables2 import SingleTableMixin
@@ -42,10 +42,12 @@ from django_tables2 import SingleTableMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.tables import CobroTable, LiquidacionAgricolaTable, NotaDebitoEmitidaTable, NotaDebitoRecibidaTable, UserTable
+from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin, SelectionMixin
+from inventory.tables import CierreZafraTable, CobroTable, LiquidacionAgricolaTable, NotaDebitoEmitidaTable, NotaDebitoRecibidaTable, UserTable
 
-from .forms import CobroForm, CustomUserChangeForm, CustomUserCreationForm, LiquidacionAgricolaForm, NotaDebitoEmitidaForm, NotaDebitoRecibidaForm
+from .forms import CierreZafraForm, CobroForm, CustomUserChangeForm, CustomUserCreationForm, LiquidacionAgricolaForm, NotaDebitoEmitidaForm, NotaDebitoRecibidaForm
+from .forms import LiquidacionAgricolaSelectionForm
+
 
 from inventory.forms import (AcopioForm, ActividadAgricolaForm,
                              AjusteStockForm, CompraForm, ContratoForm, CuotaCompraForm, CuotaVentaForm,
@@ -56,7 +58,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
                                AcopioDetalleInline,
                                ActividadAgricolaItemDetalleInline,
                                ActividadAgricolaMaquinariaDetalleInline,
-                               AjusteStockDetalleInline, CobroDetalleInline, CobroMedioInline, CompraDetalleInline, CuotaCompraInline, CuotaVentaInline, LiquidacionAgricolaDetalleInline,
+                               AjusteStockDetalleInline, CierreZafraDetalleInline, CobroDetalleInline, CobroMedioInline, CompraDetalleInline, CuotaCompraInline, CuotaVentaInline, LiquidacionAgricolaDetalleInline,
                                NotaCreditoEmitidaDetalleInline,
                                NotaCreditoRecibidaDetalleInline, NotaDebitoEmitidaDetalleInline, NotaDebitoRecibidaDetalleInline,
                                OrdenCompraDetalleInline,
@@ -66,7 +68,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, ActividadAgricola, AjusteStock,
                               AperturaCaja, Arqueo, Banco,
-                              CalificacionAgricola, Categoria, Cobro, CobroDetalle, Compra,
+                              CalificacionAgricola, Categoria, CierreZafra, Cobro, CobroDetalle, Compra,
                               Contrato, Cuenta, CuotaVenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, Lote,
                               MaquinariaAgricola, Marca, NotaCreditoEmitida,
                               NotaCreditoRecibida, NotaDebitoEmitida, NotaDebitoRecibida, OrdenCompra, PedidoCompra,
@@ -85,7 +87,7 @@ from inventory.tables import (AcopioTable, ActividadAgricolaTable,
                               PlanActividadZafraTable, ProduccionAgricolaInformeTable,
                               TipoActividadAgricolaTable, TipoImpuestoTable,
                               TipoMaquinariaAgricolaTable, TransferenciaCuentaTable, VentaInformeTable, VentaTable,
-                              ZafraTable)
+                              ZafraTable, PersonaSelectionTable)
 from inventory.utils import link_callback
 
 from django.db.models import Q
@@ -104,6 +106,15 @@ def main(request):
 
 def menu(request):
     return render(request, template_name="menu_dummy.html", context={})
+
+
+class SelectionListView(SelectionMixin, SearchViewMixin, SingleTableMixin, ListView):
+    """ Vista de seleccion de tipo listado """
+
+
+class SelectionFormView(SelectionMixin, FormView):
+    """ Vista de seleccion de tipo formulario """
+
 
 class CustomDeleteView(DeleteView):
     error = None
@@ -155,6 +166,11 @@ class CreateWithFormsetInlinesView(FormsetInlinesMetaMixin, CreateWithInlinesVie
     def run_form_extra_validation(self, form, inlines):
         """ ejecutar validaciones adicionales de formularios """
 
+    def run_form_extra_validation_form_master(self, form):
+        """ ejecutar validaciones adicionales de formularios """
+        return True
+
+
     def post(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()
@@ -163,7 +179,7 @@ class CreateWithFormsetInlinesView(FormsetInlinesMetaMixin, CreateWithInlinesVie
         inlines = self.construct_inlines()
         try:
             with transaction.atomic():
-                if form.is_valid():
+                if form.is_valid() and self.run_form_extra_validation_form_master(form):
                     self.object = form.save(commit=False)
                     form_validated = True
                 else:
@@ -748,7 +764,7 @@ class CalificacionAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTab
     paginate_by = 6
     search_fields = ['descripcion',]
     template_name = 'inventory/calificacion_agricola_list.html'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['update_url'] = 'calificacion_agricola_update'
@@ -759,6 +775,7 @@ class CalificacionAgricolaCreateView(LoginRequiredMixin,CreateView):
     model = CalificacionAgricola
     template_name = 'inventory/calificacion_agricola_create.html'
     fields = ['descripcion',]
+    paginate_by = 10
 
     def get_success_url(self):
         return reverse_lazy("calificacion_agricola_list")
@@ -784,6 +801,7 @@ class PlanActividadZafraListView(LoginRequiredMixin,SearchViewMixin, SingleTable
     table_class = PlanActividadZafraTable
     search_fields = ['zafra__descripcion', 'observacion']
     template_name = 'inventory/plan_actividad_zafra_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -831,6 +849,7 @@ class AcopioListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListV
     table_class = AcopioTable
     search_fields = ['zafra__descripcion', 'comprobante','deposito__descripcion']
     template_name = 'inventory/acopio_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -855,6 +874,22 @@ class AcopioCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         return context
+
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+
+        acopioDetalle = inlines[0]
+        totalPeso = 0
+        existeRegistro = False
+        pesoEncabezado =  (form.cleaned_data.get('pBruto') + form.cleaned_data.get('pBonificacion')) - (form.cleaned_data.get('pTara') + form.cleaned_data.get('pDescuento'))
+        for f in acopioDetalle:
+            totalPeso = totalPeso + f.cleaned_data.get('peso')
+            existeRegistro = True
+                       
+        if existeRegistro == False or totalPeso == 0 or totalPeso is None:
+            form.add_error(None, 'Registre al menos un detalle del acopio')
+        if pesoEncabezado != totalPeso:  
+            form.add_error('pBruto', 'El neto (Peso Bruto + Peso Bonificacion ) - ( Peso Tara + Peso Descuento) no es igual a los detalles cargados')
 
 class AcopioUpdateView(LoginRequiredMixin,UpdateWithFormsetInlinesView):
     model = Acopio
@@ -914,6 +949,7 @@ class PedidoCompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin,
     table_class = PedidoCompraTable
     search_fields = ['proveedor__razonSocial',]
     template_name = 'inventory/pedido_compra_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -974,6 +1010,7 @@ class OrdenCompraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     form_class = OrdenCompraForm
     template_name = 'inventory/orden_compra_create.html'
     inlines = [OrdenCompraDetalleInline]
+    paginate_by = 10
 
     def get_success_url(self):
         return reverse_lazy('orden_compra_list')
@@ -1046,7 +1083,10 @@ class AperturaCajaCreateView(LoginRequiredMixin,CreateView):
     model = AperturaCaja
     template_name = 'inventory/apertura_caja_create.html'
     fields = ['empleado','observacion','montoInicio']
-
+    def get_form(self, form_class=None):
+        form = super().get_form()
+        form.fields["empleado"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
+        return form
     def get_success_url(self):
         return reverse_lazy("apertura_caja_list")
 
@@ -1094,7 +1134,10 @@ class ArqueoCreateView(LoginRequiredMixin,CreateView):
     model = Arqueo
     template_name = 'inventory/arqueo_create.html'
     fields = ['empleado','aperturaCaja','observacion','monto']
-
+    def get_form(self, form_class=None):      
+        form = super().get_form()
+        form.fields["empleado"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
+        return form
     def get_success_url(self):
         return reverse_lazy("arqueo_list")
 
@@ -1112,6 +1155,7 @@ class CompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListV
     table_class = CompraTable
     search_fields = ['proveedor__razonSocial','comprobante','timbrado','observacion']
     template_name = 'inventory/compra_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1132,9 +1176,23 @@ class CompraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         form = super().get_form(form_class)
         return form
     
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        return context
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+        comrpaDetalle = inlines[0]
+        cuotaDetalle = inlines[1]
+        totalDetalle = 0
+        totalCuota = 0
+        existeRegistro = False
+        for f in comrpaDetalle:
+            totalDetalle = totalDetalle +f.cleaned_data.get('subtotal')
+            existeRegistro = True
+        for f in cuotaDetalle:
+            totalCuota = totalCuota + f.cleaned_data.get('monto')
+                     
+        if existeRegistro == False or totalDetalle == 0 or totalDetalle is None:
+            form.add_error(None, 'Registre al menos un Detalle')
+        if form.cleaned_data.get('esCredito') and (totalDetalle!=totalCuota ) :  
+            form.add_error(None, 'Los montos de las cuotas difieren al total de la compra')
 
 class CompraAnularView(LoginRequiredMixin,DeleteView):
     model = Compra
@@ -1176,7 +1234,7 @@ class CompraAnularView(LoginRequiredMixin,DeleteView):
 class AjusteStockListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = AjusteStock
     table_class = AjusteStockTable
-    paginate_by = 6
+    paginate_by = 10
     search_fields = ['comprobante','empleado__razonSocial','deposito__descripcion']
     template_name = 'inventory/ajuste_stock_list.html'
 
@@ -1232,6 +1290,7 @@ class ActividadAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTableM
     table_class = ActividadAgricolaTable
     search_fields = ['zafra__descripcion','finca__descripcion','lote__descripcion', 'empleado__razonSocial','deposito__descripcion']
     template_name = 'inventory/actividad_agricola_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1325,6 +1384,7 @@ class VentaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListVi
     table_class = VentaTable
     search_fields = ['cliente__razonSocial','comprobante','timbrado','observacion']
     template_name = 'inventory/venta_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1349,6 +1409,38 @@ class VentaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         return context
+
+    def run_form_extra_validation_form_master(self,form):
+        aperturaCaja = AperturaCaja.objects.filter(estaCerrado = False).order_by('-pk')[:1].first()
+        if aperturaCaja is None:
+            form.add_error(None, 'No existe una apertura de Caja en estado ABIERTO')
+            return False
+        return True
+
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+        ventaDetalle = inlines[0]
+        cuotaDetalle = inlines[1]
+        totalDetalle = 0
+        totalCuota = 0
+        existeRegistro = False
+
+        for f in ventaDetalle:
+            totalDetalle += f.cleaned_data.get('subtotal')
+            existeRegistro = True
+
+        for f in cuotaDetalle:
+            valor = 0 
+            if f.cleaned_data.get('monto') is None:
+                valor = 0
+            else:
+                valor = f.cleaned_data.get('monto')
+            totalCuota += valor
+
+        if existeRegistro == False or totalDetalle == 0 or totalDetalle is None:
+            form.add_error(None, 'Registre al menos un Detalle')
+        if form.cleaned_data.get('esCredito') and (totalDetalle!=totalCuota) :  
+            form.add_error(None, 'Los montos de las cuotas difieren al total de la venta')
 
 class VentaAnularView(LoginRequiredMixin,DeleteView):
     model = Venta
@@ -1440,7 +1532,7 @@ class NotaCreditoRecibidaListView(LoginRequiredMixin,SearchViewMixin, SingleTabl
     table_class = NotaCreditoRecibidaTable
     search_fields = ['proveedor__razonSocial','comprobante','timbrado','compra__comprobante']
     template_name = 'inventory/nota_credito_recibida_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'nota_credito_recibida_anular'
@@ -1508,7 +1600,7 @@ class NotaCreditoEmitidaListView(LoginRequiredMixin,SearchViewMixin, SingleTable
     table_class = NotaCreditoEmitidaTable
     search_fields = ['cliente__razonSocial','comprobante','timbrado','venta__comprobante']
     template_name = 'inventory/nota_credito_emitida_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'nota_credito_emitida_anular'
@@ -1576,7 +1668,7 @@ class TransferenciaCuentaListView(LoginRequiredMixin,SearchViewMixin, SingleTabl
     table_class = TransferenciaCuentaTable
     search_fields = ['cuentaSalida__descripcion','cuentaEntrada__descripcion','comprobante']
     template_name = 'inventory/transferencia_cuenta_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'transferencia_cuenta_anular'
@@ -1633,7 +1725,7 @@ class TransferenciaCuentaAnularView(LoginRequiredMixin,DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("transferencia_cuenta_list")
-
+    
 # LIBRO DE COMPRA
 class LibroCompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin,FilterView):
     model = Compra
@@ -1642,7 +1734,12 @@ class LibroCompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin,F
     paginate_by = 10
     search_fields = ['comprobante','proveedor__razonSocial','deposito__descripcion'] #context?
     template_name = 'inventory/libro_compra_list.html'
-  
+   
+    #def get_form(self, form_class=None):      
+    #    form = super().get_form()
+    #    form.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
+    #    return form
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['list_defecto'] = 'libro_compra_list'
@@ -1723,6 +1820,7 @@ class UserListView(LoginRequiredMixin, SearchViewMixin, SingleTableMixin, ListVi
     table_class = UserTable
     search_fields = ['username', 'first_name']
     template_name = 'generic/list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1797,23 +1895,43 @@ class CobroListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListVi
     table_class = CobroTable
     search_fields = ['cliente__razonSocial','comprobante','cobrador__razonSocial']
     template_name = 'inventory/cobro_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'cobro_anular'
         return context
 
+
+class PersonaSelectionListView(LoginRequiredMixin, SelectionListView):
+
+    model = Persona
+    table_class = PersonaSelectionTable
+    search_fields = ['razonSocial']
+    next_url = "cobro_create"
+    back_url = "cobro_list"
+    params_name = 'cliente'
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(esCliente = True)
+        return qs
+
+
 class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = Cobro
     form_class = CobroForm
     template_name = 'inventory/cobro_create.html'
     inlines = [CobroDetalleInline,CobroMedioInline]
-
+   
     def get_success_url(self):
         return reverse_lazy('cobro_list')
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
+        if self.request.GET.get('cliente', None):
+            form.fields['cliente'].initial = self.request.GET.get('cliente', None)
+            form.fields['cliente'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
         return form
         
     def run_form_extra_validation(self, form, inlines):
@@ -1826,20 +1944,18 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         totalCuota = 0
         for f in cobrodetalleinline:
             if f.cleaned_data.get('check'):
-                totalCuota = f.cleaned_data.get('cancelacion')
+                totalCuota = totalCuota +f.cleaned_data.get('cancelacion')
                 existeUnSeleccionado = True
+                
         totalMedioCobro = 0
-
         for f in mediocobrodetalleinline:
-            totalMedioCobro = f.cleaned_data.get('monto')
-
+            totalMedioCobro = totalMedioCobro + f.cleaned_data.get('monto')
+        montoASaldarValor = form.cleaned_data['montoASaldar']
         if existeUnSeleccionado == False:
             form.add_error(None, 'Seleccione al menos un detalle a cobrar')
-        if totalCuota != form.cleaned_data['montoASaldar']:  
+        if totalCuota != montoASaldarValor:  
             form.add_error('montoASaldar', 'El Monto A Saldar difiere de la suma de las cancelaciones de las cuotas')
-        if totalMedioCobro == 0 or totalMedioCobro is None: 
-               form.add_error(None, 'Cargue los Medios de Cobros')
-        if totalMedioCobro != form.cleaned_data['montoASaldar']:  
+        if totalMedioCobro != montoASaldarValor:    
             form.add_error('montoASaldar', 'El Monto A Saldar difiere de la suma de los medios de cobros')
 
     def get_inlines(self):
@@ -1894,11 +2010,19 @@ class LiquidacionAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTabl
     table_class = LiquidacionAgricolaTable
     search_fields = ['proveedor__razonSocial','zafra__descripcion','tipo']
     template_name = 'inventory/liquidacion_agricola_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'liquidacion_agricola_anular'
         return context
+
+class LiquidacionAgricolaSelectionView(LoginRequiredMixin, SelectionFormView):
+    model = LiquidacionAgricola
+    form_class = LiquidacionAgricolaSelectionForm
+    next_url = 'liquidacion_agricola_create'
+    back_url = 'liquidacion_agricola_list'
+    title = 'Complete los filtros para continuar'
+    #params_name = 'cliente'
 
 class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     model = LiquidacionAgricola
@@ -1911,6 +2035,12 @@ class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesV
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
+        if self.request.GET.get('zafra', None):
+            form.fields['zafra'].initial = self.request.GET.get('zafra', None)
+            form.fields['zafra'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        if self.request.GET.get('proveedor', None):
+            form.fields['proveedor'].initial = self.request.GET.get('proveedor', None)
+            form.fields['proveedor'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
         return form
     
     def get_context_data(self, *args, **kwargs):
@@ -1921,7 +2051,6 @@ class LiquidacionAgricolaAnularView(LoginRequiredMixin,DeleteView):
     model = LiquidacionAgricola
     template_name = 'inventory/anular.html'
     success_url = reverse_lazy("liquidacion_agricola_list")
-
     @transaction.atomic
     def delete(self, request, *args, **kwargs):
         success_url = self.get_success_url()
@@ -1960,7 +2089,7 @@ class NotaDebitoRecibidaListView(LoginRequiredMixin,SearchViewMixin, SingleTable
     table_class = NotaDebitoRecibidaTable
     search_fields = ['proveedor__razonSocial','comprobante','timbrado','compra__comprobante']
     template_name = 'inventory/nota_debito_recibida_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'nota_debito_recibida_anular'
@@ -2027,7 +2156,7 @@ class NotaDebitoEmitidaListView(LoginRequiredMixin,SearchViewMixin, SingleTableM
     table_class = NotaDebitoEmitidaTable
     search_fields = ['cliente__razonSocial','comprobante','timbrado','venta__comprobante']
     template_name = 'inventory/nota_debito_emitida_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'nota_debito_emitida_anular'
@@ -2086,3 +2215,43 @@ class NotaDebitoEmitidaAnularView(LoginRequiredMixin,DeleteView):
         return context
     def get_success_url(self):
         return reverse_lazy("nota_debito_emitida_list")
+
+# CIERRE ZAFRA
+class CierreZafraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
+    model = CierreZafra
+    table_class = CierreZafraTable
+    paginate_by = 6
+    search_fields = ['zafra__descripcion',]
+    template_name = 'inventory/cierre_zafra_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['delete_url'] = 'cierre_zafra_delete'
+        return context
+
+class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
+    model = CierreZafra
+    form_class = CierreZafraForm
+    template_name = 'inventory/cierre_zafra_create.html'
+    inlines = [CierreZafraDetalleInline]
+
+    def get_success_url(self):
+        return reverse_lazy('cierre_zafra_list')
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        return form
+    def get_inlines(self):
+        #initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True).exclude(saldo = 0) ]
+        detalle = self.inlines[0]
+        #cobrodetalleinline.initial = initial
+        #cobrodetalleinline.factory_kwargs['extra'] = len(initial)
+        detalle.factory_kwargs['can_delete'] = False
+        return self.inlines
+
+class CierreZafraDeleteView(LoginRequiredMixin,DeleteView):
+    model = CierreZafra
+    template_name = 'inventory/cierre_zafra_delete.html'
+
+    def get_success_url(self):
+        return reverse_lazy("cierre_zafra_list")

@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, Cobro, Compra, Contrato,
+from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, CierreZafra, Cobro, Compra, Contrato,
                               Cuenta, Deposito, Finca, Item, ItemMovimiento, Marca, NotaCreditoEmitida, NotaCreditoRecibida, NotaDebitoRecibida, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
@@ -58,6 +58,13 @@ class DeleteTable(BaseTable):
     def __init__(self, *args, **kwargs):
         kwargs['empty_text']  =  "Sin resultados."
         kwargs['extra_columns'] = [('eliminar', tables.TemplateColumn(template_name="includes/delete_button.html", verbose_name="Eliminar", orderable=False))]
+        super().__init__(*args, **kwargs)
+
+
+class SelectionTable(BaseTable):
+    def __init__(self, *args, **kwargs):
+        kwargs['empty_text']  =  "Sin resultados."
+        kwargs['extra_columns'] = [('seleccionar', tables.TemplateColumn(template_name="includes/seleccionar_button.html", verbose_name="Seleccionar", orderable=False))]
         super().__init__(*args, **kwargs)
 
 
@@ -223,9 +230,11 @@ class ActividadAgricolaTable(AnulableTable):
         return intcomma(value)
     def render_cantidadTrabajada(self,value):
         return intcomma(value)
+    def render_total(self,value):
+        return intcomma(value)
     class Meta:
         model = ActividadAgricola
-        fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","cantidadTrabajada","esServicioContratado","esVigente")
+        fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","cantidadTrabajada","esServicioContratado","total","esVigente")
         row_attrs = {
             "registro_esVigente": lambda record: record.esVigente
         }
@@ -400,3 +409,21 @@ class NotaDebitoEmitidaTable(AnulableTable):
             "registro_esVigente": lambda record: record.esVigente
         }
         order_by = "-fechaDocumento"
+
+
+class CierreZafraTable(DeleteTable):
+    def render_totalCultivado(self,value):
+        return intcomma(value)
+    def render_totalAcopiado(self,value):
+        return intcomma(value)
+    def render_totalCosto(self,value):
+        return intcomma(value)
+    class Meta:
+        model = CierreZafra
+        fields = ("fecha","zafra","totalCultivado","totalAcopiado","totalCosto",)
+        order_by = "-fecha"
+
+class PersonaSelectionTable(SelectionTable):
+    class Meta:
+        model = Persona
+        fields = ("razonSocial", "documento", )

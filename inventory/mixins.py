@@ -1,5 +1,8 @@
-from django.db.models import Q
 from django.core.exceptions import FieldDoesNotExist
+from django.db.models import Q
+from django.urls import reverse_lazy
+
+from .tables import SelectionTable
 
 class SearchViewMixin:
     search_fields = None
@@ -90,4 +93,32 @@ class FormsetInlinesMetaMixin(object):
         """
         context = super().get_context_data(**kwargs)
         context['formset_inlines_meta'] = self.get_formset_inlines_meta()
+        return context
+
+
+class SelectionMixin:
+    title = None
+    next_url = None
+    back_url = None
+    template_name = 'inventory/selection.html'
+    params_name = 'selection-pk'
+
+    def get_title(self):
+        return self.title
+
+    def get_next_url(self):
+        return reverse_lazy(self.next_url)
+
+    def get_back_url(self):
+        return reverse_lazy(self.back_url)
+
+    def get_params_name(self):
+        return self.params_name
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.get_title()
+        context['next_url'] = self.get_next_url()
+        context['back_url'] = self.get_back_url()
+        context['params_name'] = self.get_params_name()
         return context

@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path,include
 
 # importando vistas
-from inventory.views import AcopioAnularView, AcopioCreateView, AcopioListView, AcopioUpdateView, ActividadAgricolaAnularView, ActividadAgricolaCreateView, ActividadAgricolaListView, AjusteStockCreateView, AjusteStockDeleteView, AjusteStockListView, AjusteStockUpdateView, AperturaCajaCerrarView, AperturaCajaCreateView, AperturaCajaListView, ArqueoCreateView, ArqueoDeleteView, ArqueoListView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CobroAnularView, CobroCreateView, CobroListView, CompraAnularView, CompraCreateView, CompraInformeListView, CompraListView, ContratoCreateView, ContratoDeleteView, ContratoListView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, CustomPasswordChangeDoneView, CustomPasswordChangeView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, InventarioDepositoInformeListView, ItemCreateView, LibroCompraListView, LibroVentaListView, LiquidacionAgricolaAnularView, LiquidacionAgricolaCreateView, LiquidacionAgricolaListView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, NotaCreditoEmitidaAnularView, NotaCreditoEmitidaCreateView, NotaCreditoEmitidaListView, NotaCreditoRecibidaAnularView, NotaCreditoRecibidaCreateView, NotaCreditoRecibidaListView, NotaDebitoEmitidaAnularView, NotaDebitoEmitidaCreateView, NotaDebitoEmitidaListView, NotaDebitoRecibidaAnularView, NotaDebitoRecibidaCreateView, NotaDebitoRecibidaListView, OrdenCompraAnularView, OrdenCompraCreateView, OrdenCompraListView, OrdenCompraUpdateView, PedidoCompraCreateView, PedidoCompraListView, PedidoCompraUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, ProduccionAgricolaInformeListView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, TransferenciaCuentaAnularView, TransferenciaCuentaCreateView, TransferenciaCuentaListView, UserDeleteView, VentaAnularView, VentaCreateView, VentaInformeListView, VentaListView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView
+from inventory.views import AcopioAnularView, AcopioCreateView, AcopioListView, AcopioUpdateView, ActividadAgricolaAnularView, ActividadAgricolaCreateView, ActividadAgricolaListView, AjusteStockCreateView, AjusteStockDeleteView, AjusteStockListView, AjusteStockUpdateView, AperturaCajaCerrarView, AperturaCajaCreateView, AperturaCajaListView, ArqueoCreateView, ArqueoDeleteView, ArqueoListView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CobroAnularView, CobroCreateView, CobroListView, CompraAnularView, CompraCreateView, CompraInformeListView, CompraListView, ContratoCreateView, ContratoDeleteView, ContratoListView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, CustomPasswordChangeDoneView, CustomPasswordChangeView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, InventarioDepositoInformeListView, ItemCreateView, LibroCompraListView, LibroVentaListView, LiquidacionAgricolaAnularView, LiquidacionAgricolaCreateView, LiquidacionAgricolaListView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, NotaCreditoEmitidaAnularView, NotaCreditoEmitidaCreateView, NotaCreditoEmitidaListView, NotaCreditoRecibidaAnularView, NotaCreditoRecibidaCreateView, NotaCreditoRecibidaListView, NotaDebitoEmitidaAnularView, NotaDebitoEmitidaCreateView, NotaDebitoEmitidaListView, NotaDebitoRecibidaAnularView, NotaDebitoRecibidaCreateView, NotaDebitoRecibidaListView, OrdenCompraAnularView, OrdenCompraCreateView, OrdenCompraListView, OrdenCompraUpdateView, PedidoCompraCreateView, PedidoCompraListView, PedidoCompraUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, ProduccionAgricolaInformeListView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, TransferenciaCuentaAnularView, TransferenciaCuentaCreateView, TransferenciaCuentaListView, UserDeleteView, VentaAnularView, VentaCreateView, VentaInformeListView, VentaListView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView, CierreZafraCreateView, CierreZafraDeleteView, CierreZafraListView
 from inventory.views import MarcaCreateView, MarcaDeleteView, MarcaListView, MarcaUpdateView
 from inventory.views import TipoMaquinariaAgricolaCreateView, TipoMaquinariaAgricolaDeleteView, TipoMaquinariaAgricolaListView, TipoMaquinariaAgricolaUpdateView
 from inventory.views import ItemDeleteView, ItemListView, ItemUpdateView
@@ -27,6 +27,7 @@ from inventory.views import TipoActividadAgricolaListView, TipoActividadAgricola
 from inventory.views import FincaListView, FincaCreateView, FincaUpdateView, FincaDeleteView
 from inventory.views import main, menu, download_view
 from inventory.views import UserCreateView, UserListView, UserUpdateView
+from inventory.views import PersonaSelectionListView, LiquidacionAgricolaSelectionView
 
 urlpatterns = [
      # personas
@@ -187,10 +188,12 @@ urlpatterns = [
     # COBRO
     path('inventory/cobro/<int:pk>/anular',CobroAnularView.as_view(), name="cobro_anular"),
     path('inventory/cobro/add',CobroCreateView.as_view(), name="cobro_create"),
+    path('inventory/cobro/seleccionar-persona', PersonaSelectionListView.as_view(), name="cobro_persona_selecction_list"),
     path('inventory/cobro', CobroListView.as_view(), name="cobro_list"),
     # LIQUIDACION AGRICOLA
     path('inventory/liquidacion_agricola/<int:pk>/anular',LiquidacionAgricolaAnularView.as_view(), name="liquidacion_agricola_anular"),
     path('inventory/liquidacion_agricola/add',LiquidacionAgricolaCreateView.as_view(), name="liquidacion_agricola_create"),
+    path('inventory/liquidacion_agricola/selection',LiquidacionAgricolaSelectionView.as_view(), name="liquidacion_agricola_select"),
     path('inventory/liquidacion_agricola', LiquidacionAgricolaListView.as_view(), name="liquidacion_agricola_list"),
     # NOTA DE DEBITO RECIBIDA
     path('inventory/nota_debito_recibida/<int:pk>/anular',NotaDebitoRecibidaAnularView.as_view(), name="nota_debito_recibida_anular"),
@@ -200,6 +203,10 @@ urlpatterns = [
     path('inventory/nota_debito_emitida/<int:pk>/anular',NotaDebitoEmitidaAnularView.as_view(), name="nota_debito_emitida_anular"),
     path('inventory/nota_debito_emitida/add',NotaDebitoEmitidaCreateView.as_view(), name="nota_debito_emitida_create"),
     path('inventory/nota_debito_emitida', NotaDebitoEmitidaListView.as_view(), name="nota_debito_emitida_list"),
+     # CIERRE ZAFRA
+    path('inventory/cierre_zafra/<int:pk>/anular',CierreZafraDeleteView.as_view(), name="cierre_zafra_delete"),
+    path('inventory/cierre_zafra/add',CierreZafraCreateView.as_view(), name="cierre_zafra_create"),
+    path('inventory/cierre_zafra', CierreZafraListView.as_view(), name="cierre_zafra_list"),
     # menu tonto
     path('inventory/', menu, name="inventory_menu"),
     path('admin/', admin.site.urls),

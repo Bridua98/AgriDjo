@@ -10,7 +10,7 @@ from django import forms
 from django.db.models import fields
 from django.contrib.auth.models import User
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, Item, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, Persona, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
 
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -98,6 +98,7 @@ class PlanActividadZafraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        #self.fields['total'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "fecha",
             "zafra",
@@ -166,7 +167,7 @@ class AcopioDetalleForm(forms.ModelForm):
     class Meta:
         model = AcopioDetalle
         fields = ['acopio', 'finca', 'lote', 'peso']
-        widgets = {'peso':DateInput}
+        widgets = {'peso':DecimalMaskInput}
 
 class AcopioCalificacionForm(forms.ModelForm):
     class Meta:
@@ -189,6 +190,8 @@ class PedidoCompraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['cantidad'].label = False
+        #self.fields['cantidad'].widget = DecimalMaskInput()
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.helper.layout = Layout(
             "proveedor",
             "fechaDocumento",
@@ -210,6 +213,10 @@ class PedidoCompraForm(forms.ModelForm):
         )
 
 class PedidoCompraDetalleForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields["item"].queryset =  item = Item.objects.filter(tipoItem__pk=2) # sea igual a normal
     class Meta:
         model = PedidoCompraDetalle
         fields = ['item', 'cantidad']
@@ -230,7 +237,9 @@ class OrdenCompraForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.fields['total'].label = False
+        #self.fields['total'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "pedidoCompra",
             "proveedor",
@@ -256,6 +265,10 @@ class OrdenCompraDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('(cantidad*(precio-descuento))', attrs={'readonly':True}),
         label = "SubTotal"
     )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields["item"].queryset =  item = Item.objects.filter(tipoItem__pk=2) # sea igual a normal
     class Meta:
         model = OrdenCompraDetalle
         fields = ['item', 'cantidad','precio','descuento']
@@ -279,8 +292,11 @@ class CompraForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.fields['total'].label = False
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -321,6 +337,10 @@ class CompraDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
         label = "Impuesto"
     )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields["item"].queryset =  item = Item.objects.filter(tipoItem__pk=2) # sea igual a normal
     class Meta:
         model = CompraDetalle
         fields = ['item', 'cantidad','costo','porcentajeImpuesto','impuesto','subtotal']
@@ -335,13 +355,13 @@ class CuotaCompraForm(forms.ModelForm):
 class AjusteStockForm(forms.ModelForm):
     class Meta:
        model = AjusteStock
-       #template_name = 'inventory/ajuste_stock_create.html'
        fields = ['fechaDocumento','comprobante','empleado','deposito','observacion',]
        widgets = { 'fechaDocumento':DateInput }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.fields["empleado"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "comprobante",
@@ -385,7 +405,10 @@ class ActividadAgricolaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['totalMaquinaria'].label = False
+        #self.fields['totalMaquinaria'].widget = DecimalMaskInput()
         self.fields['totalItem'].label = False
+        #self.fields['totalItem'].widget = DecimalMaskInput()
+        self.fields["empleado"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "tipoActividadAgricola",
@@ -451,6 +474,7 @@ class PedidoCompraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['cantidad'].label = False
+        #self.fields['cantidad'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "proveedor",
             "fechaDocumento",
@@ -472,6 +496,10 @@ class PedidoCompraForm(forms.ModelForm):
         )
 
 class PedidoCompraDetalleForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields["item"].queryset =  item = Item.objects.filter(tipoItem__pk=2) # sea igual a normal
     class Meta:
         model = PedidoCompraDetalle
         fields = ['item', 'cantidad']
@@ -519,8 +547,11 @@ class VentaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -605,8 +636,12 @@ class NotaCreditoRecibidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
+        self.fields["compra"].queryset =  compra = Compra.objects.filter(esVigente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -669,8 +704,12 @@ class NotaCreditoEmitidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
+        self.fields["venta"].queryset =  venta = Venta.objects.filter(esVigente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -755,7 +794,10 @@ class CobroForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
+        self.fields["cobrador"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "comprobante",
@@ -804,6 +846,16 @@ class CobroMedioForm(forms.ModelForm):
         widgets = {'cancelacion':DecimalMaskInput}
 
 # LIQUIDACION AGRICOLA
+
+
+class LiquidacionAgricolaSelectionForm(forms.ModelForm):
+    class Meta:
+        model = LiquidacionAgricola
+        fields = ['zafra','proveedor']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['zafra'].required = False
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
 class LiquidacionAgricolaForm(forms.ModelForm):
     total = forms.DecimalField(
         widget=calculation.SumInput('subtotal',   attrs={'readonly':True}),
@@ -818,6 +870,8 @@ class LiquidacionAgricolaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        #self.fields['total'].widget = DecimalMaskInput()
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "tipo",
@@ -835,7 +889,7 @@ class LiquidacionAgricolaForm(forms.ModelForm):
                 Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
             ), 
             Row(
-                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'cobro_list' %}"> Cancelar</a>""" ))
+                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'liquidacion_agricola_list' %}"> Cancelar</a>""" ))
             ) 
         )
 
@@ -865,8 +919,12 @@ class NotaDebitoRecibidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
+        self.fields["compra"].queryset =  compra = Compra.objects.filter(esVigente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -929,8 +987,12 @@ class NotaDebitoEmitidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
+        self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
+        self.fields["venta"].queryset =  venta = Venta.objects.filter(esVigente=True)
         self.helper.layout = Layout(
             "fechaDocumento",
             "esCredito",
@@ -972,5 +1034,63 @@ class NotaDebitoEmitidaDetalleForm(forms.ModelForm):
         model = NotaDebitoEmitidaDetalle
         fields = ['item', 'cantidad','valor','porcentajeImpuesto','impuesto','subtotal']
         widgets = {'cantidad':DecimalMaskInput,'valor':DecimalMaskInput,'porcentajeImpuesto':DecimalMaskInput,'impuesto':DecimalMaskInput,'subtotal':DecimalMaskInput}
+
+
+# CIERRE DE ZAFRAS
+class CierreZafraForm(forms.ModelForm):
+
+    totalCostoV = forms.DecimalField(
+        widget=calculation.SumInput('costoTotal',   attrs={'readonly':True}),
+    )
+    totalAcopiadoV = forms.DecimalField(
+        widget=calculation.SumInput('cantidadAcopioNeto',   attrs={'readonly':True}),
+    )
+    totalCultivadoV = forms.DecimalField(
+        widget=calculation.SumInput('haCultivada',   attrs={'readonly':True}),
+    )
+    class Meta:
+        model = CierreZafra
+        fields = ['fecha', 'zafra', 'observacion']
+        widgets = {'fecha':DateInput}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['totalCostoV'].label = False
+        #self.fields['totalCostoV'].widget = DecimalMaskInput()
+        self.fields['totalAcopiadoV'].label = False
+        #self.fields['totalAcopiadoV'].widget = DecimalMaskInput()
+        self.fields['totalCultivadoV'].label = False
+        #self.fields['totalCultivadoV'].widget = DecimalMaskInput()
+        self.helper.layout = Layout(
+            "fecha",
+            "zafra",
+            "observacion",
+            Fieldset(
+                u'Detalle',
+                Formset(
+                    "CierreZafraDetalleInline"#, stacked=True
+                ),  
+            ),
+            Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total HA Cultivada: </span>'), css_class="text-right"), Column("totalCultivadoV"),
+            ), 
+             Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total Acopiado: </span>'), css_class="text-right"), Column("totalAcopiadoV"),
+            ), 
+             Row(
+                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total Costo: </span>'), css_class="text-right"), Column("totalCostoV")
+            ), 
+            Row(
+                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'cierre_zafra_list' %}"> Cancelar</a>""" ))
+            ) 
+        )
+
+class CierreZafraDetalleForm(forms.ModelForm):
+    class Meta:
+        model = CierreZafraDetalle
+        fields = ['finca','haCultivada','cantidadAcopioNeto','rendimiento','costoTotal','costoHA','costoUnit']
+        widgets = {'haCultivada':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'rendimiento':DecimalMaskInput,'costoTotal':DecimalMaskInput,'costoHA':DecimalMaskInput,'costoUnit':DecimalMaskInput}
 
 

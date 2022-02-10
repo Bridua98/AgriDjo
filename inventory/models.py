@@ -189,10 +189,10 @@ class Acopio(models.Model):
     camion = models.ForeignKey(MaquinariaAgricola, on_delete=models.DO_NOTHING,verbose_name="Camión")
     fecha = models.DateField(verbose_name="Fecha")
     comprobante = models.CharField(max_length=30,verbose_name="Comprobante")
-    pBruto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Bruto")
-    pTara = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Tara")
-    pDescuento = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Descuento")
-    pBonificacion = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Bonificación")
+    pBruto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Bruto",default=0)
+    pTara = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Tara",default=0)
+    pDescuento = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Descuento",default=0)
+    pBonificacion = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Bonificación",default=0)
     esTransportadoraPropia = models.BooleanField(verbose_name="Es Transportadora Propia?",default=False)
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
@@ -274,7 +274,7 @@ class Compra(models.Model):
     fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
     comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
     timbrado = models.CharField(max_length=8,verbose_name="Timbrado")
-    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=False)
+    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=True)
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
     @property
@@ -394,13 +394,13 @@ class ActividadAgricola(models.Model):
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
     esServicioContratado = models.BooleanField(verbose_name="Es contratado?",default=False)
-    cantidadTrabajada = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cant HA Trabajada")
+    cantidadTrabajada = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="HA Trabajada")
     @property
     def totalMaquinaria(self):
-        retorno = sum(round(x.precio * x.cantidad)  for x in self.actividadagricolamaquinariadetalle.all())
+        retorno = sum(round(x.precio * x.haTrabajada)  for x in self.actividadagricolamaquinariadetalle_set.all())
         if retorno is None:
             retorno = 0
-        return 0
+        return retorno
     @property    
     def totalItem(self):
         retorno = sum(round(x.costo * x.cantidad)  for x in self.actividadagricolaitemdetalle_set.all())
@@ -436,7 +436,7 @@ class ActividadAgricolaItemDetalle(models.Model):
 class Contrato(models.Model):
     zafra = models.ForeignKey(Zafra, on_delete=models.DO_NOTHING,verbose_name="Zafra")
     persona = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Persona")
-    costoPactado = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Pactado")
+    costoPactado = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Precio Pactado")
     fecha = models.DateField(verbose_name="Fecha")
     descripcion = models.CharField(max_length=300,verbose_name="Descripción")
 
@@ -449,7 +449,7 @@ class Venta(models.Model):
     fechaHoraRegistro = models.DateTimeField(auto_now_add=True,verbose_name="Fecha Hora Registro")
     comprobante = models.CharField(max_length=15,verbose_name="Comprobante")
     timbrado = models.CharField(max_length=8,verbose_name="Timbrado")
-    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=False)
+    esCredito = models.BooleanField(verbose_name="Es Crédito?",default=True)
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
     @property
@@ -658,6 +658,15 @@ class CierreZafra(models.Model):
     zafra = models.ForeignKey(Zafra, on_delete=models.DO_NOTHING,verbose_name="Zafra")
     fecha = models.DateField(verbose_name="Fecha")
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    @property
+    def totalCosto(self):
+        return sum(round(x.costoTotal)  for x in self.cierrezafradetalle_set.all())
+    @property
+    def totalCultivado(self):
+        return sum(round(x.haCultivada)  for x in self.cierrezafradetalle_set.all())
+    @property
+    def totalAcopiado(self):
+        return sum(round(x.cantidadAcopioNeto)  for x in self.cierrezafradetalle_set.all())
 
 class CierreZafraDetalle(models.Model):
     cierreZafra = models.ForeignKey(CierreZafra, on_delete=models.DO_NOTHING)
@@ -668,7 +677,7 @@ class CierreZafraDetalle(models.Model):
     costoTotal = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Total")
     costoHA = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo HA")
     costoUnit = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Unit.")
-
+   
 class Cobro(models.Model):
     cobrador = models.ForeignKey(Persona, on_delete=models.DO_NOTHING,verbose_name="Cobrador",related_name='cobrador')
     cuenta = models.ForeignKey(Cuenta, on_delete=models.DO_NOTHING,verbose_name="Cuenta")

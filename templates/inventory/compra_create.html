@@ -9,7 +9,6 @@
 <h1> Añadir Compra </h1>
 <form method="post" enctype="multipart/form-data">
 {% crispy form %}
-{{form.errors}}
 </form>
 {% endblock %}
 
@@ -18,9 +17,9 @@
     $(document).ready(function(){
         $("#id_esCredito").change(function(){
             if($(this).is(":checked")){
-                $(".None").addClass("d-none");
-            }else{
                 $(".None").removeClass("d-none");
+            }else{
+                $(".None").addClass("d-none");
             }
         });
     });
