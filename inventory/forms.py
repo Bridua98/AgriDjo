@@ -34,7 +34,7 @@ class PlanActividadZafraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
-        self.fields['total'].widget = DecimalMaskInput()
+        #self.fields['total'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "fecha",
             "zafra",
@@ -126,7 +126,7 @@ class PedidoCompraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['cantidad'].label = False
-        self.fields['cantidad'].widget = DecimalMaskInput()
+        #self.fields['cantidad'].widget = DecimalMaskInput()
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.helper.layout = Layout(
             "proveedor",
@@ -171,7 +171,7 @@ class OrdenCompraForm(forms.ModelForm):
         self.helper.form_tag = False
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.fields['total'].label = False
-        self.fields['total'].widget = DecimalMaskInput()
+        #self.fields['total'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "pedidoCompra",
             "proveedor",
@@ -222,9 +222,9 @@ class CompraForm(forms.ModelForm):
         self.helper.form_tag = False
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.fields['total'].label = False
-        self.fields['total'].widget = DecimalMaskInput()
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
-        self.fields['total_iva'].widget = DecimalMaskInput()
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -329,9 +329,9 @@ class ActividadAgricolaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['totalMaquinaria'].label = False
-        self.fields['totalMaquinaria'].widget = DecimalMaskInput()
+        #self.fields['totalMaquinaria'].widget = DecimalMaskInput()
         self.fields['totalItem'].label = False
-        self.fields['totalItem'].widget = DecimalMaskInput()
+        #self.fields['totalItem'].widget = DecimalMaskInput()
         self.fields["empleado"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -398,7 +398,7 @@ class PedidoCompraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['cantidad'].label = False
-        self.fields['cantidad'].widget = DecimalMaskInput()
+        #self.fields['cantidad'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "proveedor",
             "fechaDocumento",
@@ -467,9 +467,9 @@ class VentaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
-        self.fields['total'].widget = DecimalMaskInput()
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
-        self.fields['total_iva'].widget = DecimalMaskInput()
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
         self.helper.layout = Layout(
@@ -539,9 +539,9 @@ class NotaCreditoRecibidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
-        self.fields['total'].widget = DecimalMaskInput()
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
-        self.fields['total_iva'].widget = DecimalMaskInput()
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.fields["compra"].queryset =  compra = Compra.objects.filter(esVigente=True)
@@ -607,9 +607,9 @@ class NotaCreditoEmitidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
-        self.fields['total'].widget = DecimalMaskInput()
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
-        self.fields['total_iva'].widget = DecimalMaskInput()
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
         self.fields["venta"].queryset =  venta = Venta.objects.filter(esVigente=True)
@@ -697,7 +697,7 @@ class CobroForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
-        self.fields['total'].widget = DecimalMaskInput()
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
         self.fields["cobrador"].queryset =  proveedor = Persona.objects.filter(esEmpleado=True)
@@ -763,7 +763,7 @@ class LiquidacionAgricolaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
-        self.fields['total'].widget = DecimalMaskInput()
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.helper.layout = Layout(
             "fechaDocumento",
@@ -812,9 +812,9 @@ class NotaDebitoRecibidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
-        self.fields['total'].widget = DecimalMaskInput()
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
-        self.fields['total_iva'].widget = DecimalMaskInput()
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
         self.fields["compra"].queryset =  compra = Compra.objects.filter(esVigente=True)
@@ -880,9 +880,9 @@ class NotaDebitoEmitidaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['total'].label = False
-        self.fields['total'].widget = DecimalMaskInput()
+        #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
-        self.fields['total_iva'].widget = DecimalMaskInput()
+        #self.fields['total_iva'].widget = DecimalMaskInput()
         self.fields['comprobante'].widget = InvoiceMaskInput()
         self.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
         self.fields["venta"].queryset =  venta = Venta.objects.filter(esVigente=True)
@@ -951,11 +951,11 @@ class CierreZafraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields['totalCostoV'].label = False
-        self.fields['totalCostoV'].widget = DecimalMaskInput()
+        #self.fields['totalCostoV'].widget = DecimalMaskInput()
         self.fields['totalAcopiadoV'].label = False
-        self.fields['totalAcopiadoV'].widget = DecimalMaskInput()
+        #self.fields['totalAcopiadoV'].widget = DecimalMaskInput()
         self.fields['totalCultivadoV'].label = False
-        self.fields['totalCultivadoV'].widget = DecimalMaskInput()
+        #self.fields['totalCultivadoV'].widget = DecimalMaskInput()
         self.helper.layout = Layout(
             "fecha",
             "zafra",

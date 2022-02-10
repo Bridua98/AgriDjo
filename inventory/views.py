@@ -1380,6 +1380,24 @@ class VentaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         context = super().get_context_data(*args, **kwargs)
         return context
 
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+        ventaDetalle = inlines[0]
+        cuotaDetalle = inlines[1]
+        totalDetalle = 0
+        totalCuota = 0
+        existeRegistro = False
+        for f in ventaDetalle:
+            totalDetalle = f.cleaned_data.get('subtotal')
+            existeRegistro = True
+        for f in cuotaDetalle:
+            totalCuota = f.cleaned_data.get('monto')
+                     
+        if existeRegistro == False or totalDetalle == 0 or totalDetalle is None:
+            form.add_error(None, 'Registre al menos un Detalle')
+        if form.cleaned_data.get('esCredito') and (totalDetalle!=totalCuota ) :  
+            form.add_error(None, 'Los montos de las cuotas difieren al total de venta')
+
 class VentaAnularView(LoginRequiredMixin,DeleteView):
     model = Venta
     template_name = 'inventory/anular.html'
