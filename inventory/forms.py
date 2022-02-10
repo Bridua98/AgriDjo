@@ -774,7 +774,7 @@ class LiquidacionAgricolaSelectionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['zafra'].required = False
-
+        self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
 class LiquidacionAgricolaForm(forms.ModelForm):
     total = forms.DecimalField(
         widget=calculation.SumInput('subtotal',   attrs={'readonly':True}),
@@ -808,7 +808,7 @@ class LiquidacionAgricolaForm(forms.ModelForm):
                 Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
             ), 
             Row(
-                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'cobro_list' %}"> Cancelar</a>""" ))
+                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'liquidacion_agricola_list' %}"> Cancelar</a>""" ))
             ) 
         )
 

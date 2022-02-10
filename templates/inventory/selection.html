@@ -21,7 +21,8 @@
 <form action="{{ next_url }}" method="get">
     {% csrf_token %}
     {{ form|crispy }}
-    <input class="btn btn-success" type="submit" value="Siguinte">
+    <input class="btn btn-success" type="submit" value="Siguiente">
+    <a class="btn btn-secondary" href="{{ back_url }}"> Cancelar </a>
 </form>
 {% else %}
 {% render_table table %}
