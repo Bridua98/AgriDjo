@@ -45,7 +45,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin, SelectionMixin
 from inventory.tables import CierreZafraTable, CobroTable, LiquidacionAgricolaTable, NotaDebitoEmitidaTable, NotaDebitoRecibidaTable, UserTable
 
-from .forms import CierreZafraForm, CobroForm, CustomUserChangeForm, CustomUserCreationForm, LiquidacionAgricolaForm, NotaDebitoEmitidaForm, NotaDebitoRecibidaForm
+from .forms import CierreZafraForm, CierreZafraSelectionForm, CobroForm, CustomUserChangeForm, CustomUserCreationForm, LiquidacionAgricolaForm, NotaDebitoEmitidaForm, NotaDebitoRecibidaForm
 from .forms import LiquidacionAgricolaSelectionForm
 
 
@@ -2041,11 +2041,18 @@ class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesV
         if self.request.GET.get('proveedor', None):
             form.fields['proveedor'].initial = self.request.GET.get('proveedor', None)
             form.fields['proveedor'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        if self.request.GET.get('tipo', None):
+            form.fields['tipo'].initial = self.request.GET.get('tipo', None)
+            form.fields['tipo'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
         return form
-    
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        return context
+
+    def get_inlines(self):
+        #initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True).exclude(saldo = 0) ]
+        detalle = self.inlines[0]
+        #cobrodetalleinline.initial = initial
+        #cobrodetalleinline.factory_kwargs['extra'] = len(initial)
+        detalle.factory_kwargs['can_delete'] = False
+        return self.inlines
 
 class LiquidacionAgricolaAnularView(LoginRequiredMixin,DeleteView):
     model = LiquidacionAgricola
@@ -2240,7 +2247,11 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
+        if self.request.GET.get('zafra', None):
+            form.fields['zafra'].initial = self.request.GET.get('zafra', None)
+            form.fields['zafra'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
         return form
+
     def get_inlines(self):
         #initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True).exclude(saldo = 0) ]
         detalle = self.inlines[0]
@@ -2255,3 +2266,11 @@ class CierreZafraDeleteView(LoginRequiredMixin,DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("cierre_zafra_list")
+
+class CierreZafraSelectionView(LoginRequiredMixin, SelectionFormView):
+    model = CierreZafra
+    form_class = CierreZafraSelectionForm
+    next_url = 'cierre_zafra_create'
+    back_url = 'cierre_zafra_list'
+    title = 'Complete los filtros para continuar'
+    params_name = 'zafra'

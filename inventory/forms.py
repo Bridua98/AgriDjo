@@ -10,7 +10,7 @@ from django import forms
 from django.db.models import fields
 from django.contrib.auth.models import User
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, Item, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, Persona, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, Item, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, Persona, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle, Zafra
 
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -845,17 +845,19 @@ class CobroMedioForm(forms.ModelForm):
         fields = ['numero','comprobante','medioCobro','observacion','monto']
         widgets = {'cancelacion':DecimalMaskInput}
 
+
 # LIQUIDACION AGRICOLA
-
-
 class LiquidacionAgricolaSelectionForm(forms.ModelForm):
     class Meta:
         model = LiquidacionAgricola
-        fields = ['zafra','proveedor']
+        fields = ['tipo','zafra','proveedor']
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['zafra'].required = False
+        self.fields['zafra'].required = True
+        self.fields['zafra'].required = True
+        self.fields['tipo'].required = True
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
+
 class LiquidacionAgricolaForm(forms.ModelForm):
     total = forms.DecimalField(
         widget=calculation.SumInput('subtotal',   attrs={'readonly':True}),
@@ -1093,4 +1095,11 @@ class CierreZafraDetalleForm(forms.ModelForm):
         fields = ['finca','haCultivada','cantidadAcopioNeto','rendimiento','costoTotal','costoHA','costoUnit']
         widgets = {'haCultivada':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'rendimiento':DecimalMaskInput,'costoTotal':DecimalMaskInput,'costoHA':DecimalMaskInput,'costoUnit':DecimalMaskInput}
 
-
+class CierreZafraSelectionForm(forms.ModelForm):
+    class Meta:
+        model = CierreZafra
+        fields = ['zafra']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['zafra'].required = True
+        self.fields["zafra"].queryset =  zafra = Zafra.objects.filter(estaCerrado=False)
