@@ -748,7 +748,7 @@ class CalificacionAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTab
     paginate_by = 6
     search_fields = ['descripcion',]
     template_name = 'inventory/calificacion_agricola_list.html'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['update_url'] = 'calificacion_agricola_update'
@@ -759,6 +759,7 @@ class CalificacionAgricolaCreateView(LoginRequiredMixin,CreateView):
     model = CalificacionAgricola
     template_name = 'inventory/calificacion_agricola_create.html'
     fields = ['descripcion',]
+    paginate_by = 10
 
     def get_success_url(self):
         return reverse_lazy("calificacion_agricola_list")
@@ -784,6 +785,7 @@ class PlanActividadZafraListView(LoginRequiredMixin,SearchViewMixin, SingleTable
     table_class = PlanActividadZafraTable
     search_fields = ['zafra__descripcion', 'observacion']
     template_name = 'inventory/plan_actividad_zafra_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -831,6 +833,7 @@ class AcopioListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListV
     table_class = AcopioTable
     search_fields = ['zafra__descripcion', 'comprobante','deposito__descripcion']
     template_name = 'inventory/acopio_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -930,6 +933,7 @@ class PedidoCompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin,
     table_class = PedidoCompraTable
     search_fields = ['proveedor__razonSocial',]
     template_name = 'inventory/pedido_compra_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -990,6 +994,7 @@ class OrdenCompraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     form_class = OrdenCompraForm
     template_name = 'inventory/orden_compra_create.html'
     inlines = [OrdenCompraDetalleInline]
+    paginate_by = 10
 
     def get_success_url(self):
         return reverse_lazy('orden_compra_list')
@@ -1134,6 +1139,7 @@ class CompraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListV
     table_class = CompraTable
     search_fields = ['proveedor__razonSocial','comprobante','timbrado','observacion']
     template_name = 'inventory/compra_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1198,7 +1204,7 @@ class CompraAnularView(LoginRequiredMixin,DeleteView):
 class AjusteStockListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = AjusteStock
     table_class = AjusteStockTable
-    paginate_by = 6
+    paginate_by = 10
     search_fields = ['comprobante','empleado__razonSocial','deposito__descripcion']
     template_name = 'inventory/ajuste_stock_list.html'
 
@@ -1254,6 +1260,7 @@ class ActividadAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTableM
     table_class = ActividadAgricolaTable
     search_fields = ['zafra__descripcion','finca__descripcion','lote__descripcion', 'empleado__razonSocial','deposito__descripcion']
     template_name = 'inventory/actividad_agricola_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1347,6 +1354,7 @@ class VentaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListVi
     table_class = VentaTable
     search_fields = ['cliente__razonSocial','comprobante','timbrado','observacion']
     template_name = 'inventory/venta_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1462,7 +1470,7 @@ class NotaCreditoRecibidaListView(LoginRequiredMixin,SearchViewMixin, SingleTabl
     table_class = NotaCreditoRecibidaTable
     search_fields = ['proveedor__razonSocial','comprobante','timbrado','compra__comprobante']
     template_name = 'inventory/nota_credito_recibida_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'nota_credito_recibida_anular'
@@ -1530,7 +1538,7 @@ class NotaCreditoEmitidaListView(LoginRequiredMixin,SearchViewMixin, SingleTable
     table_class = NotaCreditoEmitidaTable
     search_fields = ['cliente__razonSocial','comprobante','timbrado','venta__comprobante']
     template_name = 'inventory/nota_credito_emitida_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'nota_credito_emitida_anular'
@@ -1598,7 +1606,7 @@ class TransferenciaCuentaListView(LoginRequiredMixin,SearchViewMixin, SingleTabl
     table_class = TransferenciaCuentaTable
     search_fields = ['cuentaSalida__descripcion','cuentaEntrada__descripcion','comprobante']
     template_name = 'inventory/transferencia_cuenta_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'transferencia_cuenta_anular'
@@ -1750,7 +1758,7 @@ class UserListView(LoginRequiredMixin, SearchViewMixin, SingleTableMixin, ListVi
     table_class = UserTable
     search_fields = ['username', 'first_name']
     template_name = 'registration/user_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['update_url'] = 'user_update'
@@ -1780,6 +1788,7 @@ class CobroListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListVi
     table_class = CobroTable
     search_fields = ['cliente__razonSocial','comprobante','cobrador__razonSocial']
     template_name = 'inventory/cobro_list.html'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1791,7 +1800,7 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
     form_class = CobroForm
     template_name = 'inventory/cobro_create.html'
     inlines = [CobroDetalleInline,CobroMedioInline]
-
+   
     def get_success_url(self):
         return reverse_lazy('cobro_list')
     
@@ -1875,7 +1884,7 @@ class LiquidacionAgricolaListView(LoginRequiredMixin,SearchViewMixin, SingleTabl
     table_class = LiquidacionAgricolaTable
     search_fields = ['proveedor__razonSocial','zafra__descripcion','tipo']
     template_name = 'inventory/liquidacion_agricola_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'liquidacion_agricola_anular'
@@ -1902,7 +1911,6 @@ class LiquidacionAgricolaAnularView(LoginRequiredMixin,DeleteView):
     model = LiquidacionAgricola
     template_name = 'inventory/anular.html'
     success_url = reverse_lazy("liquidacion_agricola_list")
-
     @transaction.atomic
     def delete(self, request, *args, **kwargs):
         success_url = self.get_success_url()
@@ -1941,7 +1949,7 @@ class NotaDebitoRecibidaListView(LoginRequiredMixin,SearchViewMixin, SingleTable
     table_class = NotaDebitoRecibidaTable
     search_fields = ['proveedor__razonSocial','comprobante','timbrado','compra__comprobante']
     template_name = 'inventory/nota_debito_recibida_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'nota_debito_recibida_anular'
@@ -2008,7 +2016,7 @@ class NotaDebitoEmitidaListView(LoginRequiredMixin,SearchViewMixin, SingleTableM
     table_class = NotaDebitoEmitidaTable
     search_fields = ['cliente__razonSocial','comprobante','timbrado','venta__comprobante']
     template_name = 'inventory/nota_debito_emitida_list.html'
-
+    paginate_by = 10
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['anular_url'] = 'nota_debito_emitida_anular'
