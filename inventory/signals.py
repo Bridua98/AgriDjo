@@ -167,3 +167,19 @@ def signalCobroDetalleSave(sender, instance, created, **kwargs):
         cuota = CuotaVenta.objects.get(pk=instance.cuotaVenta.pk)
         cuota.saldo = cuota.saldo - instance.cancelacion
         cuota.save()
+
+@receiver(post_save, sender = Cobro)
+def signalCobroAnulado(sender, instance, created, **kwargs):
+    print("entra en la señal")
+    if created == False:
+        cobroDetalle = CobroDetalle.objects.filter(cobro__pk = instance.pk)
+        for f in cobroDetalle:
+            cuotaVenta = CuotaVenta.objects.get(pk = f.cuotaVenta.pk)
+            cuotaVenta.saldo =  cuotaVenta.saldo + f.cancelacion  
+            cuotaVenta.save()
+    else: 
+         print("entra en la señal create true")
+        
+
+
+        

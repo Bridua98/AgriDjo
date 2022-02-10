@@ -1983,6 +1983,7 @@ class CobroAnularView(LoginRequiredMixin,DeleteView):
             else:
                 self.object.esVigente = False
                 self.object.save()
+
         except  Exception as e:
             self.error = e
             context = self.get_context_data(object=self.object)

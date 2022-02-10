@@ -771,5 +771,6 @@ from .signals import signalTransferenciaCuentaPreGuardado
 from .signals import signalCobroPreGuardado
 from .signals import signalCobroDetalleSave
 from .signals import signalPreGuardadoCuotaVenta
+from .signals import signalCobroAnulado
 
  
