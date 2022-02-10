@@ -646,7 +646,10 @@ class LiquidacionAgricola(models.Model):
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
     precioUnitario = models.DecimalField(max_digits=15, decimal_places=0,verbose_name="Precio")
     tipo = models.CharField(max_length=50,choices=VALORESENUMTIPMOV,verbose_name="Tipo Liquidación") 
-
+    @property
+    def total(self):
+        return sum(round(self.precioUnitario * x.cantidad)  for x in self.liquidacionagricoladetalle_set.all())
+        
 class LiquidacionAgricolaDetalle(models.Model):
     liquidacionAgricola = models.ForeignKey(LiquidacionAgricola, on_delete=models.DO_NOTHING)
     cantidad = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cantidad")
