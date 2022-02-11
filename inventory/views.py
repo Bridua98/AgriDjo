@@ -1,5 +1,6 @@
 import base64
 import datetime
+from genericpath import exists
 import hashlib
 import imghdr
 import logging
@@ -69,7 +70,7 @@ from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
 from inventory.models import (Acopio, AcopioDetalle, ActividadAgricola, AjusteStock,
                               AperturaCaja, Arqueo, Banco,
                               CalificacionAgricola, Categoria, CierreZafra, Cobro, CobroDetalle, Compra,
-                              Contrato, Cuenta, CuotaVenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, Lote,
+                              Contrato, Cuenta, CuotaVenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, LiquidacionAgricolaDetalle, Lote,
                               MaquinariaAgricola, Marca, NotaCreditoEmitida,
                               NotaCreditoRecibida, NotaDebitoEmitida, NotaDebitoRecibida, OrdenCompra, PedidoCompra,
                               Persona, PlanActividadZafra,
@@ -2055,9 +2056,11 @@ class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesV
         tipoSel = self.request.GET.get('tipo', None)
         precio = self.request.GET.get('precioUnitario', None)
         if tipoSel == 'ACTIVIDADES AGRICOLAS':
-            initial = [ {'precio':precio,'secuenciaOrigen':x.pk ,'check': False,'movimiento': x.tipoActividadAgricola.descripcion ,'finca': x.finca, 'lote': x.lote, 'cantidad': x.cantidadTrabajada, 'subTotal':  (float(x.cantidadTrabajada) * float(precio)) } for x in ActividadAgricola.objects.filter(esVigente = True,esServicioContratado = True)]
+            initial = [{'precio': precio, 'secuenciaOrigen': x.pk, 'check': False, 'movimiento': x.tipoActividadAgricola.descripcion, 'finca': x.finca, 'lote': x.lote, 'cantidad': x.cantidadTrabajada, 'subTotal':  (float(x.cantidadTrabajada) * float(
+                precio))} for x in ActividadAgricola.objects.filter(esVigente=True, esServicioContratado=True) if not LiquidacionAgricolaDetalle.objects.filter(liquidacionAgricola__esVigente=True, secuenciaOrigen=x.pk, liquidacionAgricola__tipo='ACTIVIDADES AGRICOLAS').exists()]
         else:
-             initial = [ {'precio':precio,'secuenciaOrigen':x.pk ,'check': False,'movimiento': "Comp:"+ x.acopio.comprobante +" Conductor "+x.acopio.conductor.razonSocial ,'finca': x.finca, 'lote': x.lote, 'cantidad': x.acopio.pBruto, 'subTotal':  (float(x.acopio.pBruto) * float(precio)) } for x in AcopioDetalle.objects.filter(acopio__esVigente = True,acopio__esTransportadoraPropia = False)]
+            initial = [{'precio': precio, 'secuenciaOrigen': x.pk, 'check': False, 'movimiento': "Comp:" + x.acopio.comprobante + " Conductor "+x.acopio.conductor.razonSocial, 'finca': x.finca, 'lote': x.lote,
+                        'cantidad': x.acopio.pBruto, 'subTotal':  (float(x.acopio.pBruto) * float(precio))} for x in AcopioDetalle.objects.filter(acopio__esVigente=True, acopio__esTransportadoraPropia=False) if not LiquidacionAgricolaDetalle.objects.filter(liquidacionAgricola__esVigente=True, secuenciaOrigen=x.pk, liquidacionAgricola__tipo='ACOPIOS').exists()]
         detalle = self.inlines[0]
         detalle.initial = initial
         detalle.factory_kwargs['extra'] = len(initial)
@@ -2075,6 +2078,7 @@ class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesV
 
         if existeUnSeleccionado == False:
             form.add_error(None, 'Seleccione al menos un detalle a liquidar')
+            
 
 class LiquidacionAgricolaAnularView(LoginRequiredMixin,DeleteView):
     model = LiquidacionAgricola
