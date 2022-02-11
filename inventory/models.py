@@ -156,9 +156,9 @@ class Persona(models.Model):
     documento = models.CharField(max_length=40, verbose_name="Documento")
     direccion = models.CharField(max_length=200, verbose_name="Direccion")
     celular = models.CharField(max_length=60, verbose_name="Celular / Telefono",null=True,blank=True)
-    esCliente = models.BooleanField(verbose_name="Es Cliente?",default=False)
-    esProveedor = models.BooleanField(verbose_name="Es Proveedor?",default=False)
-    esEmpleado = models.BooleanField(verbose_name="Es Empleado?",default=False)
+    esCliente = models.BooleanField(verbose_name="Es Cliente?",default=False,help_text="La persona será tratada como un cliente")
+    esProveedor = models.BooleanField(verbose_name="Es Proveedor?",default=False,help_text="La persona será tratada como un proveedor")
+    esEmpleado = models.BooleanField(verbose_name="Es Empleado?",default=False,help_text="La persona será tratada como un empleado de la empresa")
     
     def __str__(self):
         return self.razonSocial
