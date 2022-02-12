@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+import django_on_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -128,7 +129,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/static_files/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
@@ -145,3 +146,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 INVOICE_CSS_DIR = os.path.join(STATICFILES_DIRS[0],"site/css/invoice.css")
 INVOICE_IMG_DIR = os.path.join(STATICFILES_DIRS[0], 'site/images/iconoAgroAmanecer.png')
 
+django_on_heroku.settings(locals(), staticfiles=False)
