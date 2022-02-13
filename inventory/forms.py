@@ -1110,16 +1110,16 @@ class CierreZafraDetalleForm(forms.ModelForm):
         fields = ['finca','haCultivada','cantidadAcopioNeto','rendimiento','costoTotal','costoHA','costoUnit']
         widgets = {'haCultivada':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'rendimiento':DecimalMaskInput,'costoTotal':DecimalMaskInput,'costoHA':DecimalMaskInput,'costoUnit':DecimalMaskInput}
     def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.helper = FormHelper()
-            self.helper.form_tag = False
-            self.fields['finca'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
-            self.fields['haCultivada'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
-            self.fields['cantidadAcopioNeto'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
-            self.fields['rendimiento'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
-            self.fields['costoTotal'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
-            self.fields['costoHA'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
-            self.fields['costoUnit'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['finca'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        self.fields['haCultivada'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        self.fields['cantidadAcopioNeto'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        self.fields['rendimiento'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        self.fields['costoTotal'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        self.fields['costoHA'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
+        self.fields['costoUnit'].widget.attrs.update({'readonly':True, 'style': 'pointer-events:none;'})
 
 class CierreZafraSelectionForm(forms.ModelForm):
     class Meta:

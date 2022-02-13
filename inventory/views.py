@@ -2324,7 +2324,7 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
 
             costoUnit = round(costoTotal /  cantidadAcopio.get("peso__sum"))
                                                                     
-            initial = [ {'check': False, 'finca': finca, 'haCultivada': haCultivadaV.get("cantidadTrabajada__sum"), 'cantidadAcopioNeto': cantidadAcopio.get("peso__sum"), 'rendimiento': rendimientoKg, 'costoTotal': costoTotal, 'costoHA': costoHa, 'costoUnit': costoUnit}]
+            initial = [ {'finca': finca, 'haCultivada': haCultivadaV.get("cantidadTrabajada__sum"), 'cantidadAcopioNeto': cantidadAcopio.get("peso__sum"), 'rendimiento': rendimientoKg, 'costoTotal': costoTotal, 'costoHA': costoHa, 'costoUnit': costoUnit}]
        
         detalle = self.inlines[0]
         detalle.initial = initial
