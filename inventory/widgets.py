@@ -1,7 +1,7 @@
 import json 
 from django import forms
-
-from inventory.models import Persona
+from django.forms.widgets import Select
+from inventory.models import Item, Persona
 
 
 class DateInput(forms.DateInput):
@@ -65,3 +65,25 @@ class DecimalMaskInput(MaskInputMixin, forms.TextInput):
         super().__init__(*args, **kwargs)
         self.attrs['inputmode'] = 'decimal'
         self.attrs['style'] =  self.attrs.get('style', '')+'text-align:right;'
+
+class ItemCustomSelect(Select):
+    
+    def __init__(self, attrs=None, choices=(), modify_choices=()):
+        super(Select, self).__init__(attrs, choices=choices)
+        # set data
+        self.modify_choices = modify_choices
+
+
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option = super(Select, self).create_option(name, value, label, selected, index, subindex, attrs)
+
+        if value:
+            option['attrs']['data-precio'] = value.instance.precio
+            option['attrs']['data-costo'] = value.instance.costo
+            option['attrs']['data-ultimo-costo'] = value.instance.ultimoCosto
+            option['attrs']['data-tipo-impuesto-id'] = value.instance.tipoImpuesto.id
+            option['attrs']['data-tipo-impuesto-descripcion'] = value.instance.tipoImpuesto.descripcion
+            option['attrs']['data-tipo-impuesto-porcentaje'] = value.instance.tipoImpuesto.porcentaje
+            option['attrs']['data-tipo-impuesto-iva'] = value.instance.tipoImpuesto.esIva
+
+        return option

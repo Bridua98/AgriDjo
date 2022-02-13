@@ -14,7 +14,25 @@
 
 {% block footer %}
 <script>
+
     $(document).ready(function(){
+        
+        function checkItem($item){
+            let $detalleContainer = $item.closest("tr");
+            let $itemCosto = $detalleContainer.find(".item-costo");
+            let $itemPorcentajeIva = $detalleContainer.find(".item-porcentaje-impuesto");
+
+            let $precioCosto = $item.find('option:selected').attr('data-costo');
+            let $impuestoPorcentaje = $item.find('option:selected').attr('data-tipo-impuesto-porcentaje');
+
+            $itemCosto.val($precioCosto);
+            $itemPorcentajeIva.val($impuestoPorcentaje);
+        }
+
+        $(document).on("change", "select[data-item-select]", function(event){
+            checkItem($(event.target))
+        });
+
         $("#id_esCredito").change(function(){
             if($(this).is(":checked")){
                 $(".None").removeClass("d-none");
