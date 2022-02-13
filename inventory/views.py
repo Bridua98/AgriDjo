@@ -921,7 +921,6 @@ class AcopioAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("El Acopio ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -1207,7 +1206,6 @@ class CompraAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("La factura ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -1340,7 +1338,6 @@ class ActividadAgricolaAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("La Actividad Agrícola ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -1467,7 +1464,6 @@ class VentaAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("La factura ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -1581,7 +1577,6 @@ class NotaCreditoRecibidaAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("La Nota de Crédito ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -1649,7 +1644,6 @@ class NotaCreditoEmitidaAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("La Nota de Crédito ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -1715,7 +1709,6 @@ class TransferenciaCuentaAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("La Transferencia ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -1992,7 +1985,6 @@ class CobroAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("El cobro ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -2103,7 +2095,6 @@ class LiquidacionAgricolaAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("La liquidación ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -2170,7 +2161,6 @@ class NotaDebitoRecibidaAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("La Nota de Débito ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -2237,7 +2227,6 @@ class NotaDebitoEmitidaAnularView(LoginRequiredMixin,DeleteView):
         try:
             self.object = self.get_object()
             if self.object.esVigente == False:
-                print('entro en exepcion para anulado')
                 raise Exception("La Nota de Débito ya fue anulado.")
             else:
                 self.object.esVigente = False
@@ -2298,7 +2287,6 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         existeCosto = False
         existeAcopio = False
         for f in detalle:
-            print("cantidad cultivada ",f.cleaned_data.get('haCultivada'))
             if f.cleaned_data.get('haCultivada') == 0 or f.cleaned_data.get('haCultivada') is None:
                 existeFincaSinPlantacion = True
             if f.cleaned_data.get('costoTotal') == 0 or f.cleaned_data.get('costoTotal') is None:
@@ -2364,8 +2352,8 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
 
                 costoUnit = round(costoTotal / acopios)
 
-            #if costoTotal != 0  or acopios !=0 or hectareasCultivadas != 0:                                                
-            initial += [ {'finca': fincaDet, 'haCultivada': hectareasCultivadas, 'cantidadAcopioNeto': acopios, 'rendimiento': rendimientoKg, 'costoTotal': costoTotal, 'costoHA': costoHa, 'costoUnit': costoUnit}]
+            if costoTotal != 0  or acopios !=0 or hectareasCultivadas != 0:                                                
+                initial += [ {'finca': fincaDet, 'haCultivada': hectareasCultivadas, 'cantidadAcopioNeto': acopios, 'rendimiento': rendimientoKg, 'costoTotal': costoTotal, 'costoHA': costoHa, 'costoUnit': costoUnit}]
        
         detalle = self.inlines[0]
         detalle.initial = initial
