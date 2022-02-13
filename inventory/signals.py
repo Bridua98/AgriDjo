@@ -1,5 +1,5 @@
 from django.db.models.signals import post_save,pre_save
-from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, Cobro, CobroDetalle, CompraDetalle, CuotaVenta, Item,ItemMovimiento, NotaCreditoEmitidaDetalle, NotaCreditoRecibidaDetalle, TransferenciaCuenta, Venta, VentaDetalle
+from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CompraDetalle, CuotaVenta, Item,ItemMovimiento, NotaCreditoEmitidaDetalle, NotaCreditoRecibidaDetalle, TransferenciaCuenta, Venta, VentaDetalle, Zafra
 from django.dispatch import receiver
 
 
@@ -179,7 +179,34 @@ def signalCobroAnulado(sender, instance, created, **kwargs):
             cuotaVenta.save()
     else: 
          print("entra en la señal create true")
+
+@receiver(post_save, sender = CierreZafra)
+def signalCierreZafraSave(sender, instance, created, **kwargs):
+    if created:
+        zafra = Zafra.objects.get(pk=instance.zafra.pk)
+        zafra.estaCerrado = True
+        zafra.save()
+
+@receiver(post_save, sender = CierreZafraDetalle)
+def signalCierreZafraDetalleGuardado(sender, instance, created, **kwargs):
+    if created:
+        detalleCierreZafra = CierreZafraDetalle.objects.get(cierreZafra = instance.cierreZafra)
+        sumaCantidadAcopiada = 0
+        sumaCostoTotal = 0
+        costoUnitario = 0
+        for x in detalleCierreZafra:
+            sumaCantidadAcopiada += x.haCultivada
+            sumaCostoTotal += x.costoTotal 
         
+        costoUnitario = round(sumaCostoTotal / sumaCantidadAcopiada)
+        item = Item.objects.get(pk= instance.item.pk)
+        item.ultimoCosto = costoUnitario
+        item.costo = costoUnitario
+        item.save()
+
+        
+       
+
 
 
         

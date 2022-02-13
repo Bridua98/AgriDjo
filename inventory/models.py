@@ -191,11 +191,26 @@ class Acopio(models.Model):
     comprobante = models.CharField(max_length=30,verbose_name="Comprobante")
     pBruto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Bruto",default=0)
     pTara = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Tara",default=0)
-    pDescuento = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Descuento",default=0)
-    pBonificacion = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Bonificación",default=0)
+    pDescuento = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Desc.",default=0)
+    pBonificacion = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Peso Bonif.",default=0)
     esTransportadoraPropia = models.BooleanField(verbose_name="Es Transportadora Propia?",default=False)
     esVigente = models.BooleanField(verbose_name="Vigente?",default=True)
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
+    @property
+    def total(self):
+        pesoBru = self.pBruto
+        pesoBon = self.pBonificacion
+        pesoTara = self.pTara
+        pesoDesc = self.pDescuento
+        if pesoBru is None :
+            pesoBru = 0
+        if pesoBon is None :
+            pesoBon = 0
+        if pesoTara is None :
+            pesoTara = 0
+        if pesoDesc is None :
+            pesoDesc = 0
+        return (pesoBru + pesoBon) - (pesoTara + pesoDesc)
 
 class AcopioDetalle(models.Model):
     acopio = models.ForeignKey(Acopio, on_delete=models.DO_NOTHING)
@@ -675,7 +690,7 @@ class CierreZafraDetalle(models.Model):
     cierreZafra = models.ForeignKey(CierreZafra, on_delete=models.DO_NOTHING)
     finca = models.ForeignKey(Finca, on_delete=models.DO_NOTHING,verbose_name="Finca")
     haCultivada = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="HA Cultivada")
-    cantidadAcopioNeto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Cant. Acopio")
+    cantidadAcopioNeto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="KG Acopiado")
     rendimiento = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Rendimiento")
     costoTotal = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo Total")
     costoHA = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="Costo HA")
@@ -772,5 +787,7 @@ from .signals import signalCobroPreGuardado
 from .signals import signalCobroDetalleSave
 from .signals import signalPreGuardadoCuotaVenta
 from .signals import signalCobroAnulado
+from .signals import signalCierreZafraSave
+from .signals import signalCierreZafraDetalleGuardado
 
  
