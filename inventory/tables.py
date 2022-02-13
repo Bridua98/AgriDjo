@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from inventory.models import (Acopio, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, CierreZafra, Cobro, Compra, Contrato,
+from inventory.models import (Acopio, AcopioCalificacion, ActividadAgricola, AjusteStock, AperturaCaja, Arqueo, Banco, CalificacionAgricola, Categoria, CierreZafra, Cobro, Compra, Contrato,
                               Cuenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, Marca, NotaCreditoEmitida, NotaCreditoRecibida, NotaDebitoRecibida, OrdenCompra,
                               PedidoCompra, Persona, PlanActividadZafra,
                               TipoActividadAgricola, TipoImpuesto,
@@ -165,10 +165,16 @@ class AcopioTable(AnulableTable):
 
     def render_pDescuento(self,value):
         return intcomma(value)
+    
+    def render_pBonificacion(self,value):
+        return intcomma(value)
+
+    def render_total(self,value):
+        return intcomma(value)
 
     class Meta:
         model = Acopio
-        fields = ("fecha","comprobante","zafra","deposito","pBruto","pTara","pDescuento","esVigente")
+        fields = ("fecha","comprobante","zafra","deposito","pBruto","pTara","pDescuento","total","esVigente")
         row_attrs = {
         "registro_esVigente": lambda record: record.esVigente
         }
@@ -176,7 +182,7 @@ class AcopioTable(AnulableTable):
 
 class AcopioCalificacionTable(EditableTable):
     class Meta:
-        model = Acopio
+        model = AcopioCalificacion
         fields = ("acopio","calificacionAgricola","grado","porcentaje","peso",)
 
 class PedidoCompraTable(EditableTable):

@@ -48,7 +48,8 @@ from inventory.tables import CierreZafraTable, CobroTable, LiquidacionAgricolaTa
 
 from .forms import CierreZafraForm, CierreZafraSelectionForm, CobroForm, CustomUserChangeForm, CustomUserCreationForm, LiquidacionAgricolaForm, NotaDebitoEmitidaForm, NotaDebitoRecibidaForm
 from .forms import LiquidacionAgricolaSelectionForm
-
+from django.db.models import Sum
+from django.db.models import FloatField, F
 
 from inventory.forms import (AcopioForm, ActividadAgricolaForm,
                              AjusteStockForm, CompraForm, ContratoForm, CuotaCompraForm, CuotaVentaForm,
@@ -67,7 +68,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
                                PlanActividadZafraDetalleInline,
                                VentaDetalleInline)
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import (Acopio, AcopioDetalle, ActividadAgricola, AjusteStock,
+from inventory.models import (Acopio, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, AjusteStock,
                               AperturaCaja, Arqueo, Banco,
                               CalificacionAgricola, Categoria, CierreZafra, Cobro, CobroDetalle, Compra,
                               Contrato, Cuenta, CuotaVenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, LiquidacionAgricolaDetalle, Lote,
@@ -1312,9 +1313,18 @@ class ActividadAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesVie
         form = super().get_form(form_class)
         return form
     
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        return context
+    def run_form_extra_validation(self, form, inlines):
+        """ ejecutar validaciones adicionales de formularios """
+        detalleMaquinaria = inlines[0] 
+        detalleItem = inlines[0]
+
+        cantidadHaMaquinaria = 0
+
+        for f in detalleMaquinaria:
+           cantidadHaMaquinaria += f.cleaned_data.get('haTrabajada')
+               
+        if (cantidadHaMaquinaria != form.cleaned_data.get('cantidadTrabajada')) and form.cleaned_data.get('esServicioContratado') == False :
+            form.add_error(None, 'La cantidad de HA trabajada debe ser igual a la cantidad de HA trabajada por las maquinarias')
 
 class ActividadAgricolaAnularView(LoginRequiredMixin,DeleteView):
     model = ActividadAgricola
@@ -2279,10 +2289,27 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         return form
 
     def get_inlines(self):
-        #initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True).exclude(saldo = 0) ]
+        initial = None
+        zafraDigitada = self.request.GET.get('zafra', None)
+        for finca in Finca.objects.filter():
+            haCultivadaV = ActividadAgricola.objects.filter(esVigente = True,tipoActividadAgricola__esSiembra = True,zafra = zafraDigitada).aggregate(Sum('cantidadTrabajada'))
+            cantidadAcopio = AcopioDetalle.objects.filter(acopio__esVigente = True, acopio__zafra = zafraDigitada).aggregate(Sum('peso'))
+            rendimientoKg =  round(cantidadAcopio.get("peso__sum") / haCultivadaV.get("cantidadTrabajada__sum"))
+
+
+            #costoItem = ActividadAgricolaItemDetalle.objects.filter(
+            #                                                        actividadAgricola__esVigente = True,actividadAgricola__zafra = zafraDigitada
+            #                                                        ).aggregate(
+            #                                                                    total=Sum(field=F('costo') * F('cantidad'),output_field=FloatField())
+            #                                                                )
+
+            #print("kova hae",costoItem)
+                                                                    
+            initial = [ {'check': False, 'finca': finca, 'haCultivada': haCultivadaV.get("cantidadTrabajada__sum"), 'cantidadAcopioNeto': cantidadAcopio.get("peso__sum"), 'rendimiento': rendimientoKg, 'costoTotal': 0, 'costoHA': 0, 'costoUnit': 0}]
+       
         detalle = self.inlines[0]
-        #cobrodetalleinline.initial = initial
-        #cobrodetalleinline.factory_kwargs['extra'] = len(initial)
+        detalle.initial = initial
+        detalle.factory_kwargs['extra'] = len(initial)
         detalle.factory_kwargs['can_delete'] = False
         return self.inlines
 
