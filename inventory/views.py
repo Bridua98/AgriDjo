@@ -68,7 +68,7 @@ from inventory.inlines import (AcopioCalificacionDetalleInline,
                                PlanActividadZafraDetalleInline,
                                VentaDetalleInline)
 from inventory.mixins import FormsetInlinesMetaMixin, SearchViewMixin
-from inventory.models import (Acopio, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, AjusteStock,
+from inventory.models import (Acopio, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock,
                               AperturaCaja, Arqueo, Banco,
                               CalificacionAgricola, Categoria, CierreZafra, Cobro, CobroDetalle, Compra,
                               Contrato, Cuenta, CuotaVenta, Deposito, Finca, Item, ItemMovimiento, LiquidacionAgricola, LiquidacionAgricolaDetalle, Lote,
@@ -2296,16 +2296,35 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
             cantidadAcopio = AcopioDetalle.objects.filter(acopio__esVigente = True, acopio__zafra = zafraDigitada).aggregate(Sum('peso'))
             rendimientoKg =  round(cantidadAcopio.get("peso__sum") / haCultivadaV.get("cantidadTrabajada__sum"))
 
+            costoItem = ActividadAgricolaItemDetalle.objects.annotate(i_sum=Sum(F('costo') * F('cantidad'))).filter(
+                                                                    actividadAgricola__esVigente = True,actividadAgricola__zafra = zafraDigitada
+                                                                    )
+            costoMaquinaria = ActividadAgricolaMaquinariaDetalle.objects.annotate(i_sum=Sum(F('haTrabajada') * F('haTrabajada'))).filter(
+                                                                    actividadAgricola__esVigente = True,actividadAgricola__zafra = zafraDigitada
+                                                                    )
+            costoLiquidacion = LiquidacionAgricolaDetalle.objects.annotate(i_sum=Sum(F('cantidad') * F('liquidacionAgricola__precioUnitario'))).filter(
+                                                                    liquidacionAgricola__esVigente = True,liquidacionAgricola__zafra = zafraDigitada
+                                                                    )
+            costoItemTotal = 0
+            costoMaquinariaTotal = 0
+            costoLiquidacionTotal = 0
+            costoTotal = 0
+            for x in costoItem:
+                costoItemTotal += x.i_sum
 
-            #costoItem = ActividadAgricolaItemDetalle.objects.filter(
-            #                                                        actividadAgricola__esVigente = True,actividadAgricola__zafra = zafraDigitada
-            #                                                        ).aggregate(
-            #                                                                    total=Sum(field=F('costo') * F('cantidad'),output_field=FloatField())
-            #                                                                )
+            for x in costoMaquinaria:
+                costoMaquinariaTotal += x.i_sum
+            
+            for x in costoLiquidacion:
+                costoLiquidacionTotal += x.i_sum
 
-            #print("kova hae",costoItem)
+            costoTotal = costoItemTotal + costoMaquinariaTotal + costoLiquidacionTotal
+
+            costoHa = round(costoTotal / haCultivadaV.get("cantidadTrabajada__sum"))
+
+            costoUnit = round(costoTotal /  cantidadAcopio.get("peso__sum"))
                                                                     
-            initial = [ {'check': False, 'finca': finca, 'haCultivada': haCultivadaV.get("cantidadTrabajada__sum"), 'cantidadAcopioNeto': cantidadAcopio.get("peso__sum"), 'rendimiento': rendimientoKg, 'costoTotal': 0, 'costoHA': 0, 'costoUnit': 0}]
+            initial = [ {'check': False, 'finca': finca, 'haCultivada': haCultivadaV.get("cantidadTrabajada__sum"), 'cantidadAcopioNeto': cantidadAcopio.get("peso__sum"), 'rendimiento': rendimientoKg, 'costoTotal': costoTotal, 'costoHA': costoHa, 'costoUnit': costoUnit}]
        
         detalle = self.inlines[0]
         detalle.initial = initial
