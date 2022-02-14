@@ -106,6 +106,25 @@ class ItemTable(EditableDeleteTable):
         return intcomma(value)
     def render_ultimoCosto(self,value):
         return intcomma(value)
+        
+    precio = tables.Column(verbose_name= 'Precio',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
+    costo = tables.Column(verbose_name= 'Costo',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
+    ultimoCosto = tables.Column(verbose_name= 'Ult. Costo',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = Item
         fields = ("codigoBarra","descripcion","tipoImpuesto", "marca","categoria","costo","ultimoCosto","precio", "esActivo")
@@ -123,6 +142,12 @@ class LoteTable(EditableDeleteTable):
 class MaquinariaAgricolaTable(EditableDeleteTable):
     def render_precio(self,value):
         return intcomma(value)
+    precio = tables.Column(verbose_name= 'Precio',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = Zafra
         fields = ("descripcion","tipoMaquinariaAgricola", "esImplemento","admiteImplemento","precio")
@@ -155,6 +180,12 @@ class PersonaTable(EditableDeleteTable):
 class PlanActividadZafraTable(EditableTable):
     def render_total(self,value):
         return intcomma(value)
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = PlanActividadZafra
         fields = ("fecha","zafra","observacion","total")
@@ -175,6 +206,30 @@ class AcopioTable(AnulableTable):
 
     def render_total(self,value):
         return intcomma(value)
+    pBruto = tables.Column(verbose_name= 'P Bruto',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
+    pTara = tables.Column(verbose_name= 'P Tara',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
+    pDescuento = tables.Column(verbose_name= 'P Desc.',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
+    total = tables.Column(verbose_name= 'P Neto',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
 
     class Meta:
         model = Acopio
@@ -197,6 +252,12 @@ class PedidoCompraTable(EditableTable):
 class OrdenCompraTable(AnulableTable):
     def render_total(self,value):
         return intcomma(value)
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = OrdenCompra
         fields = ("proveedor","fechaDocumento","total","esVigente")
@@ -208,6 +269,12 @@ class OrdenCompraTable(AnulableTable):
 class AperturaCajaTable(CerrarAperturaCajaTable):
     def render_montoInicio(self,value):
         return intcomma(value)
+    montoInicio = tables.Column(verbose_name= 'Monto Inicial',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = AperturaCaja
         fields = ("empleado","fechaHoraRegistro","fechaHoraCierre","montoInicio","estaCerrado")
@@ -215,6 +282,12 @@ class AperturaCajaTable(CerrarAperturaCajaTable):
 class ArqueoTable(DeleteTable):
     def render_monto(self,value):
         return intcomma(value)
+    monto = tables.Column(verbose_name= 'Monto',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = Arqueo
         fields = ("empleado","aperturaCaja","observacion","fechaHoraRegistro","monto")
@@ -222,6 +295,12 @@ class ArqueoTable(DeleteTable):
 class CompraTable(AnulableTable):
     def render_total(self,value):
         return intcomma(value)
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = Compra
         fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)
@@ -238,10 +317,20 @@ class AjusteStockTable(EditableDeleteTable):
 class ActividadAgricolaTable(AnulableTable):
     def render_cantidadTrabajada(self,value):
         return intcomma(value)
-    def render_cantidadTrabajada(self,value):
-        return intcomma(value)
     def render_total(self,value):
         return intcomma(value)
+    cantidadTrabajada = tables.Column(verbose_name= 'HA Trabajada',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = ActividadAgricola
         fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","cantidadTrabajada","esServicioContratado","total","esVigente")
@@ -253,6 +342,12 @@ class ActividadAgricolaTable(AnulableTable):
 class ContratoTable(DeleteTable):
     def render_costoPactado(self,value):
         return intcomma(value)
+    costoPactado = tables.Column(verbose_name= 'Costo Pactado',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = Contrato
         fields = ("fecha","zafra","persona","costoPactado","descripcion")
@@ -261,6 +356,12 @@ class ContratoTable(DeleteTable):
 class VentaTable(VentaTable):
     def render_total(self,value):
         return intcomma(value)
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = Venta
         fields = ("fechaDocumento","comprobante","cliente","total","esVigente",)
@@ -272,6 +373,12 @@ class VentaTable(VentaTable):
 class NotaCreditoRecibidaTable(AnulableTable):
     def render_total(self,value):
         return intcomma(value)
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = NotaCreditoRecibida
         fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)
@@ -283,6 +390,12 @@ class NotaCreditoRecibidaTable(AnulableTable):
 class NotaCreditoEmitidaTable(AnulableTable):
     def render_total(self,value):
         return intcomma(value)
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = NotaCreditoEmitida
         fields = ("fechaDocumento","comprobante","cliente","total","esVigente",)
@@ -294,6 +407,12 @@ class NotaCreditoEmitidaTable(AnulableTable):
 class TransferenciaCuentaTable(AnulableTable):
     def render_monto(self,value):
         return intcomma(value)
+    monto = tables.Column(verbose_name= 'Monto',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = TransferenciaCuenta
         fields = ("fecha","cuentaSalida","cuentaEntrada","monto","esVigente",)
@@ -413,11 +532,23 @@ class LibroVentaTable(BaseTable):
 class CompraInformeTable(BaseTable):
     def render_total(self,value):
         return intcomma(value)
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
     class Meta:
         model = Compra
         fields = ("fechaDocumento","esCredito","comprobante","proveedor","total",)
 
 class VentaInformeTable(BaseTable):
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
     def render_total(self,value):
         return intcomma(value)
     class Meta:
@@ -462,6 +593,12 @@ class ProduccionAgricolaInformeTable(BaseTable):
 class InventarioDepositoInformeTable(BaseTable):   
     def render_cantidad(self,value):
         return intcomma(value)
+    cantidad = tables.Column(verbose_name= 'Cantidad',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = ItemMovimiento
         fields = ("fechaDocumento","deposito","item","tipoMovimiento","cantidad")
@@ -474,6 +611,12 @@ class UserTable(EditableDeleteTable):
 class CobroTable(AnulableTable):
     def render_montoASaldar(self,value):
         return intcomma(value)
+    montoASaldar = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = Cobro
         fields = ("fechaDocumento","comprobante","cuenta","cliente",'cobrador',"montoASaldar","esVigente")
@@ -485,6 +628,12 @@ class CobroTable(AnulableTable):
 class LiquidacionAgricolaTable(AnulableTable):
     def render_total(self,value):
         return intcomma(value)
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = LiquidacionAgricola
         fields = ("fechaDocumento","tipo","zafra","proveedor","total","esVigente")
@@ -496,6 +645,12 @@ class LiquidacionAgricolaTable(AnulableTable):
 class NotaDebitoRecibidaTable(AnulableTable):
     def render_total(self,value):
         return intcomma(value)
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = NotaDebitoRecibida
         fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)
@@ -507,6 +662,12 @@ class NotaDebitoRecibidaTable(AnulableTable):
 class NotaDebitoEmitidaTable(AnulableTable):
     def render_total(self,value):
         return intcomma(value)
+    total = tables.Column(verbose_name= 'Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
     class Meta:
         model = NotaDebitoRecibida
         fields = ("fechaDocumento","comprobante","cliente","total","esVigente",)
@@ -528,11 +689,37 @@ class CierreZafraTable(DeleteTable):
     def render_totalCostoUnit(self,value):
         return intcomma(value)
 
-    totalAcopiado = tables.Column(verbose_name= 'KG Acopiado' )
-    totalCultivado = tables.Column(verbose_name= 'HA Cultivada' )
-    totalCostoUnit = tables.Column(verbose_name= 'Costo Unit')
-    totalCostoHa = tables.Column(verbose_name= 'Costo HA')
-    totalCosto = tables.Column(verbose_name= 'Costo')
+    totalAcopiado = tables.Column(verbose_name= 'KG Acopiado',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
+    totalCultivado = tables.Column(verbose_name= 'HA Cultivada',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        } )
+    totalCostoUnit = tables.Column(verbose_name= 'Costo Unit',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    totalCostoHa = tables.Column(verbose_name= 'Costo HA',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    totalCosto = tables.Column(verbose_name= 'Costo',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+
 
     class Meta:
         model = CierreZafra

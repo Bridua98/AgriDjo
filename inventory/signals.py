@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save,pre_save
+from django.db.models.signals import post_save,pre_save,pre_delete
 from .models import AcopioDetalle, ActividadAgricolaItemDetalle, AjusteStockDetalle, AperturaCaja, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CompraDetalle, CuotaVenta, Item,ItemMovimiento, NotaCreditoEmitidaDetalle, NotaCreditoRecibidaDetalle, TransferenciaCuenta, Venta, VentaDetalle, Zafra
 from django.dispatch import receiver
 
@@ -205,8 +205,11 @@ def signalCierreZafraDetalleGuardado(sender, instance, created, **kwargs):
             item.costo = costoUnitario
             item.save()
 
-        
-       
+@receiver(pre_delete, sender = CierreZafra)
+def signalCierreZafraBorrar(sender, instance, **kwargs):
+    zafra = Zafra.objects.get(pk=instance.zafra.pk)
+    zafra.estaCerrado = False
+    zafra.save()
 
 
 

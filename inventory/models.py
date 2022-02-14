@@ -694,6 +694,8 @@ class CierreZafra(models.Model):
     @property
     def totalCostoUnit(self):
         return round(self.totalCosto / self.totalAcopiado)
+    def __str__(self):
+        return self.zafra.descripcion
 
 class CierreZafraDetalle(models.Model):
     cierreZafra = models.ForeignKey(CierreZafra, on_delete=models.DO_NOTHING)
@@ -798,5 +800,6 @@ from .signals import signalPreGuardadoCuotaVenta
 from .signals import signalCobroAnulado
 from .signals import signalCierreZafraSave
 from .signals import signalCierreZafraDetalleGuardado
+#from .signals import signalCierreZafraBorrar
 
  
