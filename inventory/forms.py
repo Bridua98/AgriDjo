@@ -458,6 +458,7 @@ class ActividadAgricolaItemDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('costo*cantidad', attrs={'readonly':True}),
         label = "SubTotal"
     )
+    item = ItemCustomSelect()
     class Meta:
         model = ActividadAgricolaItemDetalle
         fields = ['item', 'deposito','dosis','costo','cantidad','porcentajeImpuesto','subtotalItem']
