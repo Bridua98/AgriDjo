@@ -315,6 +315,44 @@ class LibroCompraTable(BaseTable):
         return intcomma(value)
     def render_total(self,value):
         return intcomma(value)
+
+    iva5 = tables.Column(verbose_name= 'Iva 5',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    iva10 = tables.Column(verbose_name= 'Iva 10',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    imponibleExenta = tables.Column(verbose_name= 'Imp. Exenta',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    imponible5 = tables.Column(verbose_name= 'Imp. 5',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    imponible10 = tables.Column(verbose_name= 'Imp. 10',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    total = tables.Column(verbose_name= 'Imp. Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+
     class Meta:
         model = Compra
         fields = ("fechaDocumento","esCredito","comprobante","proveedor","iva5","iva10","imponibleExenta","imponible5","imponible10","total",)
@@ -332,6 +370,42 @@ class LibroVentaTable(BaseTable):
         return intcomma(value)
     def render_total(self,value):
         return intcomma(value)
+    iva5 = tables.Column(verbose_name= 'Iva 5',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    iva10 = tables.Column(verbose_name= 'Iva 10',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    imponibleExenta = tables.Column(verbose_name= 'Imp. Exenta',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    imponible5 = tables.Column(verbose_name= 'Imp. 5',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    imponible10 = tables.Column(verbose_name= 'Imp. 10',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    total = tables.Column(verbose_name= 'Imp. Total',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
     class Meta:
         model = Venta
         fields = ("fechaDocumento","esCredito","comprobante","cliente","iva5","iva10","imponibleExenta","imponible5","imponible10","total",)
@@ -359,6 +433,27 @@ class ProduccionAgricolaInformeTable(BaseTable):
 
     def render_totalMaquinaria(self,value):
         return intcomma(value)
+
+    totalMaquinaria = tables.Column(verbose_name= 'Total Maqui.',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    totalItem = tables.Column(verbose_name= 'Total Item',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    total = tables.Column(verbose_name= 'Total',
+    attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+
     class Meta:
         model = ActividadAgricola
         fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","totalMaquinaria","totalItem","total")
@@ -428,9 +523,20 @@ class CierreZafraTable(DeleteTable):
         return intcomma(value)
     def render_totalCosto(self,value):
         return intcomma(value)
+    def render_totalCostoHa(self,value):
+        return intcomma(value)
+    def render_totalCostoUnit(self,value):
+        return intcomma(value)
+
+    totalAcopiado = tables.Column(verbose_name= 'KG Acopiado' )
+    totalCultivado = tables.Column(verbose_name= 'HA Cultivada' )
+    totalCostoUnit = tables.Column(verbose_name= 'Costo Unit')
+    totalCostoHa = tables.Column(verbose_name= 'Costo HA')
+    totalCosto = tables.Column(verbose_name= 'Costo')
+
     class Meta:
         model = CierreZafra
-        fields = ("fecha","zafra","totalCultivado","totalAcopiado","totalCosto",)
+        fields = ("fecha","zafra","totalCultivado","totalAcopiado","totalCosto","totalCostoHa","totalCostoUnit")
         order_by = "-fecha"
 
 class PersonaSelectionTable(SelectionTable):

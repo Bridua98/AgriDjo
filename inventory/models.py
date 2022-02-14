@@ -685,6 +685,15 @@ class CierreZafra(models.Model):
     @property
     def totalAcopiado(self):
         return sum(round(x.cantidadAcopioNeto)  for x in self.cierrezafradetalle_set.all())
+    @property
+    def totalHA(self):
+        return sum(round(x.haCultivada)  for x in self.cierrezafradetalle_set.all())
+    @property
+    def totalCostoHa(self):
+        return round(self.totalCosto / self.totalHA)
+    @property
+    def totalCostoUnit(self):
+        return round(self.totalCosto / self.totalAcopiado)
 
 class CierreZafraDetalle(models.Model):
     cierreZafra = models.ForeignKey(CierreZafra, on_delete=models.DO_NOTHING)
