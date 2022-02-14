@@ -2,7 +2,7 @@ from django.shortcuts import reverse
 from email.policy import default
 import calculation
 from .layout import CancelButton, DeleteButton, Formset
-from .widgets import DateInput, DecimalMaskInput, InvoiceMaskInput
+from .widgets import DateInput, DecimalMaskInput, InvoiceMaskInput, ItemCustomSelect
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fieldset,
                                  Layout, Row, Submit, Field)
@@ -310,7 +310,8 @@ class CompraForm(forms.ModelForm):
             Fieldset(
                 u'Detalle',
                 Formset(
-                    "CompraDetalleInline"#, stacked=True
+                    "CompraDetalleInline",#, stacked=True
+                    css_class="compra-detalle-container"
                 ),  
                 Formset(
                     "CuotaCompraInline",
@@ -337,6 +338,7 @@ class CompraDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
         label = "Impuesto"
     )
+    item = ItemCustomSelect()
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -590,29 +592,30 @@ class VentaDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
         label = "Impuesto"
     )
+    item = ItemCustomSelect()
     class Meta:
         model = VentaDetalle
         fields = ['item', 'cantidad','precio','porcentajeImpuesto','impuesto','subtotal']
         widgets = {'cantidad':DecimalMaskInput,'precio':DecimalMaskInput,'porcentajeImpuesto':DecimalMaskInput,'impuesto':DecimalMaskInput,'subtotal':DecimalMaskInput}
 
 class CuotaVentaForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.disable_csrf = True
-        self.helper.form_tag = False
-        self.helper.include_media = False
-        self.helper.layout = Layout(
-            Row(
-                Column("fechaVencimiento"),  
-                Column("monto"),   
-            ),
-            Column(
-                'DELETE',
-                hidden='hidden'
-            ),
-            Button("button",  "Eliminar", css_class="btn btn-block btn-danger",data_formset_delete_button=""),
-        )
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.helper = FormHelper()
+    #     self.helper.disable_csrf = True
+    #     self.helper.form_tag = False
+    #     self.helper.include_media = False
+    #     self.helper.layout = Layout(
+    #         Row(
+    #             Column("fechaVencimiento"),  
+    #             Column("monto"),   
+    #         ),
+    #         Column(
+    #             'DELETE',
+    #             hidden='hidden'
+    #         ),
+    #         Button("button",  "Eliminar", css_class="btn btn-block btn-danger",data_formset_delete_button=""),
+    #     )
     class Meta:
         model = CuotaVenta
         fields = ['fechaVencimiento','monto']
