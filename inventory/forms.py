@@ -2,7 +2,7 @@ from django.shortcuts import reverse
 from email.policy import default
 import calculation
 from .layout import CancelButton, DeleteButton, Formset
-from .widgets import DateInput, DecimalMaskInput, InvoiceMaskInput, ItemCustomSelect
+from .widgets import DateInput, DecimalMaskInput, InvoiceMaskInput, ItemCustomSelect, MaquinariaCustomSelect
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import (HTML, Button, ButtonHolder, Column, Div, Fieldset,
                                  Layout, Row, Submit, Field)
@@ -442,10 +442,12 @@ class ActividadAgricolaForm(forms.ModelForm):
         )
 
 class ActividadAgricolaMaquinariaDetalleForm(forms.ModelForm):
+    maquinaria = MaquinariaCustomSelect()
     subtotalMaquinaria = forms.DecimalField(
         widget=calculation.FormulaInput('precio*haTrabajada', attrs={'readonly':True}),
         label = "SubTotal"
     )
+
     class Meta:
         model = ActividadAgricolaMaquinariaDetalle
         fields = ['maquinaria', 'haTrabajada','precio','subtotalMaquinaria']

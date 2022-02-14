@@ -73,7 +73,6 @@ class ItemCustomSelect(Select):
         # set data
         self.modify_choices = modify_choices
 
-
     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
         option = super(Select, self).create_option(name, value, label, selected, index, subindex, attrs)
 
@@ -87,3 +86,18 @@ class ItemCustomSelect(Select):
             option['attrs']['data-tipo-impuesto-iva'] = value.instance.tipoImpuesto.esIva
 
         return option
+
+class MaquinariaCustomSelect(Select):
+    
+    def __init__(self, attrs=None, choices=(), modify_choices=()):
+        super(Select, self).__init__(attrs, choices=choices)
+        # set data
+        self.modify_choices = modify_choices
+
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option = super(Select, self).create_option(name, value, label, selected, index, subindex, attrs)
+        if value:
+            option['attrs']['data-precio-ha'] = value.instance.precio
+
+        return option
+

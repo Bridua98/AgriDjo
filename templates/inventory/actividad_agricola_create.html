@@ -9,3 +9,27 @@
 {{form.errors}}
 </form>
 {% endblock %}
+
+
+{% block footer %}
+    <script>
+        $(document).ready(function(){
+                
+            function checkItem($maquinaria){
+                
+                let $detalleContainer = $maquinaria.closest("tr");
+                let $maquinariaPrecio = $detalleContainer.find(".precio-ha");
+                
+                let $precioHa = $maquinaria.find('option:selected').attr('data-precio-ha');
+                
+                $maquinariaPrecio.val($precioHa);
+                
+            }
+
+            $(document).on("change", "select[data-maquinaria-select]", function(event){
+                checkItem($(event.target))
+            });
+        });
+    </script>
+{% endblock  %}
+    

@@ -1,5 +1,5 @@
 from extra_views.advanced import InlineFormSetFactory
-from inventory.widgets import ItemCustomSelect
+from inventory.widgets import ItemCustomSelect, MaquinariaCustomSelect
 
 from .models import AcopioCalificacion, AcopioDetalle, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStockDetalle, CierreZafraDetalle, CobroDetalle, CobroMedio, CompraDetalle, CuotaCompra, CuotaVenta, LiquidacionAgricolaDetalle, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitidaDetalle, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle, VentaDetalle
 from .forms import AcopioCalificacionForm, AcopioDetalleForm, ActividadAgricolaItemDetalleForm, ActividadAgricolaMaquinariaDetalleForm, AjusteStockDetalleForm, CierreZafraDetalleForm, CobroDetalleForm, CobroMedioForm, CompraDetalleForm, CuotaCompraForm, CuotaVentaForm, LiquidacionAgricolaDetalleForm, NotaCreditoEmitidaDetalleForm, NotaCreditoRecibidaDetalleForm, NotaCreditoRecibidaForm, NotaDebitoEmitidaDetalleForm, NotaDebitoRecibidaDetalleForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm, VentaDetalleForm
@@ -89,7 +89,22 @@ class AjusteStockDetalleInline(InlineFormSetFactory):
 class ActividadAgricolaMaquinariaDetalleInline(InlineFormSetFactory):
     model = ActividadAgricolaMaquinariaDetalle
     form_class = ActividadAgricolaMaquinariaDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'maquinaria':MaquinariaCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-4',
+                    'data-maquinaria-select':True,
+                }
+            ),
+            'precio':widgets.NumberInput(
+                attrs={
+                    'class':'text-right precio-ha',
+                }
+            ),
+        } 
+    }
     fields = ['maquinaria', 'haTrabajada','precio','subtotalMaquinaria']
 
 class ActividadAgricolaItemDetalleInline(InlineFormSetFactory):
