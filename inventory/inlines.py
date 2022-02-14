@@ -122,4 +122,4 @@ class CierreZafraDetalleInline(InlineFormSetFactory):
     model = CierreZafraDetalle
     form_class = CierreZafraDetalleForm
     factory_kwargs = {'extra':1 }
-    fields = ['finca','haCultivada','cantidadAcopioNeto','rendimiento','costoTotal','costoHA','costoUnit',]
+    fields = ['check','finca','haCultivada','cantidadAcopioNeto','rendimiento','costoTotal','costoHA','costoUnit',]

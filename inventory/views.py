@@ -2284,23 +2284,31 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         """ ejecutar validaciones adicionales de formularios """
         detalle = inlines[0]
         existeFincaSinPlantacion = False
-        existeCosto = False
-        existeAcopio = False
+        existeSinCosto = False
+        existeSinAcopio = False
+        existeSinSelecionar = False
         for f in detalle:
+            if f.cleaned_data.get('check') == False or f.cleaned_data.get('check') is None :
+                existeSinSelecionar = True
             if f.cleaned_data.get('haCultivada') == 0 or f.cleaned_data.get('haCultivada') is None:
                 existeFincaSinPlantacion = True
-            if f.cleaned_data.get('costoTotal') == 0 or f.cleaned_data.get('costoTotal') is None:
-                existeAcopio = True
             if f.cleaned_data.get('cantidadAcopioNeto') == 0 or f.cleaned_data.get('cantidadAcopioNeto') is None:
-                existeCosto = True
+                existeSinAcopio = True
+            print("haCultivada",f.cleaned_data.get('haCultivada'),"cantidadAcopioNeto",f.cleaned_data.get('cantidadAcopioNeto'),"costoTotal",f.cleaned_data.get('costoTotal'))
+            if f.cleaned_data.get('costoTotal') == 0 or f.cleaned_data.get('costoTotal') is None:
+                existeSinCosto = True
 
-        if existeFincaSinPlantacion == True:
-            form.add_error(None, 'Algun/as Finca/as no tienen una actividad de plantación registrada. Proceda a registrar para poder cerrar la zafra')
-        if existeAcopio == True:
-            form.add_error(None, 'Algun/as Finca/as no tienen registrado Acopio/s. Proceda a registrar para poder cerrar la zafra')
-        if existeCosto == True:
-            form.add_error(None, 'Algun/as Finca/as no tienen registrados Gastos. Proceda a registrar para poder cerrar la zafra')
-        
+        if existeSinSelecionar == True:
+            form.add_error(None, 'Confirme todos los detalles para guardar')
+
+        if existeSinSelecionar == False:
+            if existeFincaSinPlantacion == True:
+                form.add_error(None, 'Algun/as Finca/as no tienen una actividad de plantación registrada. Proceda a registrar para poder cerrar la zafra')
+            if existeSinAcopio == True:
+                form.add_error(None, 'Algun/as Finca/as no tienen registrado Acopio/s. Proceda a registrar para poder cerrar la zafra')
+            if existeSinCosto == True:
+                form.add_error(None, 'Algun/as Finca/as no tienen registrados Gastos. Proceda a registrar para poder cerrar la zafra')
+      
             
     def get_inlines(self):
         initial = []
@@ -2353,7 +2361,7 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
                 costoUnit = round(costoTotal / acopios)
 
             if costoTotal != 0  or acopios !=0 or hectareasCultivadas != 0:                                                
-                initial += [ {'finca': fincaDet, 'haCultivada': hectareasCultivadas, 'cantidadAcopioNeto': acopios, 'rendimiento': rendimientoKg, 'costoTotal': costoTotal, 'costoHA': costoHa, 'costoUnit': costoUnit}]
+                initial += [ {'check': False,'finca': fincaDet, 'haCultivada': hectareasCultivadas, 'cantidadAcopioNeto': acopios, 'rendimiento': rendimientoKg, 'costoTotal': costoTotal, 'costoHA': costoHa, 'costoUnit': costoUnit}]
        
         detalle = self.inlines[0]
         detalle.initial = initial

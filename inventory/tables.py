@@ -102,6 +102,10 @@ class TipoImpuestoTable(EditableDeleteTable):
 class ItemTable(EditableDeleteTable):
     def render_precio(self,value):
         return intcomma(value)
+    def render_costo(self,value):
+        return intcomma(value)
+    def render_ultimoCosto(self,value):
+        return intcomma(value)
     class Meta:
         model = Item
         fields = ("codigoBarra","descripcion","tipoImpuesto", "marca","categoria","costo","ultimoCosto","precio", "esActivo")

@@ -1105,9 +1105,10 @@ class CierreZafraForm(forms.ModelForm):
         )
 
 class CierreZafraDetalleForm(forms.ModelForm):
+    check = forms.BooleanField(label='Sel.',required=False)
     class Meta:
         model = CierreZafraDetalle
-        fields = ['finca','haCultivada','cantidadAcopioNeto','rendimiento','costoTotal','costoHA','costoUnit']
+        fields = ['check','finca','haCultivada','cantidadAcopioNeto','rendimiento','costoTotal','costoHA','costoUnit']
         widgets = {'haCultivada':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'cantidadAcopioNeto':DecimalMaskInput,'rendimiento':DecimalMaskInput,'costoTotal':DecimalMaskInput,'costoHA':DecimalMaskInput,'costoUnit':DecimalMaskInput}
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

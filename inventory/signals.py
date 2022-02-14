@@ -190,19 +190,20 @@ def signalCierreZafraSave(sender, instance, created, **kwargs):
 @receiver(post_save, sender = CierreZafraDetalle)
 def signalCierreZafraDetalleGuardado(sender, instance, created, **kwargs):
     if created:
-        detalleCierreZafra = CierreZafraDetalle.objects.get(cierreZafra = instance.cierreZafra)
+        detalleCierreZafra = CierreZafraDetalle.objects.filter(cierreZafra = instance.cierreZafra)
         sumaCantidadAcopiada = 0
         sumaCostoTotal = 0
         costoUnitario = 0
         for x in detalleCierreZafra:
-            sumaCantidadAcopiada += x.haCultivada
+            sumaCantidadAcopiada += x.cantidadAcopioNeto
             sumaCostoTotal += x.costoTotal 
-        
-        costoUnitario = round(sumaCostoTotal / sumaCantidadAcopiada)
-        item = Item.objects.get(pk= instance.item.pk)
-        item.ultimoCosto = costoUnitario
-        item.costo = costoUnitario
-        item.save()
+
+        if sumaCantidadAcopiada > 0 and sumaCostoTotal > 0 :
+            costoUnitario = round(sumaCostoTotal / sumaCantidadAcopiada)
+            item = Item.objects.get(pk= instance.cierreZafra.zafra.item.pk)
+            item.ultimoCosto = costoUnitario
+            item.costo = costoUnitario
+            item.save()
 
         
        
