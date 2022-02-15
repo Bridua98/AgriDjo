@@ -16,13 +16,13 @@
         
             function checkItem($item){
                 let $detalleContainer = $item.closest("tr");
-                let $itemCosto = $detalleContainer.find(".item-precio");
+                let $itemPrecio = $detalleContainer.find(".item-precio");
                 let $itemPorcentajeIva = $detalleContainer.find(".item-porcentaje-impuesto");
 
-                let $precioCosto = $item.find('option:selected').attr('data-precio');
+                let $precio = $item.find('option:selected').attr('data-precio');
                 let $impuestoPorcentaje = $item.find('option:selected').attr('data-tipo-impuesto-porcentaje');
 
-                $itemCosto.val($precioCosto);
+                $itemPrecio.val($precio);
                 $itemPorcentajeIva.val($impuestoPorcentaje);
             }
 
