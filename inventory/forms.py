@@ -685,6 +685,7 @@ class NotaCreditoRecibidaDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
         label = "Impuesto"
     )
+    item = ItemCustomSelect()
     class Meta:
         model = NotaCreditoRecibidaDetalle
         fields = ['esDevolucion','item', 'cantidad','valor','porcentajeImpuesto','impuesto','subtotal']
@@ -753,6 +754,7 @@ class NotaCreditoEmitidaDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
         label = "Impuesto"
     )
+    item = ItemCustomSelect()
     class Meta:
         model = NotaCreditoEmitidaDetalle
         fields = ['esDevolucion','item', 'cantidad','valor','porcentajeImpuesto','impuesto','subtotal']
@@ -985,6 +987,7 @@ class NotaDebitoRecibidaDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
         label = "Impuesto"
     )
+    item = ItemCustomSelect()
     class Meta:
         model = NotaDebitoRecibidaDetalle
         fields = ['item', 'cantidad','valor','porcentajeImpuesto','impuesto','subtotal']
@@ -1053,6 +1056,8 @@ class NotaDebitoEmitidaDetalleForm(forms.ModelForm):
         widget=calculation.FormulaInput('parseFloat((subtotal*porcentajeImpuesto)/(porcentajeImpuesto+100)).toFixed(0)', attrs={'readonly':True}),
         label = "Impuesto"
     )
+
+    item = ItemCustomSelect()
     class Meta:
         model = NotaDebitoEmitidaDetalle
         fields = ['item', 'cantidad','valor','porcentajeImpuesto','impuesto','subtotal']

@@ -173,13 +173,64 @@ class VentaDetalleInline(InlineFormSetFactory):
 class NotaCreditoRecibidaDetalleInline(InlineFormSetFactory):
     model = NotaCreditoRecibidaDetalle
     form_class = NotaCreditoRecibidaDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1, 
+        'widgets':{
+            'item':ItemCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-3',
+                    'data-item-select':True,
+                }
+            ),
+            'porcentajeImpuesto':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-porcentaje-impuesto',
+                }
+            ),
+            'valor':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-costo',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                }
+            ),
+        }        
+    }
     fields = ['esDevolucion','item', 'cantidad','valor','porcentajeImpuesto',]
 
 class NotaCreditoEmitidaDetalleInline(InlineFormSetFactory):
     model = NotaCreditoEmitidaDetalle
     form_class = NotaCreditoEmitidaDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'item':ItemCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-3',
+                    'data-item-select':True,
+                }
+            ),
+            'porcentajeImpuesto':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-porcentaje-impuesto',
+                }
+            ),
+            'valor':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-precio',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                }
+            ),
+        } 
+    
+    }
     fields = ['esDevolucion','item', 'cantidad','valor','porcentajeImpuesto',]
 
 class CobroDetalleInline(InlineFormSetFactory):
@@ -203,14 +254,65 @@ class LiquidacionAgricolaDetalleInline(InlineFormSetFactory):
 class NotaDebitoRecibidaDetalleInline(InlineFormSetFactory):
     model = NotaDebitoRecibidaDetalle
     form_class = NotaDebitoRecibidaDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'item':ItemCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-3',
+                    'data-item-select':True,
+                }
+            ),
+            'porcentajeImpuesto':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-porcentaje-impuesto',
+                }
+            ),
+            'valor':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-costo',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                }
+            ),
+        }
+    }
     fields = ['item', 'cantidad','valor','porcentajeImpuesto',]
 
 
 class NotaDebitoEmitidaDetalleInline(InlineFormSetFactory):
     model = NotaDebitoEmitidaDetalle
     form_class = NotaDebitoEmitidaDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'item':ItemCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-3',
+                    'data-item-select':True,
+                }
+            ),
+            'porcentajeImpuesto':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-porcentaje-impuesto',
+                }
+            ),
+            'valor':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-precio',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                }
+            ),
+        }  
+    
+    }
     fields = ['item', 'cantidad','valor','porcentajeImpuesto',]
 
 class CierreZafraDetalleInline(InlineFormSetFactory):
