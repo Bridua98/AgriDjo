@@ -698,7 +698,7 @@ class CierreZafra(models.Model):
         return self.zafra.descripcion
 
 class CierreZafraDetalle(models.Model):
-    cierreZafra = models.ForeignKey(CierreZafra, on_delete=models.DO_NOTHING)
+    cierreZafra = models.ForeignKey(CierreZafra, on_delete=models.CASCADE)
     finca = models.ForeignKey(Finca, on_delete=models.DO_NOTHING,verbose_name="Finca")
     haCultivada = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="HA Cultivada")
     cantidadAcopioNeto = models.DecimalField(max_digits=15, decimal_places=2,verbose_name="KG Acopiado")

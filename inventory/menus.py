@@ -69,7 +69,8 @@ hijos_movimiento_venta = (
 hijos_informes = (
     MenuItem("Compra Informe",reverse_lazy("compra_informe_list")),
     MenuItem("Venta Informe",reverse_lazy("venta_informe_list")),
-    MenuItem("Producción Agrícola Informe",reverse_lazy("produccion_agricola_informe_list")),
+    MenuItem("Actividad Agrícola Informe",reverse_lazy("produccion_agricola_informe_list")),
+    #MenuItem("Producción Agrícola Informe",reverse_lazy("produccion_agricola_list")),
 )
 
 

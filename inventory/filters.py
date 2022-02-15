@@ -4,7 +4,7 @@ import django_filters
 from django_filters.filters import DateFilter
 # from core import widgets
 from django_filters.filterset import FilterSet
-from inventory.models import ActividadAgricola, Compra, ItemMovimiento, Venta
+from inventory.models import ActividadAgricola, Compra, ItemMovimiento, Persona, Venta
 
 
 
@@ -45,7 +45,7 @@ class CompraInformeFilter(FilterSet):
     def __init__(self, *args, **kwargs):
         super(CompraInformeFilter, self).__init__(*args, **kwargs)
         self.form.initial['esVigente'] = True
-
+        self.form.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
     
     class Meta:
         model = Compra
@@ -57,8 +57,9 @@ class VentaInformeFilter(FilterSet):
     fechaDocumento = django_filters.DateRangeFilter(label='Rango')
 
     def __init__(self, *args, **kwargs):
-            super(VentaInformeFilter, self).__init__(*args, **kwargs)
-            self.form.initial['esVigente'] = True
+        super(VentaInformeFilter, self).__init__(*args, **kwargs)
+        self.form.initial['esVigente'] = True
+        self.form.fields["cliente"].queryset =  proveedor = Persona.objects.filter(esCliente=True)
             
     class Meta:
         model = Venta
@@ -67,12 +68,13 @@ class VentaInformeFilter(FilterSet):
 class ProduccionAgricolaInformeFilter(FilterSet):
     fecha_desde = django_filters.DateFilter(widget=DateTypeInput(attrs={'placeholder': '1970-01-01'}), field_name='fechaDocumento', lookup_expr='gte', label='Desde')
     fecha_hasta = django_filters.DateFilter(widget=DateTypeInput(), field_name='fechaDocumento', lookup_expr='lte', label='Hasta')
+    fechaDocumento = django_filters.DateRangeFilter(label='Rango')
 
     def __init__(self, *args, **kwargs):
-            super(ProduccionAgricolaInformeFilter, self).__init__(*args, **kwargs)
-            self.form.initial['esVigente'] = True
+        super(ProduccionAgricolaInformeFilter, self).__init__(*args, **kwargs)
+        self.form.initial['esVigente'] = True
+        self.form.fields["empleado"].queryset =  empleado = Persona.objects.filter(esEmpleado=True)
 
-    fechaDocumento = django_filters.DateRangeFilter(label='Rango')
     class Meta:
         model = ActividadAgricola
         fields = ["fechaDocumento","fecha_desde","fecha_hasta","tipoActividadAgricola","zafra","finca","lote","empleado","esServicioContratado","esVigente"]
@@ -89,3 +91,12 @@ class InventarioDepositoInformeFilter(FilterSet):
     class Meta:
         model = ItemMovimiento
         fields = ["fecha_desde","fecha_hasta","tipoMovimiento","item","deposito","esVigente"]
+
+#class ProduccionAgricolaInformeFilter(FilterSet):
+#    fecha_desde = django_filters.DateFilter(widget=DateTypeInput(attrs={'placeholder': '1970-01-01'}), field_name='fecha', lookup_expr='gte', label='Desde')
+#    fecha_hasta = django_filters.DateFilter(widget=DateTypeInput(), field_name='fecha', lookup_expr='lte', label='Hasta')
+#
+#    fecha = django_filters.DateRangeFilter(label='Rango')
+ #   class Meta:
+ #       model = ActividadAgricola
+#        fields = ["fecha","fecha_desde","fecha_hasta","tipoActividadAgricola","zafra","finca","lote","empleado","esServicioContratado","esVigente"]

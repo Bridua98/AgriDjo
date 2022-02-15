@@ -589,6 +589,41 @@ class ProduccionAgricolaInformeTable(BaseTable):
         model = ActividadAgricola
         fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","totalMaquinaria","totalItem","total")
 
+class ProduccionAgricolaTable(BaseTable):   
+    def render_totalItem(self,value):
+        return intcomma(value)
+    
+    def render_total(self,value):
+        return intcomma(value)
+
+    def render_totalMaquinaria(self,value):
+        return intcomma(value)
+
+    totalMaquinaria = tables.Column(verbose_name= 'Total Maqui.',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    totalItem = tables.Column(verbose_name= 'Total Item',attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+    total = tables.Column(verbose_name= 'Total',
+    attrs={
+            "td": {"align": "right"},
+            "th":{
+            "class":"text-right"
+            },
+        })
+
+    class Meta:
+        model = ActividadAgricola
+        fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","totalMaquinaria","totalItem","total")
+
+
 
 class InventarioDepositoInformeTable(BaseTable):   
     def render_cantidad(self,value):
