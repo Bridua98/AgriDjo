@@ -9,3 +9,27 @@
 {{form.errors}}
 </form>
 {% endblock %}
+
+{% block footer %}
+    <script>
+        $(document).ready(function(){
+        
+            function checkItem($item){
+                let $detalleContainer = $item.closest("tr");
+                let $itemPrecio = $detalleContainer.find(".item-precio");
+                let $itemPorcentajeIva = $detalleContainer.find(".item-porcentaje-impuesto");
+
+                let $precio = $item.find('option:selected').attr('data-precio');
+                let $impuestoPorcentaje = $item.find('option:selected').attr('data-tipo-impuesto-porcentaje');
+
+                $itemPrecio.val($precio);
+                $itemPorcentajeIva.val($impuestoPorcentaje);
+            }
+
+            $(document).on("change", "select[data-item-select]", function(event){
+                checkItem($(event.target))
+            });
+
+        });
+    </script>
+    {% endblock  %}

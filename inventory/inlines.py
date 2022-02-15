@@ -1,5 +1,5 @@
 from extra_views.advanced import InlineFormSetFactory
-from inventory.widgets import ItemCustomSelect
+from inventory.widgets import ItemCustomSelect, MaquinariaCustomSelect
 
 from .models import AcopioCalificacion, AcopioDetalle, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStockDetalle, CierreZafraDetalle, CobroDetalle, CobroMedio, CompraDetalle, CuotaCompra, CuotaVenta, LiquidacionAgricolaDetalle, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitidaDetalle, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle, VentaDetalle
 from .forms import AcopioCalificacionForm, AcopioDetalleForm, ActividadAgricolaItemDetalleForm, ActividadAgricolaMaquinariaDetalleForm, AjusteStockDetalleForm, CierreZafraDetalleForm, CobroDetalleForm, CobroMedioForm, CompraDetalleForm, CuotaCompraForm, CuotaVentaForm, LiquidacionAgricolaDetalleForm, NotaCreditoEmitidaDetalleForm, NotaCreditoRecibidaDetalleForm, NotaCreditoRecibidaForm, NotaDebitoEmitidaDetalleForm, NotaDebitoRecibidaDetalleForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm, VentaDetalleForm
@@ -89,13 +89,53 @@ class AjusteStockDetalleInline(InlineFormSetFactory):
 class ActividadAgricolaMaquinariaDetalleInline(InlineFormSetFactory):
     model = ActividadAgricolaMaquinariaDetalle
     form_class = ActividadAgricolaMaquinariaDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'maquinaria':MaquinariaCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-4',
+                    'data-maquinaria-select':True,
+                }
+            ),
+            'precio':widgets.NumberInput(
+                attrs={
+                    'class':'text-right precio-ha',
+                }
+            ),
+        } 
+    }
     fields = ['maquinaria', 'haTrabajada','precio','subtotalMaquinaria']
 
 class ActividadAgricolaItemDetalleInline(InlineFormSetFactory):
     model = ActividadAgricolaItemDetalle
     form_class = ActividadAgricolaItemDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1, 
+        'widgets':{
+            'item':ItemCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-2',
+                    'data-item-select':True,
+                }
+            ),
+            'porcentajeImpuesto':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-porcentaje-impuesto',
+                }
+            ),
+            'costo':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-costo',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                }
+            ),
+        }
+    }
     fields = ['item', 'deposito','dosis','costo','cantidad','porcentajeImpuesto','subtotalItem']
 
 class VentaDetalleInline(InlineFormSetFactory):
@@ -120,6 +160,11 @@ class VentaDetalleInline(InlineFormSetFactory):
                     'class':'text-right item-precio',
                 }
             ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                }
+            ),
         }
 
     }
@@ -128,13 +173,64 @@ class VentaDetalleInline(InlineFormSetFactory):
 class NotaCreditoRecibidaDetalleInline(InlineFormSetFactory):
     model = NotaCreditoRecibidaDetalle
     form_class = NotaCreditoRecibidaDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1, 
+        'widgets':{
+            'item':ItemCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-3',
+                    'data-item-select':True,
+                }
+            ),
+            'porcentajeImpuesto':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-porcentaje-impuesto',
+                }
+            ),
+            'valor':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-costo',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                }
+            ),
+        }        
+    }
     fields = ['esDevolucion','item', 'cantidad','valor','porcentajeImpuesto',]
 
 class NotaCreditoEmitidaDetalleInline(InlineFormSetFactory):
     model = NotaCreditoEmitidaDetalle
     form_class = NotaCreditoEmitidaDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'item':ItemCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-3',
+                    'data-item-select':True,
+                }
+            ),
+            'porcentajeImpuesto':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-porcentaje-impuesto',
+                }
+            ),
+            'valor':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-precio',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                }
+            ),
+        } 
+    
+    }
     fields = ['esDevolucion','item', 'cantidad','valor','porcentajeImpuesto',]
 
 class CobroDetalleInline(InlineFormSetFactory):
@@ -158,14 +254,65 @@ class LiquidacionAgricolaDetalleInline(InlineFormSetFactory):
 class NotaDebitoRecibidaDetalleInline(InlineFormSetFactory):
     model = NotaDebitoRecibidaDetalle
     form_class = NotaDebitoRecibidaDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'item':ItemCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-3',
+                    'data-item-select':True,
+                }
+            ),
+            'porcentajeImpuesto':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-porcentaje-impuesto',
+                }
+            ),
+            'valor':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-costo',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                }
+            ),
+        }
+    }
     fields = ['item', 'cantidad','valor','porcentajeImpuesto',]
 
 
 class NotaDebitoEmitidaDetalleInline(InlineFormSetFactory):
     model = NotaDebitoEmitidaDetalle
     form_class = NotaDebitoEmitidaDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'item':ItemCustomSelect(
+                attrs={
+                    'wrapper_class':'col-sm-3',
+                    'data-item-select':True,
+                }
+            ),
+            'porcentajeImpuesto':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-porcentaje-impuesto',
+                }
+            ),
+            'valor':widgets.NumberInput(
+                attrs={
+                    'class':'text-right item-precio',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                }
+            ),
+        }  
+    
+    }
     fields = ['item', 'cantidad','valor','porcentajeImpuesto',]
 
 class CierreZafraDetalleInline(InlineFormSetFactory):
