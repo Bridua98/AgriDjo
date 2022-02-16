@@ -670,9 +670,10 @@ class ZafraCreateView(LoginRequiredMixin,CreateView):
     def get_success_url(self):
         return reverse_lazy("zafra_list")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["item"].queryset = Item.objects.filter(tipoItem__pk = 1)
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["item"].queryset =  Item.objects.filter(tipoItem__pk=1)
+        return form
         
 class ZafraUpdateView(LoginRequiredMixin,UpdateView):
     model = Zafra
@@ -680,6 +681,11 @@ class ZafraUpdateView(LoginRequiredMixin,UpdateView):
     fields = ['descripcion','item','anho','esZafrinha','kgEstimado']
     def get_success_url(self):
         return reverse_lazy("zafra_list")
+        
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["item"].queryset =  Item.objects.filter(tipoItem__pk=1)
+        return form
 
 class ZafraDeleteView(LoginRequiredMixin,DeleteView):
     model = Zafra
