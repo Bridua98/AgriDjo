@@ -1,4 +1,4 @@
 echo "-----> Building MkDocs documentation"
 mkdocs build --clean
 
-paython manage.py collectstatic --noinput
+python manage.py collectstatic --noinput
