@@ -1,0 +1,4 @@
+echo "-----> Building MkDocs documentation"
+mkdocs build --clean
+
+python manage.py collectstatic --noinput

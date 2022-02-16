@@ -1,0 +1,23 @@
+site_name: Manual de Usuario
+
+nav:
+    - 'index.md'
+    - 'accesoSistema.md'
+    - 'menuPrincipalOpciones.md'
+    - 'funcionesBasicasRegistros.md'
+    - 'mantenimientoUsuario.md'
+    - 'funcionesBasicasMovimientos.md'
+    - 'funcionesBasicaInforme.md'
+   
+
+
+
+theme:
+  name: material
+  language: es
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  

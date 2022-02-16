@@ -1,3 +1,4 @@
+
 [
 {
  "model": "inventory.localidad",
@@ -323,7 +324,7 @@
  "model": "inventory.localidad",
  "pk": 42,
  "fields": {
-  "descripcion": "CAÑETE CUE",
+  "descripcion": "CAÃETE CUE",
   "distrito": 2
  }
 },
@@ -483,7 +484,7 @@
  "model": "inventory.localidad",
  "pk": 62,
  "fields": {
-  "descripcion": "CURUZU ÑU",
+  "descripcion": "CURUZU ÃU",
   "distrito": 2
  }
 },
@@ -491,7 +492,7 @@
  "model": "inventory.localidad",
  "pk": 63,
  "fields": {
-  "descripcion": "CURUÑI",
+  "descripcion": "CURUÃI",
   "distrito": 2
  }
 },
@@ -763,7 +764,7 @@
  "model": "inventory.localidad",
  "pk": 97,
  "fields": {
-  "descripcion": "LAGUNA ÑARO",
+  "descripcion": "LAGUNA ÃARO",
   "distrito": 2
  }
 },
@@ -835,7 +836,7 @@
  "model": "inventory.localidad",
  "pk": 106,
  "fields": {
-  "descripcion": "MONTAÑAS",
+  "descripcion": "MONTAÃAS",
   "distrito": 2
  }
 },
@@ -955,7 +956,7 @@
  "model": "inventory.localidad",
  "pk": 121,
  "fields": {
-  "descripcion": "PUENTE CAÑON",
+  "descripcion": "PUENTE CAÃON",
   "distrito": 2
  }
 },
@@ -1259,7 +1260,7 @@
  "model": "inventory.localidad",
  "pk": 159,
  "fields": {
-  "descripcion": "YACARE - ÑU",
+  "descripcion": "YACARE - ÃU",
   "distrito": 10
  }
 },
@@ -1355,7 +1356,7 @@
  "model": "inventory.localidad",
  "pk": 171,
  "fields": {
-  "descripcion": "ÑANDUCUA",
+  "descripcion": "ÃANDUCUA",
   "distrito": 10
  }
 },
@@ -1363,7 +1364,7 @@
  "model": "inventory.localidad",
  "pk": 172,
  "fields": {
-  "descripcion": "ÑANDUROCAY",
+  "descripcion": "ÃANDUROCAY",
   "distrito": 10
  }
 },
@@ -1371,7 +1372,7 @@
  "model": "inventory.localidad",
  "pk": 173,
  "fields": {
-  "descripcion": "ÑU - PORA",
+  "descripcion": "ÃU - PORA",
   "distrito": 10
  }
 },
@@ -1619,7 +1620,7 @@
  "model": "inventory.localidad",
  "pk": 204,
  "fields": {
-  "descripcion": "ÑANDEYARA",
+  "descripcion": "ÃANDEYARA",
   "distrito": 12
  }
 },
@@ -1627,7 +1628,7 @@
  "model": "inventory.localidad",
  "pk": 205,
  "fields": {
-  "descripcion": "ÑANDUEVA - I",
+  "descripcion": "ÃANDUEVA - I",
   "distrito": 12
  }
 },
@@ -1843,7 +1844,7 @@
  "model": "inventory.localidad",
  "pk": 232,
  "fields": {
-  "descripcion": "CURUZU - ÑU",
+  "descripcion": "CURUZU - ÃU",
   "distrito": 13
  }
 },
@@ -2211,7 +2212,7 @@
  "model": "inventory.localidad",
  "pk": 278,
  "fields": {
-  "descripcion": "RUBIO ÑU",
+  "descripcion": "RUBIO ÃU",
   "distrito": 32
  }
 },
@@ -2235,7 +2236,7 @@
  "model": "inventory.localidad",
  "pk": 281,
  "fields": {
-  "descripcion": "ÑU-AI",
+  "descripcion": "ÃU-AI",
   "distrito": 32
  }
 },
@@ -2331,7 +2332,7 @@
  "model": "inventory.localidad",
  "pk": 293,
  "fields": {
-  "descripcion": "TUCUNGA CAÑADA",
+  "descripcion": "TUCUNGA CAÃADA",
   "distrito": 33
  }
 },
@@ -2427,7 +2428,7 @@
  "model": "inventory.localidad",
  "pk": 305,
  "fields": {
-  "descripcion": "RUBIO ÑU",
+  "descripcion": "RUBIO ÃU",
   "distrito": 34
  }
 },
@@ -2747,7 +2748,7 @@
  "model": "inventory.localidad",
  "pk": 345,
  "fields": {
-  "descripcion": "CAÑADA DE LOURDES",
+  "descripcion": "CAÃADA DE LOURDES",
   "distrito": 14
  }
 },
@@ -3315,7 +3316,7 @@
  "model": "inventory.localidad",
  "pk": 416,
  "fields": {
-  "descripcion": "QUIÑONEZ - CUE",
+  "descripcion": "QUIÃONEZ - CUE",
   "distrito": 14
  }
 },
@@ -3691,7 +3692,7 @@
  "model": "inventory.localidad",
  "pk": 463,
  "fields": {
-  "descripcion": "ÑANDY PA",
+  "descripcion": "ÃANDY PA",
   "distrito": 14
  }
 },
@@ -3699,7 +3700,7 @@
  "model": "inventory.localidad",
  "pk": 464,
  "fields": {
-  "descripcion": "ÑATIURYMI",
+  "descripcion": "ÃATIURYMI",
   "distrito": 14
  }
 },
@@ -3707,7 +3708,7 @@
  "model": "inventory.localidad",
  "pk": 465,
  "fields": {
-  "descripcion": "ÑU PYHAJHU",
+  "descripcion": "ÃU PYHAJHU",
   "distrito": 14
  }
 },
@@ -3715,7 +3716,7 @@
  "model": "inventory.localidad",
  "pk": 466,
  "fields": {
-  "descripcion": "ÑUMI",
+  "descripcion": "ÃUMI",
   "distrito": 14
  }
 },
@@ -3723,7 +3724,7 @@
  "model": "inventory.localidad",
  "pk": 467,
  "fields": {
-  "descripcion": "ÑU POI",
+  "descripcion": "ÃU POI",
   "distrito": 14
  }
 },
@@ -3747,7 +3748,7 @@
  "model": "inventory.localidad",
  "pk": 470,
  "fields": {
-  "descripcion": "AÑARETA",
+  "descripcion": "AÃARETA",
   "distrito": 15
  }
 },
@@ -4075,7 +4076,7 @@
  "model": "inventory.localidad",
  "pk": 511,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 17
  }
 },
@@ -4083,7 +4084,7 @@
  "model": "inventory.localidad",
  "pk": 512,
  "fields": {
-  "descripcion": "CAÑADA APAREJO",
+  "descripcion": "CAÃADA APAREJO",
   "distrito": 17
  }
 },
@@ -4091,7 +4092,7 @@
  "model": "inventory.localidad",
  "pk": 513,
  "fields": {
-  "descripcion": "CAÑADA A. CORDRO",
+  "descripcion": "CAÃADA A. CORDRO",
   "distrito": 17
  }
 },
@@ -4243,7 +4244,7 @@
  "model": "inventory.localidad",
  "pk": 532,
  "fields": {
-  "descripcion": "YUKYRY (COMPAÑIA)",
+  "descripcion": "YUKYRY (COMPAÃIA)",
   "distrito": 66
  }
 },
@@ -4275,7 +4276,7 @@
  "model": "inventory.localidad",
  "pk": 536,
  "fields": {
-  "descripcion": "ÑATIURY 1RO.",
+  "descripcion": "ÃATIURY 1RO.",
   "distrito": 66
  }
 },
@@ -4283,7 +4284,7 @@
  "model": "inventory.localidad",
  "pk": 537,
  "fields": {
-  "descripcion": "ÑATIURY GUAZU",
+  "descripcion": "ÃATIURY GUAZU",
   "distrito": 66
  }
 },
@@ -4291,7 +4292,7 @@
  "model": "inventory.localidad",
  "pk": 538,
  "fields": {
-  "descripcion": "ÑATIURY MI",
+  "descripcion": "ÃATIURY MI",
   "distrito": 66
  }
 },
@@ -4299,7 +4300,7 @@
  "model": "inventory.localidad",
  "pk": 539,
  "fields": {
-  "descripcion": "ÑATIURY-MI 2DA.LINEA",
+  "descripcion": "ÃATIURY-MI 2DA.LINEA",
   "distrito": 66
  }
 },
@@ -4307,7 +4308,7 @@
  "model": "inventory.localidad",
  "pk": 540,
  "fields": {
-  "descripcion": "ÑUPY",
+  "descripcion": "ÃUPY",
   "distrito": 66
  }
 },
@@ -4331,7 +4332,7 @@
  "model": "inventory.localidad",
  "pk": 543,
  "fields": {
-  "descripcion": "CARIY CAÑADA",
+  "descripcion": "CARIY CAÃADA",
   "distrito": 67
  }
 },
@@ -4539,7 +4540,7 @@
  "model": "inventory.localidad",
  "pk": 569,
  "fields": {
-  "descripcion": "ÑA CUALI CUE",
+  "descripcion": "ÃA CUALI CUE",
   "distrito": 67
  }
 },
@@ -4547,7 +4548,7 @@
  "model": "inventory.localidad",
  "pk": 570,
  "fields": {
-  "descripcion": "ÑANDU CUA",
+  "descripcion": "ÃANDU CUA",
   "distrito": 67
  }
 },
@@ -4659,7 +4660,7 @@
  "model": "inventory.localidad",
  "pk": 584,
  "fields": {
-  "descripcion": "CAÑADA MONDAY",
+  "descripcion": "CAÃADA MONDAY",
   "distrito": 68
  }
 },
@@ -4667,7 +4668,7 @@
  "model": "inventory.localidad",
  "pk": 585,
  "fields": {
-  "descripcion": "CAÑADITA",
+  "descripcion": "CAÃADITA",
   "distrito": 68
  }
 },
@@ -5011,7 +5012,7 @@
  "model": "inventory.localidad",
  "pk": 628,
  "fields": {
-  "descripcion": "PIRA-ÑARO",
+  "descripcion": "PIRA-ÃARO",
   "distrito": 68
  }
 },
@@ -5363,7 +5364,7 @@
  "model": "inventory.localidad",
  "pk": 672,
  "fields": {
-  "descripcion": "ÑEMBIARA",
+  "descripcion": "ÃEMBIARA",
   "distrito": 68
  }
 },
@@ -5371,7 +5372,7 @@
  "model": "inventory.localidad",
  "pk": 673,
  "fields": {
-  "descripcion": "ÑURAVIYU",
+  "descripcion": "ÃURAVIYU",
   "distrito": 68
  }
 },
@@ -5379,7 +5380,7 @@
  "model": "inventory.localidad",
  "pk": 674,
  "fields": {
-  "descripcion": "ÑU PUCU",
+  "descripcion": "ÃU PUCU",
   "distrito": 68
  }
 },
@@ -5827,7 +5828,7 @@
  "model": "inventory.localidad",
  "pk": 730,
  "fields": {
-  "descripcion": "ÑURUNDIAY",
+  "descripcion": "ÃURUNDIAY",
   "distrito": 69
  }
 },
@@ -5987,7 +5988,7 @@
  "model": "inventory.localidad",
  "pk": 750,
  "fields": {
-  "descripcion": "CIA. ÑATIURUGUAZU",
+  "descripcion": "CIA. ÃATIURUGUAZU",
   "distrito": 71
  }
 },
@@ -6275,7 +6276,7 @@
  "model": "inventory.localidad",
  "pk": 786,
  "fields": {
-  "descripcion": "COMPAÑIA",
+  "descripcion": "COMPAÃIA",
   "distrito": 75
  }
 },
@@ -6283,7 +6284,7 @@
  "model": "inventory.localidad",
  "pk": 787,
  "fields": {
-  "descripcion": "COMPAÑIA LUCERO",
+  "descripcion": "COMPAÃIA LUCERO",
   "distrito": 75
  }
 },
@@ -6291,7 +6292,7 @@
  "model": "inventory.localidad",
  "pk": 788,
  "fields": {
-  "descripcion": "COMPAÑIA PIRAY",
+  "descripcion": "COMPAÃIA PIRAY",
   "distrito": 75
  }
 },
@@ -6299,7 +6300,7 @@
  "model": "inventory.localidad",
  "pk": 789,
  "fields": {
-  "descripcion": "COMPAÑIA SANCHEZ CUE",
+  "descripcion": "COMPAÃIA SANCHEZ CUE",
   "distrito": 75
  }
 },
@@ -6755,7 +6756,7 @@
  "model": "inventory.localidad",
  "pk": 846,
  "fields": {
-  "descripcion": "COMPAÑIA N.MATIAUDA",
+  "descripcion": "COMPAÃIA N.MATIAUDA",
   "distrito": 36
  }
 },
@@ -6835,7 +6836,7 @@
  "model": "inventory.localidad",
  "pk": 856,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 37
  }
 },
@@ -7059,7 +7060,7 @@
  "model": "inventory.localidad",
  "pk": 884,
  "fields": {
-  "descripcion": "CAÑADA DEL CARMEN",
+  "descripcion": "CAÃADA DEL CARMEN",
   "distrito": 38
  }
 },
@@ -7627,7 +7628,7 @@
  "model": "inventory.localidad",
  "pk": 955,
  "fields": {
-  "descripcion": "IBAÑEZ ÑU",
+  "descripcion": "IBAÃEZ ÃU",
   "distrito": 2
  }
 },
@@ -7723,7 +7724,7 @@
  "model": "inventory.localidad",
  "pk": 967,
  "fields": {
-  "descripcion": "ÑU APUA",
+  "descripcion": "ÃU APUA",
   "distrito": 2
  }
 },
@@ -7731,7 +7732,7 @@
  "model": "inventory.localidad",
  "pk": 968,
  "fields": {
-  "descripcion": "ÑUMI",
+  "descripcion": "ÃUMI",
   "distrito": 2
  }
 },
@@ -8131,7 +8132,7 @@
  "model": "inventory.localidad",
  "pk": 1018,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 6
  }
 },
@@ -8587,7 +8588,7 @@
  "model": "inventory.localidad",
  "pk": 1075,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 7
  }
 },
@@ -8651,7 +8652,7 @@
  "model": "inventory.localidad",
  "pk": 1083,
  "fields": {
-  "descripcion": "COMPAÑIA AGAGUIGO",
+  "descripcion": "COMPAÃIA AGAGUIGO",
   "distrito": 7
  }
 },
@@ -8723,7 +8724,7 @@
  "model": "inventory.localidad",
  "pk": 1092,
  "fields": {
-  "descripcion": "JHUGUA ÑU",
+  "descripcion": "JHUGUA ÃU",
   "distrito": 7
  }
 },
@@ -8771,7 +8772,7 @@
  "model": "inventory.localidad",
  "pk": 1098,
  "fields": {
-  "descripcion": "LIMEÑO CUE",
+  "descripcion": "LIMEÃO CUE",
   "distrito": 7
  }
 },
@@ -8803,7 +8804,7 @@
  "model": "inventory.localidad",
  "pk": 1102,
  "fields": {
-  "descripcion": "MBUTU ÑU",
+  "descripcion": "MBUTU ÃU",
   "distrito": 7
  }
 },
@@ -9027,7 +9028,7 @@
  "model": "inventory.localidad",
  "pk": 1130,
  "fields": {
-  "descripcion": "YBYCUI ÑU",
+  "descripcion": "YBYCUI ÃU",
   "distrito": 7
  }
 },
@@ -9219,7 +9220,7 @@
  "model": "inventory.localidad",
  "pk": 1154,
  "fields": {
-  "descripcion": "RETIRO ÑANDUCUA",
+  "descripcion": "RETIRO ÃANDUCUA",
   "distrito": 9
  }
 },
@@ -9331,7 +9332,7 @@
  "model": "inventory.localidad",
  "pk": 1168,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 10
  }
 },
@@ -9499,7 +9500,7 @@
  "model": "inventory.localidad",
  "pk": 1189,
  "fields": {
-  "descripcion": "ISLA CUÑA",
+  "descripcion": "ISLA CUÃA",
   "distrito": 10
  }
 },
@@ -9547,7 +9548,7 @@
  "model": "inventory.localidad",
  "pk": 1195,
  "fields": {
-  "descripcion": "LA NIÑA",
+  "descripcion": "LA NIÃA",
   "distrito": 10
  }
 },
@@ -9755,7 +9756,7 @@
  "model": "inventory.localidad",
  "pk": 1221,
  "fields": {
-  "descripcion": "QUIÑONEZ - CUE",
+  "descripcion": "QUIÃONEZ - CUE",
   "distrito": 10
  }
 },
@@ -9907,7 +9908,7 @@
  "model": "inventory.localidad",
  "pk": 1240,
  "fields": {
-  "descripcion": "RINCON CHAQUEÑO",
+  "descripcion": "RINCON CHAQUEÃO",
   "distrito": 17
  }
 },
@@ -9963,7 +9964,7 @@
  "model": "inventory.localidad",
  "pk": 1247,
  "fields": {
-  "descripcion": "TORO - ÑU",
+  "descripcion": "TORO - ÃU",
   "distrito": 17
  }
 },
@@ -10011,7 +10012,7 @@
  "model": "inventory.localidad",
  "pk": 1253,
  "fields": {
-  "descripcion": "YEGUA ÑU",
+  "descripcion": "YEGUA ÃU",
   "distrito": 17
  }
 },
@@ -10059,7 +10060,7 @@
  "model": "inventory.localidad",
  "pk": 1259,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 18
  }
 },
@@ -10307,7 +10308,7 @@
  "model": "inventory.localidad",
  "pk": 1290,
  "fields": {
-  "descripcion": "CAÑADA LOURDES",
+  "descripcion": "CAÃADA LOURDES",
   "distrito": 19
  }
 },
@@ -10835,7 +10836,7 @@
  "model": "inventory.localidad",
  "pk": 1356,
  "fields": {
-  "descripcion": "LA NIÑA",
+  "descripcion": "LA NIÃA",
   "distrito": 20
  }
 },
@@ -10931,7 +10932,7 @@
  "model": "inventory.localidad",
  "pk": 1368,
  "fields": {
-  "descripcion": "MOÑAI CUARE",
+  "descripcion": "MOÃAI CUARE",
   "distrito": 20
  }
 },
@@ -10995,7 +10996,7 @@
  "model": "inventory.localidad",
  "pk": 1376,
  "fields": {
-  "descripcion": "SAN PEDRO ÑU",
+  "descripcion": "SAN PEDRO ÃU",
   "distrito": 101
  }
 },
@@ -11571,7 +11572,7 @@
  "model": "inventory.localidad",
  "pk": 1448,
  "fields": {
-  "descripcion": "CERRO PORTEÑO",
+  "descripcion": "CERRO PORTEÃO",
   "distrito": 106
  }
 },
@@ -11755,7 +11756,7 @@
  "model": "inventory.localidad",
  "pk": 1471,
  "fields": {
-  "descripcion": "JULIO D. OTAÑO",
+  "descripcion": "JULIO D. OTAÃO",
   "distrito": 108
  }
 },
@@ -12651,7 +12652,7 @@
  "model": "inventory.localidad",
  "pk": 1583,
  "fields": {
-  "descripcion": "TAÑERENDY",
+  "descripcion": "TAÃERENDY",
   "distrito": 117
  }
 },
@@ -12915,7 +12916,7 @@
  "model": "inventory.localidad",
  "pk": 1616,
  "fields": {
-  "descripcion": "ÑACUTI",
+  "descripcion": "ÃACUTI",
   "distrito": 119
  }
 },
@@ -13139,7 +13140,7 @@
  "model": "inventory.localidad",
  "pk": 1644,
  "fields": {
-  "descripcion": "MUÑAG - CUA",
+  "descripcion": "MUÃAG - CUA",
   "distrito": 20
  }
 },
@@ -13331,7 +13332,7 @@
  "model": "inventory.localidad",
  "pk": 1668,
  "fields": {
-  "descripcion": "ÑAMBUE",
+  "descripcion": "ÃAMBUE",
   "distrito": 20
  }
 },
@@ -13339,7 +13340,7 @@
  "model": "inventory.localidad",
  "pk": 1669,
  "fields": {
-  "descripcion": "ÑANDEYARA",
+  "descripcion": "ÃANDEYARA",
   "distrito": 20
  }
 },
@@ -13347,7 +13348,7 @@
  "model": "inventory.localidad",
  "pk": 1670,
  "fields": {
-  "descripcion": "ÑANDUA -CUA",
+  "descripcion": "ÃANDUA -CUA",
   "distrito": 20
  }
 },
@@ -13355,7 +13356,7 @@
  "model": "inventory.localidad",
  "pk": 1671,
  "fields": {
-  "descripcion": "ÑANDUCUAI",
+  "descripcion": "ÃANDUCUAI",
   "distrito": 20
  }
 },
@@ -13363,7 +13364,7 @@
  "model": "inventory.localidad",
  "pk": 1672,
  "fields": {
-  "descripcion": "ÑEEMBUCU",
+  "descripcion": "ÃEEMBUCU",
   "distrito": 20
  }
 },
@@ -13371,7 +13372,7 @@
  "model": "inventory.localidad",
  "pk": 1673,
  "fields": {
-  "descripcion": "ÑUAMBUA",
+  "descripcion": "ÃUAMBUA",
   "distrito": 20
  }
 },
@@ -13507,7 +13508,7 @@
  "model": "inventory.localidad",
  "pk": 1690,
  "fields": {
-  "descripcion": "COL.AÑARETA",
+  "descripcion": "COL.AÃARETA",
   "distrito": 22
  }
 },
@@ -13683,7 +13684,7 @@
  "model": "inventory.localidad",
  "pk": 1712,
  "fields": {
-  "descripcion": "AQUINO CAÑADA",
+  "descripcion": "AQUINO CAÃADA",
   "distrito": 26
  }
 },
@@ -13731,7 +13732,7 @@
  "model": "inventory.localidad",
  "pk": 1718,
  "fields": {
-  "descripcion": "CABAÑAS",
+  "descripcion": "CABAÃAS",
   "distrito": 26
  }
 },
@@ -13851,7 +13852,7 @@
  "model": "inventory.localidad",
  "pk": 1733,
  "fields": {
-  "descripcion": "ACUÑA DE FIGUEROA",
+  "descripcion": "ACUÃA DE FIGUEROA",
   "distrito": 27
  }
 },
@@ -13947,7 +13948,7 @@
  "model": "inventory.localidad",
  "pk": 1745,
  "fields": {
-  "descripcion": "TUKUNGA CAÑADA",
+  "descripcion": "TUKUNGA CAÃADA",
   "distrito": 27
  }
 },
@@ -13971,7 +13972,7 @@
  "model": "inventory.localidad",
  "pk": 1748,
  "fields": {
-  "descripcion": "YAYI CAÑADA",
+  "descripcion": "YAYI CAÃADA",
   "distrito": 27
  }
 },
@@ -14027,7 +14028,7 @@
  "model": "inventory.localidad",
  "pk": 1755,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 28
  }
 },
@@ -14035,7 +14036,7 @@
  "model": "inventory.localidad",
  "pk": 1756,
  "fields": {
-  "descripcion": "CAÑADA DOMINGUEZ",
+  "descripcion": "CAÃADA DOMINGUEZ",
   "distrito": 28
  }
 },
@@ -14339,7 +14340,7 @@
  "model": "inventory.localidad",
  "pk": 1794,
  "fields": {
-  "descripcion": "MOÑAIRY",
+  "descripcion": "MOÃAIRY",
   "distrito": 29
  }
 },
@@ -14691,7 +14692,7 @@
  "model": "inventory.localidad",
  "pk": 1838,
  "fields": {
-  "descripcion": "TUCANGUA CAÑADA",
+  "descripcion": "TUCANGUA CAÃADA",
   "distrito": 31
  }
 },
@@ -14707,7 +14708,7 @@
  "model": "inventory.localidad",
  "pk": 1840,
  "fields": {
-  "descripcion": "ACOSTA ÑU",
+  "descripcion": "ACOSTA ÃU",
   "distrito": 32
  }
 },
@@ -14723,7 +14724,7 @@
  "model": "inventory.localidad",
  "pk": 1842,
  "fields": {
-  "descripcion": "BARRETO ÑU",
+  "descripcion": "BARRETO ÃU",
   "distrito": 32
  }
 },
@@ -14763,7 +14764,7 @@
  "model": "inventory.localidad",
  "pk": 1847,
  "fields": {
-  "descripcion": "CABAÑA CUE",
+  "descripcion": "CABAÃA CUE",
   "distrito": 32
  }
 },
@@ -14803,7 +14804,7 @@
  "model": "inventory.localidad",
  "pk": 1852,
  "fields": {
-  "descripcion": "CERRO PORTEÑO",
+  "descripcion": "CERRO PORTEÃO",
   "distrito": 32
  }
 },
@@ -14859,7 +14860,7 @@
  "model": "inventory.localidad",
  "pk": 1859,
  "fields": {
-  "descripcion": "ESTNACIA ÑEEMBUCU",
+  "descripcion": "ESTNACIA ÃEEMBUCU",
   "distrito": 95
  }
 },
@@ -15051,7 +15052,7 @@
  "model": "inventory.localidad",
  "pk": 1883,
  "fields": {
-  "descripcion": "ÑU GUAZU",
+  "descripcion": "ÃU GUAZU",
   "distrito": 95
  }
 },
@@ -15059,7 +15060,7 @@
  "model": "inventory.localidad",
  "pk": 1884,
  "fields": {
-  "descripcion": "ÑU PYAJHU",
+  "descripcion": "ÃU PYAJHU",
   "distrito": 95
  }
 },
@@ -15139,7 +15140,7 @@
  "model": "inventory.localidad",
  "pk": 1894,
  "fields": {
-  "descripcion": "ESTANCIA YCUA ÑU",
+  "descripcion": "ESTANCIA YCUA ÃU",
   "distrito": 96
  }
 },
@@ -15811,7 +15812,7 @@
  "model": "inventory.localidad",
  "pk": 1978,
  "fields": {
-  "descripcion": "POTRERO ÑA U",
+  "descripcion": "POTRERO ÃA U",
   "distrito": 100
  }
 },
@@ -16011,7 +16012,7 @@
  "model": "inventory.localidad",
  "pk": 2003,
  "fields": {
-  "descripcion": "CARIÑO",
+  "descripcion": "CARIÃO",
   "distrito": 101
  }
 },
@@ -16019,7 +16020,7 @@
  "model": "inventory.localidad",
  "pk": 2004,
  "fields": {
-  "descripcion": "CAÑADA LOMA JHOVY",
+  "descripcion": "CAÃADA LOMA JHOVY",
   "distrito": 101
  }
 },
@@ -16027,7 +16028,7 @@
  "model": "inventory.localidad",
  "pk": 2005,
  "fields": {
-  "descripcion": "CAÑADA OCULTO",
+  "descripcion": "CAÃADA OCULTO",
   "distrito": 101
  }
 },
@@ -16035,7 +16036,7 @@
  "model": "inventory.localidad",
  "pk": 2006,
  "fields": {
-  "descripcion": "CAÑADA TEBICUARY (COSTA)",
+  "descripcion": "CAÃADA TEBICUARY (COSTA)",
   "distrito": 101
  }
 },
@@ -16043,7 +16044,7 @@
  "model": "inventory.localidad",
  "pk": 2007,
  "fields": {
-  "descripcion": "CAÑADITA",
+  "descripcion": "CAÃADITA",
   "distrito": 101
  }
 },
@@ -16355,7 +16356,7 @@
  "model": "inventory.localidad",
  "pk": 2046,
  "fields": {
-  "descripcion": "POTRERO ÑEMBOTY",
+  "descripcion": "POTRERO ÃEMBOTY",
   "distrito": 101
  }
 },
@@ -17123,7 +17124,7 @@
  "model": "inventory.localidad",
  "pk": 2142,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 45
  }
 },
@@ -17155,7 +17156,7 @@
  "model": "inventory.localidad",
  "pk": 2146,
  "fields": {
-  "descripcion": "DOÑA JUANA",
+  "descripcion": "DOÃA JUANA",
   "distrito": 45
  }
 },
@@ -17787,7 +17788,7 @@
  "model": "inventory.localidad",
  "pk": 2225,
  "fields": {
-  "descripcion": "ÑU PYAJHU MI",
+  "descripcion": "ÃU PYAJHU MI",
   "distrito": 86
  }
 },
@@ -18499,7 +18500,7 @@
  "model": "inventory.localidad",
  "pk": 2314,
  "fields": {
-  "descripcion": "ESTABLECIMIENTO ÑU PORA",
+  "descripcion": "ESTABLECIMIENTO ÃU PORA",
   "distrito": 185
  }
 },
@@ -18547,7 +18548,7 @@
  "model": "inventory.localidad",
  "pk": 2320,
  "fields": {
-  "descripcion": "ESTANCIA ÑANDEYARA PASO",
+  "descripcion": "ESTANCIA ÃANDEYARA PASO",
   "distrito": 185
  }
 },
@@ -18747,7 +18748,7 @@
  "model": "inventory.localidad",
  "pk": 2345,
  "fields": {
-  "descripcion": "PASO ÑANDEYARA",
+  "descripcion": "PASO ÃANDEYARA",
   "distrito": 185
  }
 },
@@ -18875,7 +18876,7 @@
  "model": "inventory.localidad",
  "pk": 2361,
  "fields": {
-  "descripcion": "PUNTA PORA ÑU",
+  "descripcion": "PUNTA PORA ÃU",
   "distrito": 185
  }
 },
@@ -19187,7 +19188,7 @@
  "model": "inventory.localidad",
  "pk": 2400,
  "fields": {
-  "descripcion": "ÑANDEYARA",
+  "descripcion": "ÃANDEYARA",
   "distrito": 185
  }
 },
@@ -19195,7 +19196,7 @@
  "model": "inventory.localidad",
  "pk": 2401,
  "fields": {
-  "descripcion": "ÑATIA CAÑADA",
+  "descripcion": "ÃATIA CAÃADA",
   "distrito": 185
  }
 },
@@ -19491,7 +19492,7 @@
  "model": "inventory.localidad",
  "pk": 2438,
  "fields": {
-  "descripcion": "ESTANCIA ÑU POI",
+  "descripcion": "ESTANCIA ÃU POI",
   "distrito": 186
  }
 },
@@ -19643,7 +19644,7 @@
  "model": "inventory.localidad",
  "pk": 2457,
  "fields": {
-  "descripcion": "RETIRO PAÑUELO",
+  "descripcion": "RETIRO PAÃUELO",
   "distrito": 186
  }
 },
@@ -19947,7 +19948,7 @@
  "model": "inventory.localidad",
  "pk": 2495,
  "fields": {
-  "descripcion": "CAMPAÑA I",
+  "descripcion": "CAMPAÃA I",
   "distrito": 187
  }
 },
@@ -20019,7 +20020,7 @@
  "model": "inventory.localidad",
  "pk": 2504,
  "fields": {
-  "descripcion": "CIERVO ÑU",
+  "descripcion": "CIERVO ÃU",
   "distrito": 187
  }
 },
@@ -20275,7 +20276,7 @@
  "model": "inventory.localidad",
  "pk": 2536,
  "fields": {
-  "descripcion": "FAZENDA JOAQUINCIÑO",
+  "descripcion": "FAZENDA JOAQUINCIÃO",
   "distrito": 187
  }
 },
@@ -20579,7 +20580,7 @@
  "model": "inventory.localidad",
  "pk": 2574,
  "fields": {
-  "descripcion": "PIÑA",
+  "descripcion": "PIÃA",
   "distrito": 187
  }
 },
@@ -20595,7 +20596,7 @@
  "model": "inventory.localidad",
  "pk": 2576,
  "fields": {
-  "descripcion": "POTRERO CIERVO ÑU",
+  "descripcion": "POTRERO CIERVO ÃU",
   "distrito": 187
  }
 },
@@ -20923,7 +20924,7 @@
  "model": "inventory.localidad",
  "pk": 2617,
  "fields": {
-  "descripcion": "COL. MAYOR OTAÑO 1,2,3,4,5,LIN",
+  "descripcion": "COL. MAYOR OTAÃO 1,2,3,4,5,LIN",
   "distrito": 90
  }
 },
@@ -21275,7 +21276,7 @@
  "model": "inventory.localidad",
  "pk": 2661,
  "fields": {
-  "descripcion": "ÑU MBYTE",
+  "descripcion": "ÃU MBYTE",
   "distrito": 45
  }
 },
@@ -21435,7 +21436,7 @@
  "model": "inventory.localidad",
  "pk": 2681,
  "fields": {
-  "descripcion": "COSTEADA ÑU PUAJHU",
+  "descripcion": "COSTEADA ÃU PUAJHU",
   "distrito": 47
  }
 },
@@ -21619,7 +21620,7 @@
  "model": "inventory.localidad",
  "pk": 2704,
  "fields": {
-  "descripcion": "ÑU PUAJHU",
+  "descripcion": "ÃU PUAJHU",
   "distrito": 47
  }
 },
@@ -21771,7 +21772,7 @@
  "model": "inventory.localidad",
  "pk": 2723,
  "fields": {
-  "descripcion": "PALÑETEY",
+  "descripcion": "PALÃETEY",
   "distrito": 48
  }
 },
@@ -22051,7 +22052,7 @@
  "model": "inventory.localidad",
  "pk": 2758,
  "fields": {
-  "descripcion": "ÑANDU CUA - I",
+  "descripcion": "ÃANDU CUA - I",
   "distrito": 49
  }
 },
@@ -22059,7 +22060,7 @@
  "model": "inventory.localidad",
  "pk": 2759,
  "fields": {
-  "descripcion": "ÑU PUAJHU - MI",
+  "descripcion": "ÃU PUAJHU - MI",
   "distrito": 49
  }
 },
@@ -22227,7 +22228,7 @@
  "model": "inventory.localidad",
  "pk": 2780,
  "fields": {
-  "descripcion": "CAÑADA TAPY-I",
+  "descripcion": "CAÃADA TAPY-I",
   "distrito": 51
  }
 },
@@ -22339,7 +22340,7 @@
  "model": "inventory.localidad",
  "pk": 2794,
  "fields": {
-  "descripcion": "ÑU PUAJHU - MI",
+  "descripcion": "ÃU PUAJHU - MI",
   "distrito": 51
  }
 },
@@ -22595,7 +22596,7 @@
  "model": "inventory.localidad",
  "pk": 2826,
  "fields": {
-  "descripcion": "ÑUMI",
+  "descripcion": "ÃUMI",
   "distrito": 54
  }
 },
@@ -22915,7 +22916,7 @@
  "model": "inventory.localidad",
  "pk": 2866,
  "fields": {
-  "descripcion": "ÑUMI",
+  "descripcion": "ÃUMI",
   "distrito": 58
  }
 },
@@ -23027,7 +23028,7 @@
  "model": "inventory.localidad",
  "pk": 2880,
  "fields": {
-  "descripcion": "ÑUMI",
+  "descripcion": "ÃUMI",
   "distrito": 59
  }
 },
@@ -23067,7 +23068,7 @@
  "model": "inventory.localidad",
  "pk": 2885,
  "fields": {
-  "descripcion": "ÑUMI",
+  "descripcion": "ÃUMI",
   "distrito": 60
  }
 },
@@ -23619,7 +23620,7 @@
  "model": "inventory.localidad",
  "pk": 2954,
  "fields": {
-  "descripcion": "LA BARREREÑA",
+  "descripcion": "LA BARREREÃA",
   "distrito": 61
  }
 },
@@ -23883,7 +23884,7 @@
  "model": "inventory.localidad",
  "pk": 2987,
  "fields": {
-  "descripcion": "ÑU RUGUA",
+  "descripcion": "ÃU RUGUA",
   "distrito": 61
  }
 },
@@ -24419,7 +24420,7 @@
  "model": "inventory.localidad",
  "pk": 3054,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 62
  }
 },
@@ -24427,7 +24428,7 @@
  "model": "inventory.localidad",
  "pk": 3055,
  "fields": {
-  "descripcion": "CAÑADA DEL MONTE(J.E.OCAMPOS)",
+  "descripcion": "CAÃADA DEL MONTE(J.E.OCAMPOS)",
   "distrito": 62
  }
 },
@@ -24523,7 +24524,7 @@
  "model": "inventory.localidad",
  "pk": 3067,
  "fields": {
-  "descripcion": "COMPAÑIA FINAGRAI",
+  "descripcion": "COMPAÃIA FINAGRAI",
   "distrito": 62
  }
 },
@@ -24867,7 +24868,7 @@
  "model": "inventory.localidad",
  "pk": 3110,
  "fields": {
-  "descripcion": "RAMCHO CUÑA",
+  "descripcion": "RAMCHO CUÃA",
   "distrito": 62
  }
 },
@@ -25035,7 +25036,7 @@
  "model": "inventory.localidad",
  "pk": 3131,
  "fields": {
-  "descripcion": "Y-ROYUÑA",
+  "descripcion": "Y-ROYUÃA",
   "distrito": 62
  }
 },
@@ -25099,7 +25100,7 @@
  "model": "inventory.localidad",
  "pk": 3139,
  "fields": {
-  "descripcion": "ÑURUNDIAY",
+  "descripcion": "ÃURUNDIAY",
   "distrito": 62
  }
 },
@@ -25219,7 +25220,7 @@
  "model": "inventory.localidad",
  "pk": 3154,
  "fields": {
-  "descripcion": "CATALDO CAÑADA",
+  "descripcion": "CATALDO CAÃADA",
   "distrito": 63
  }
 },
@@ -25507,7 +25508,7 @@
  "model": "inventory.localidad",
  "pk": 3190,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 64
  }
 },
@@ -25539,7 +25540,7 @@
  "model": "inventory.localidad",
  "pk": 3194,
  "fields": {
-  "descripcion": "CUÑANDAYTY",
+  "descripcion": "CUÃANDAYTY",
   "distrito": 64
  }
 },
@@ -25691,7 +25692,7 @@
  "model": "inventory.localidad",
  "pk": 3213,
  "fields": {
-  "descripcion": "ÑUPY",
+  "descripcion": "ÃUPY",
   "distrito": 64
  }
 },
@@ -25819,7 +25820,7 @@
  "model": "inventory.localidad",
  "pk": 3229,
  "fields": {
-  "descripcion": "LEÑA CUE",
+  "descripcion": "LEÃA CUE",
   "distrito": 65
  }
 },
@@ -25939,7 +25940,7 @@
  "model": "inventory.localidad",
  "pk": 3244,
  "fields": {
-  "descripcion": "ÑANDU CUA",
+  "descripcion": "ÃANDU CUA",
   "distrito": 65
  }
 },
@@ -25955,7 +25956,7 @@
  "model": "inventory.localidad",
  "pk": 3246,
  "fields": {
-  "descripcion": "2DA.LINEA AÑARETANGUE",
+  "descripcion": "2DA.LINEA AÃARETANGUE",
   "distrito": 66
  }
 },
@@ -26291,7 +26292,7 @@
  "model": "inventory.localidad",
  "pk": 3288,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 86
  }
 },
@@ -26299,7 +26300,7 @@
  "model": "inventory.localidad",
  "pk": 3289,
  "fields": {
-  "descripcion": "CAÑADA (SANTA TERESITA)",
+  "descripcion": "CAÃADA (SANTA TERESITA)",
   "distrito": 86
  }
 },
@@ -26587,7 +26588,7 @@
  "model": "inventory.localidad",
  "pk": 3325,
  "fields": {
-  "descripcion": "CUÑA PIRU",
+  "descripcion": "CUÃA PIRU",
   "distrito": 143
  }
 },
@@ -26811,7 +26812,7 @@
  "model": "inventory.localidad",
  "pk": 3353,
  "fields": {
-  "descripcion": "PUERTO MARTIN ORDOÑEZ",
+  "descripcion": "PUERTO MARTIN ORDOÃEZ",
   "distrito": 143
  }
 },
@@ -26955,7 +26956,7 @@
  "model": "inventory.localidad",
  "pk": 3371,
  "fields": {
-  "descripcion": "ÑACUNDAY",
+  "descripcion": "ÃACUNDAY",
   "distrito": 144
  }
 },
@@ -27043,7 +27044,7 @@
  "model": "inventory.localidad",
  "pk": 3382,
  "fields": {
-  "descripcion": "ÑACUNDAY (MUNICIPIO)",
+  "descripcion": "ÃACUNDAY (MUNICIPIO)",
   "distrito": 144
  }
 },
@@ -28539,7 +28540,7 @@
  "model": "inventory.localidad",
  "pk": 3569,
  "fields": {
-  "descripcion": "ALDANA CAÑADA",
+  "descripcion": "ALDANA CAÃADA",
   "distrito": 153
  }
 },
@@ -28563,7 +28564,7 @@
  "model": "inventory.localidad",
  "pk": 3572,
  "fields": {
-  "descripcion": "COMPAÑIA 14",
+  "descripcion": "COMPAÃIA 14",
   "distrito": 153
  }
 },
@@ -28571,7 +28572,7 @@
  "model": "inventory.localidad",
  "pk": 3573,
  "fields": {
-  "descripcion": "COMPAÑIA 15",
+  "descripcion": "COMPAÃIA 15",
   "distrito": 153
  }
 },
@@ -28619,7 +28620,7 @@
  "model": "inventory.localidad",
  "pk": 3579,
  "fields": {
-  "descripcion": "ROJAS CAÑADA",
+  "descripcion": "ROJAS CAÃADA",
   "distrito": 153
  }
 },
@@ -28635,7 +28636,7 @@
  "model": "inventory.localidad",
  "pk": 3581,
  "fields": {
-  "descripcion": "TOLEDO CAÑADA",
+  "descripcion": "TOLEDO CAÃADA",
   "distrito": 153
  }
 },
@@ -28851,7 +28852,7 @@
  "model": "inventory.localidad",
  "pk": 3608,
  "fields": {
-  "descripcion": "ÑU APY",
+  "descripcion": "ÃU APY",
   "distrito": 187
  }
 },
@@ -30035,7 +30036,7 @@
  "model": "inventory.localidad",
  "pk": 3756,
  "fields": {
-  "descripcion": "ÑU PORA",
+  "descripcion": "ÃU PORA",
   "distrito": 188
  }
 },
@@ -30891,7 +30892,7 @@
  "model": "inventory.localidad",
  "pk": 3863,
  "fields": {
-  "descripcion": "ÑU PYAJHU",
+  "descripcion": "ÃU PYAJHU",
   "distrito": 206
  }
 },
@@ -31379,7 +31380,7 @@
  "model": "inventory.localidad",
  "pk": 3924,
  "fields": {
-  "descripcion": "COSTA PEÑA",
+  "descripcion": "COSTA PEÃA",
   "distrito": 126
  }
 },
@@ -31467,7 +31468,7 @@
  "model": "inventory.localidad",
  "pk": 3935,
  "fields": {
-  "descripcion": "ÑUHAI",
+  "descripcion": "ÃUHAI",
   "distrito": 126
  }
 },
@@ -31859,7 +31860,7 @@
  "model": "inventory.localidad",
  "pk": 3984,
  "fields": {
-  "descripcion": "CAMPAÑA COHTCF",
+  "descripcion": "CAMPAÃA COHTCF",
   "distrito": 91
  }
 },
@@ -32115,7 +32116,7 @@
  "model": "inventory.localidad",
  "pk": 4016,
  "fields": {
-  "descripcion": "CARUÑAI",
+  "descripcion": "CARUÃAI",
   "distrito": 93
  }
 },
@@ -33035,7 +33036,7 @@
  "model": "inventory.localidad",
  "pk": 4131,
  "fields": {
-  "descripcion": "ÑEEMBUCU MI",
+  "descripcion": "ÃEEMBUCU MI",
   "distrito": 178
  }
 },
@@ -33179,7 +33180,7 @@
  "model": "inventory.localidad",
  "pk": 4149,
  "fields": {
-  "descripcion": "SAN JUAN DE ÑEEMBUCU",
+  "descripcion": "SAN JUAN DE ÃEEMBUCU",
   "distrito": 181
  }
 },
@@ -33531,7 +33532,7 @@
  "model": "inventory.localidad",
  "pk": 4193,
  "fields": {
-  "descripcion": "PUESTO ÑU PYAJHU",
+  "descripcion": "PUESTO ÃU PYAJHU",
   "distrito": 181
  }
 },
@@ -33547,7 +33548,7 @@
  "model": "inventory.localidad",
  "pk": 4195,
  "fields": {
-  "descripcion": "SAN JUAN ÑEEMBUCU (MUNICIPIO)",
+  "descripcion": "SAN JUAN ÃEEMBUCU (MUNICIPIO)",
   "distrito": 181
  }
 },
@@ -33587,7 +33588,7 @@
  "model": "inventory.localidad",
  "pk": 4200,
  "fields": {
-  "descripcion": "POTRERO YBYÑAI",
+  "descripcion": "POTRERO YBYÃAI",
   "distrito": 182
  }
 },
@@ -34051,7 +34052,7 @@
  "model": "inventory.localidad",
  "pk": 4258,
  "fields": {
-  "descripcion": "AÑARETA",
+  "descripcion": "AÃARETA",
   "distrito": 185
  }
 },
@@ -34275,7 +34276,7 @@
  "model": "inventory.localidad",
  "pk": 4286,
  "fields": {
-  "descripcion": "CAÑADA AQUIDABAN",
+  "descripcion": "CAÃADA AQUIDABAN",
   "distrito": 185
  }
 },
@@ -34283,7 +34284,7 @@
  "model": "inventory.localidad",
  "pk": 4287,
  "fields": {
-  "descripcion": "CAÑADA SAN ANTONIO",
+  "descripcion": "CAÃADA SAN ANTONIO",
   "distrito": 185
  }
 },
@@ -34867,7 +34868,7 @@
  "model": "inventory.localidad",
  "pk": 4360,
  "fields": {
-  "descripcion": "ÑANDUCUA",
+  "descripcion": "ÃANDUCUA",
   "distrito": 77
  }
 },
@@ -34875,7 +34876,7 @@
  "model": "inventory.localidad",
  "pk": 4361,
  "fields": {
-  "descripcion": "ÑAUMBY",
+  "descripcion": "ÃAUMBY",
   "distrito": 77
  }
 },
@@ -34883,7 +34884,7 @@
  "model": "inventory.localidad",
  "pk": 4362,
  "fields": {
-  "descripcion": "ÑAUMBYTA",
+  "descripcion": "ÃAUMBYTA",
   "distrito": 77
  }
 },
@@ -34891,7 +34892,7 @@
  "model": "inventory.localidad",
  "pk": 4363,
  "fields": {
-  "descripcion": "ÑU PYAJHU-MI",
+  "descripcion": "ÃU PYAJHU-MI",
   "distrito": 77
  }
 },
@@ -34899,7 +34900,7 @@
  "model": "inventory.localidad",
  "pk": 4364,
  "fields": {
-  "descripcion": "ÑU PYAJHU GUAZU",
+  "descripcion": "ÃU PYAJHU GUAZU",
   "distrito": 77
  }
 },
@@ -35091,7 +35092,7 @@
  "model": "inventory.localidad",
  "pk": 4388,
  "fields": {
-  "descripcion": "PATIÑO",
+  "descripcion": "PATIÃO",
   "distrito": 79
  }
 },
@@ -35203,7 +35204,7 @@
  "model": "inventory.localidad",
  "pk": 4402,
  "fields": {
-  "descripcion": "ÑACANGUA",
+  "descripcion": "ÃACANGUA",
   "distrito": 80
  }
 },
@@ -35547,7 +35548,7 @@
  "model": "inventory.localidad",
  "pk": 4445,
  "fields": {
-  "descripcion": "ESTANCIA ÑU PYAJHU",
+  "descripcion": "ESTANCIA ÃU PYAJHU",
   "distrito": 82
  }
 },
@@ -35899,7 +35900,7 @@
  "model": "inventory.localidad",
  "pk": 4489,
  "fields": {
-  "descripcion": "ÑA U",
+  "descripcion": "ÃA U",
   "distrito": 82
  }
 },
@@ -35907,7 +35908,7 @@
  "model": "inventory.localidad",
  "pk": 4490,
  "fields": {
-  "descripcion": "ÑUMI",
+  "descripcion": "ÃUMI",
   "distrito": 82
  }
 },
@@ -35915,7 +35916,7 @@
  "model": "inventory.localidad",
  "pk": 4491,
  "fields": {
-  "descripcion": "ÑURUNDIAY",
+  "descripcion": "ÃURUNDIAY",
   "distrito": 82
  }
 },
@@ -35923,7 +35924,7 @@
  "model": "inventory.localidad",
  "pk": 4492,
  "fields": {
-  "descripcion": "ÑU - CAÑY",
+  "descripcion": "ÃU - CAÃY",
   "distrito": 82
  }
 },
@@ -35931,7 +35932,7 @@
  "model": "inventory.localidad",
  "pk": 4493,
  "fields": {
-  "descripcion": "ÑU PYAJHU POTRERO",
+  "descripcion": "ÃU PYAJHU POTRERO",
   "distrito": 82
  }
 },
@@ -36035,7 +36036,7 @@
  "model": "inventory.localidad",
  "pk": 4506,
  "fields": {
-  "descripcion": "CAÑADA (X)",
+  "descripcion": "CAÃADA (X)",
   "distrito": 83
  }
 },
@@ -36371,7 +36372,7 @@
  "model": "inventory.localidad",
  "pk": 4548,
  "fields": {
-  "descripcion": "ÑU GUAZU",
+  "descripcion": "ÃU GUAZU",
   "distrito": 83
  }
 },
@@ -36499,7 +36500,7 @@
  "model": "inventory.localidad",
  "pk": 4564,
  "fields": {
-  "descripcion": "ÑU CAÑY",
+  "descripcion": "ÃU CAÃY",
   "distrito": 84
  }
 },
@@ -36595,7 +36596,7 @@
  "model": "inventory.localidad",
  "pk": 4576,
  "fields": {
-  "descripcion": "PUESTO CAÑETE",
+  "descripcion": "PUESTO CAÃETE",
   "distrito": 85
  }
 },
@@ -36627,7 +36628,7 @@
  "model": "inventory.localidad",
  "pk": 4580,
  "fields": {
-  "descripcion": "RETIRO CAÑETE",
+  "descripcion": "RETIRO CAÃETE",
   "distrito": 85
  }
 },
@@ -36843,7 +36844,7 @@
  "model": "inventory.localidad",
  "pk": 4607,
  "fields": {
-  "descripcion": "YASY KAÑY",
+  "descripcion": "YASY KAÃY",
   "distrito": 241
  }
 },
@@ -37059,7 +37060,7 @@
  "model": "inventory.localidad",
  "pk": 4634,
  "fields": {
-  "descripcion": "CAÑADITA",
+  "descripcion": "CAÃADITA",
   "distrito": 195
  }
 },
@@ -37099,7 +37100,7 @@
  "model": "inventory.localidad",
  "pk": 4639,
  "fields": {
-  "descripcion": "CUÑATAI",
+  "descripcion": "CUÃATAI",
   "distrito": 195
  }
 },
@@ -38051,7 +38052,7 @@
  "model": "inventory.localidad",
  "pk": 4758,
  "fields": {
-  "descripcion": "CAÑADA SAN VICENTE",
+  "descripcion": "CAÃADA SAN VICENTE",
   "distrito": 207
  }
 },
@@ -39011,7 +39012,7 @@
  "model": "inventory.localidad",
  "pk": 4878,
  "fields": {
-  "descripcion": "CAÑADITA",
+  "descripcion": "CAÃADITA",
   "distrito": 197
  }
 },
@@ -39723,7 +39724,7 @@
  "model": "inventory.localidad",
  "pk": 4967,
  "fields": {
-  "descripcion": "ÑAMBY",
+  "descripcion": "ÃAMBY",
   "distrito": 198
  }
 },
@@ -39731,7 +39732,7 @@
  "model": "inventory.localidad",
  "pk": 4968,
  "fields": {
-  "descripcion": "ÑANDUROCAI",
+  "descripcion": "ÃANDUROCAI",
   "distrito": 198
  }
 },
@@ -39955,7 +39956,7 @@
  "model": "inventory.localidad",
  "pk": 4996,
  "fields": {
-  "descripcion": "ÑUA-I",
+  "descripcion": "ÃUA-I",
   "distrito": 199
  }
 },
@@ -40051,7 +40052,7 @@
  "model": "inventory.localidad",
  "pk": 5008,
  "fields": {
-  "descripcion": "CALLE CERRO PORTEÑO",
+  "descripcion": "CALLE CERRO PORTEÃO",
   "distrito": 200
  }
 },
@@ -40075,7 +40076,7 @@
  "model": "inventory.localidad",
  "pk": 5011,
  "fields": {
-  "descripcion": "CAYE CUE (ÑUMI)",
+  "descripcion": "CAYE CUE (ÃUMI)",
   "distrito": 200
  }
 },
@@ -40243,7 +40244,7 @@
  "model": "inventory.localidad",
  "pk": 5032,
  "fields": {
-  "descripcion": "FAZENDA ESPAÑA",
+  "descripcion": "FAZENDA ESPAÃA",
   "distrito": 200
  }
 },
@@ -40251,7 +40252,7 @@
  "model": "inventory.localidad",
  "pk": 5033,
  "fields": {
-  "descripcion": "FAZENDA ESPAÑA 2A.",
+  "descripcion": "FAZENDA ESPAÃA 2A.",
   "distrito": 200
  }
 },
@@ -40459,7 +40460,7 @@
  "model": "inventory.localidad",
  "pk": 5059,
  "fields": {
-  "descripcion": "ARAÑA 1",
+  "descripcion": "ARAÃA 1",
   "distrito": 156
  }
 },
@@ -40595,7 +40596,7 @@
  "model": "inventory.localidad",
  "pk": 5076,
  "fields": {
-  "descripcion": "YAGUA ÑARO",
+  "descripcion": "YAGUA ÃARO",
   "distrito": 156
  }
 },
@@ -40603,7 +40604,7 @@
  "model": "inventory.localidad",
  "pk": 5077,
  "fields": {
-  "descripcion": "YAGUA ÑARO 1A.",
+  "descripcion": "YAGUA ÃARO 1A.",
   "distrito": 156
  }
 },
@@ -40611,7 +40612,7 @@
  "model": "inventory.localidad",
  "pk": 5078,
  "fields": {
-  "descripcion": "ALDANA CAÑADA",
+  "descripcion": "ALDANA CAÃADA",
   "distrito": 157
  }
 },
@@ -40619,7 +40620,7 @@
  "model": "inventory.localidad",
  "pk": 5079,
  "fields": {
-  "descripcion": "ALDANA CAÑADA 2A.",
+  "descripcion": "ALDANA CAÃADA 2A.",
   "distrito": 157
  }
 },
@@ -40635,7 +40636,7 @@
  "model": "inventory.localidad",
  "pk": 5081,
  "fields": {
-  "descripcion": "CAÑADITA",
+  "descripcion": "CAÃADITA",
   "distrito": 157
  }
 },
@@ -40787,7 +40788,7 @@
  "model": "inventory.localidad",
  "pk": 5100,
  "fields": {
-  "descripcion": "CERRO ÑU",
+  "descripcion": "CERRO ÃU",
   "distrito": 128
  }
 },
@@ -40827,7 +40828,7 @@
  "model": "inventory.localidad",
  "pk": 5105,
  "fields": {
-  "descripcion": "FRANCO ÑU",
+  "descripcion": "FRANCO ÃU",
   "distrito": 128
  }
 },
@@ -41051,7 +41052,7 @@
  "model": "inventory.localidad",
  "pk": 5133,
  "fields": {
-  "descripcion": "CAÑETE CUE",
+  "descripcion": "CAÃETE CUE",
   "distrito": 129
  }
 },
@@ -41307,7 +41308,7 @@
  "model": "inventory.localidad",
  "pk": 5165,
  "fields": {
-  "descripcion": "ESTANCIA TOÑANEZ",
+  "descripcion": "ESTANCIA TOÃANEZ",
   "distrito": 131
  }
 },
@@ -41555,7 +41556,7 @@
  "model": "inventory.localidad",
  "pk": 5196,
  "fields": {
-  "descripcion": "ÑANDU RUA",
+  "descripcion": "ÃANDU RUA",
   "distrito": 132
  }
 },
@@ -41563,7 +41564,7 @@
  "model": "inventory.localidad",
  "pk": 5197,
  "fields": {
-  "descripcion": "ÑU AHI",
+  "descripcion": "ÃU AHI",
   "distrito": 132
  }
 },
@@ -41571,7 +41572,7 @@
  "model": "inventory.localidad",
  "pk": 5198,
  "fields": {
-  "descripcion": "ÑU APUA",
+  "descripcion": "ÃU APUA",
   "distrito": 132
  }
 },
@@ -42707,7 +42708,7 @@
  "model": "inventory.localidad",
  "pk": 5340,
  "fields": {
-  "descripcion": "SAN JOSE (IBAÑEZ)",
+  "descripcion": "SAN JOSE (IBAÃEZ)",
   "distrito": 138
  }
 },
@@ -42739,7 +42740,7 @@
  "model": "inventory.localidad",
  "pk": 5344,
  "fields": {
-  "descripcion": "AÑAZCO",
+  "descripcion": "AÃAZCO",
   "distrito": 139
  }
 },
@@ -42763,7 +42764,7 @@
  "model": "inventory.localidad",
  "pk": 5347,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 139
  }
 },
@@ -43107,7 +43108,7 @@
  "model": "inventory.localidad",
  "pk": 5390,
  "fields": {
-  "descripcion": "ÑUATI JHUA POI",
+  "descripcion": "ÃUATI JHUA POI",
   "distrito": 141
  }
 },
@@ -43115,7 +43116,7 @@
  "model": "inventory.localidad",
  "pk": 5391,
  "fields": {
-  "descripcion": "ÑUATI",
+  "descripcion": "ÃUATI",
   "distrito": 141
  }
 },
@@ -43123,7 +43124,7 @@
  "model": "inventory.localidad",
  "pk": 5392,
  "fields": {
-  "descripcion": "ÑUATI CALLE",
+  "descripcion": "ÃUATI CALLE",
   "distrito": 141
  }
 },
@@ -43547,7 +43548,7 @@
  "model": "inventory.localidad",
  "pk": 5445,
  "fields": {
-  "descripcion": "MOÑAI CUARE",
+  "descripcion": "MOÃAI CUARE",
   "distrito": 172
  }
 },
@@ -43595,7 +43596,7 @@
  "model": "inventory.localidad",
  "pk": 5451,
  "fields": {
-  "descripcion": "CERRO ÑU",
+  "descripcion": "CERRO ÃU",
   "distrito": 173
  }
 },
@@ -44091,7 +44092,7 @@
  "model": "inventory.localidad",
  "pk": 5513,
  "fields": {
-  "descripcion": "CAÑADA CALAIS",
+  "descripcion": "CAÃADA CALAIS",
   "distrito": 192
  }
 },
@@ -44099,7 +44100,7 @@
  "model": "inventory.localidad",
  "pk": 5514,
  "fields": {
-  "descripcion": "CAÑADA ELISA",
+  "descripcion": "CAÃADA ELISA",
   "distrito": 192
  }
 },
@@ -44427,7 +44428,7 @@
  "model": "inventory.localidad",
  "pk": 5555,
  "fields": {
-  "descripcion": "LA CHAQUEÑA",
+  "descripcion": "LA CHAQUEÃA",
   "distrito": 194
  }
 },
@@ -44451,7 +44452,7 @@
  "model": "inventory.localidad",
  "pk": 5558,
  "fields": {
-  "descripcion": "LAS SEÑORAS",
+  "descripcion": "LAS SEÃORAS",
   "distrito": 194
  }
 },
@@ -44787,7 +44788,7 @@
  "model": "inventory.localidad",
  "pk": 5600,
  "fields": {
-  "descripcion": "PIQUIÑO CUE",
+  "descripcion": "PIQUIÃO CUE",
   "distrito": 200
  }
 },
@@ -44955,7 +44956,7 @@
  "model": "inventory.localidad",
  "pk": 5621,
  "fields": {
-  "descripcion": "ÑASAINDY",
+  "descripcion": "ÃASAINDY",
   "distrito": 200
  }
 },
@@ -45579,7 +45580,7 @@
  "model": "inventory.localidad",
  "pk": 5699,
  "fields": {
-  "descripcion": "COLONIA IRUÑA",
+  "descripcion": "COLONIA IRUÃA",
   "distrito": 217
  }
 },
@@ -45963,7 +45964,7 @@
  "model": "inventory.localidad",
  "pk": 5747,
  "fields": {
-  "descripcion": "CAÑADITA",
+  "descripcion": "CAÃADITA",
   "distrito": 153
  }
 },
@@ -46003,7 +46004,7 @@
  "model": "inventory.localidad",
  "pk": 5752,
  "fields": {
-  "descripcion": "SEÑORITA",
+  "descripcion": "SEÃORITA",
   "distrito": 187
  }
 },
@@ -46547,7 +46548,7 @@
  "model": "inventory.localidad",
  "pk": 5820,
  "fields": {
-  "descripcion": "ARGAÑA CUE",
+  "descripcion": "ARGAÃA CUE",
   "distrito": 86
  }
 },
@@ -46555,7 +46556,7 @@
  "model": "inventory.localidad",
  "pk": 5821,
  "fields": {
-  "descripcion": "CABAÑA LA CHIQUILLA",
+  "descripcion": "CABAÃA LA CHIQUILLA",
   "distrito": 86
  }
 },
@@ -46827,7 +46828,7 @@
  "model": "inventory.localidad",
  "pk": 5855,
  "fields": {
-  "descripcion": "ÑU APUA MI",
+  "descripcion": "ÃU APUA MI",
   "distrito": 132
  }
 },
@@ -46867,7 +46868,7 @@
  "model": "inventory.localidad",
  "pk": 5860,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 134
  }
 },
@@ -46915,7 +46916,7 @@
  "model": "inventory.localidad",
  "pk": 5866,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 135
  }
 },
@@ -46971,7 +46972,7 @@
  "model": "inventory.localidad",
  "pk": 5873,
  "fields": {
-  "descripcion": "ÑANDUA",
+  "descripcion": "ÃANDUA",
   "distrito": 141
  }
 },
@@ -46979,7 +46980,7 @@
  "model": "inventory.localidad",
  "pk": 5874,
  "fields": {
-  "descripcion": "ÑUATI GUAZU",
+  "descripcion": "ÃUATI GUAZU",
   "distrito": 141
  }
 },
@@ -47027,7 +47028,7 @@
  "model": "inventory.localidad",
  "pk": 5880,
  "fields": {
-  "descripcion": "PEDRO P.PEÑA",
+  "descripcion": "PEDRO P.PEÃA",
   "distrito": 194
  }
 },
@@ -47387,7 +47388,7 @@
  "model": "inventory.localidad",
  "pk": 5925,
  "fields": {
-  "descripcion": "PATIÑO",
+  "descripcion": "PATIÃO",
   "distrito": 157
  }
 },
@@ -47451,7 +47452,7 @@
  "model": "inventory.localidad",
  "pk": 5933,
  "fields": {
-  "descripcion": "ÑU POI",
+  "descripcion": "ÃU POI",
   "distrito": 157
  }
 },
@@ -47523,7 +47524,7 @@
  "model": "inventory.localidad",
  "pk": 5942,
  "fields": {
-  "descripcion": "MONTAÑA ALTA",
+  "descripcion": "MONTAÃA ALTA",
   "distrito": 158
  }
 },
@@ -47539,7 +47540,7 @@
  "model": "inventory.localidad",
  "pk": 5944,
  "fields": {
-  "descripcion": "RINCON DEL PEÑON",
+  "descripcion": "RINCON DEL PEÃON",
   "distrito": 158
  }
 },
@@ -47787,7 +47788,7 @@
  "model": "inventory.localidad",
  "pk": 5975,
  "fields": {
-  "descripcion": "ÑEMBY",
+  "descripcion": "ÃEMBY",
   "distrito": 161
  }
 },
@@ -47803,7 +47804,7 @@
  "model": "inventory.localidad",
  "pk": 5977,
  "fields": {
-  "descripcion": "CERRO ÑEMBY",
+  "descripcion": "CERRO ÃEMBY",
   "distrito": 161
  }
 },
@@ -47819,7 +47820,7 @@
  "model": "inventory.localidad",
  "pk": 5979,
  "fields": {
-  "descripcion": "PAI ÑU",
+  "descripcion": "PAI ÃU",
   "distrito": 161
  }
 },
@@ -48163,7 +48164,7 @@
  "model": "inventory.localidad",
  "pk": 6022,
  "fields": {
-  "descripcion": "CAÑADA LAGUNA GRANDE",
+  "descripcion": "CAÃADA LAGUNA GRANDE",
   "distrito": 164
  }
 },
@@ -48171,7 +48172,7 @@
  "model": "inventory.localidad",
  "pk": 6023,
  "fields": {
-  "descripcion": "CAÑADA SOLINS Y OTROS",
+  "descripcion": "CAÃADA SOLINS Y OTROS",
   "distrito": 164
  }
 },
@@ -48739,7 +48740,7 @@
  "model": "inventory.localidad",
  "pk": 6094,
  "fields": {
-  "descripcion": "CAÑADITA",
+  "descripcion": "CAÃADITA",
   "distrito": 168
  }
 },
@@ -48811,7 +48812,7 @@
  "model": "inventory.localidad",
  "pk": 6103,
  "fields": {
-  "descripcion": "YPANE ÑU",
+  "descripcion": "YPANE ÃU",
   "distrito": 168
  }
 },
@@ -48859,7 +48860,7 @@
  "model": "inventory.localidad",
  "pk": 6109,
  "fields": {
-  "descripcion": "BAÑADO SUR",
+  "descripcion": "BAÃADO SUR",
   "distrito": 169
  }
 },
@@ -48875,7 +48876,7 @@
  "model": "inventory.localidad",
  "pk": 6111,
  "fields": {
-  "descripcion": "CAÑADA",
+  "descripcion": "CAÃADA",
   "distrito": 169
  }
 },
@@ -49251,7 +49252,7 @@
  "model": "inventory.localidad",
  "pk": 6158,
  "fields": {
-  "descripcion": "ROMERO PATIÑO",
+  "descripcion": "ROMERO PATIÃO",
   "distrito": 2
  }
 },
@@ -49299,7 +49300,7 @@
  "model": "inventory.localidad",
  "pk": 6164,
  "fields": {
-  "descripcion": "YACARE ÑEE",
+  "descripcion": "YACARE ÃEE",
   "distrito": 10
  }
 },
@@ -49499,7 +49500,7 @@
  "model": "inventory.localidad",
  "pk": 6189,
  "fields": {
-  "descripcion": "ÑUAY",
+  "descripcion": "ÃUAY",
   "distrito": 15
  }
 },
@@ -49635,7 +49636,7 @@
  "model": "inventory.localidad",
  "pk": 6206,
  "fields": {
-  "descripcion": "ÑUMBUCU",
+  "descripcion": "ÃUMBUCU",
   "distrito": 68
  }
 },
@@ -49643,7 +49644,7 @@
  "model": "inventory.localidad",
  "pk": 6207,
  "fields": {
-  "descripcion": "COMPAÑIA ÑUABIYU",
+  "descripcion": "COMPAÃIA ÃUABIYU",
   "distrito": 75
  }
 },
@@ -49747,7 +49748,7 @@
  "model": "inventory.localidad",
  "pk": 6220,
  "fields": {
-  "descripcion": "ÑA VENTURA CUE",
+  "descripcion": "ÃA VENTURA CUE",
   "distrito": 2
  }
 },
@@ -49795,7 +49796,7 @@
  "model": "inventory.localidad",
  "pk": 6226,
  "fields": {
-  "descripcion": "ÑU PYHAJHU",
+  "descripcion": "ÃU PYHAJHU",
   "distrito": 4
  }
 },
@@ -49995,7 +49996,7 @@
  "model": "inventory.localidad",
  "pk": 6251,
  "fields": {
-  "descripcion": "CAÑADA AREVALOS",
+  "descripcion": "CAÃADA AREVALOS",
   "distrito": 20
  }
 },
@@ -50011,7 +50012,7 @@
  "model": "inventory.localidad",
  "pk": 6253,
  "fields": {
-  "descripcion": "PTO.YBYCUI ÑARO",
+  "descripcion": "PTO.YBYCUI ÃARO",
   "distrito": 106
  }
 },
@@ -50147,7 +50148,7 @@
  "model": "inventory.localidad",
  "pk": 6270,
  "fields": {
-  "descripcion": "MOÑO MI CUE",
+  "descripcion": "MOÃO MI CUE",
   "distrito": 20
  }
 },
@@ -50171,7 +50172,7 @@
  "model": "inventory.localidad",
  "pk": 6273,
  "fields": {
-  "descripcion": "REDONDO Y ÑANDUA",
+  "descripcion": "REDONDO Y ÃANDUA",
   "distrito": 20
  }
 },
@@ -50371,7 +50372,7 @@
  "model": "inventory.localidad",
  "pk": 6298,
  "fields": {
-  "descripcion": "ÑU GUAZU",
+  "descripcion": "ÃU GUAZU",
   "distrito": 42
  }
 },
@@ -50675,7 +50676,7 @@
  "model": "inventory.localidad",
  "pk": 6336,
  "fields": {
-  "descripcion": "ÑANDU CUA",
+  "descripcion": "ÃANDU CUA",
   "distrito": 49
  }
 },
@@ -50739,7 +50740,7 @@
  "model": "inventory.localidad",
  "pk": 6344,
  "fields": {
-  "descripcion": "ÑU PUAJHU",
+  "descripcion": "ÃU PUAJHU",
   "distrito": 51
  }
 },
@@ -50875,7 +50876,7 @@
  "model": "inventory.localidad",
  "pk": 6361,
  "fields": {
-  "descripcion": "OVEÑA 2DA. LINEA",
+  "descripcion": "OVEÃA 2DA. LINEA",
   "distrito": 62
  }
 },
@@ -50955,7 +50956,7 @@
  "model": "inventory.localidad",
  "pk": 6371,
  "fields": {
-  "descripcion": "CAÑADA SAN BLAS",
+  "descripcion": "CAÃADA SAN BLAS",
   "distrito": 66
  }
 },
@@ -51304,3 +51305,4 @@
  }
 }
 ]
+

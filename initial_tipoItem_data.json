@@ -1,0 +1,1 @@
+[{"model": "inventory.tipoitem", "pk": 1, "fields": {"descripcion": "Producto Agr�cola"}}, {"model": "inventory.tipoitem", "pk": 2, "fields": {"descripcion": "Producto Normal"}}]
