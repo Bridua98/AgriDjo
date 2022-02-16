@@ -17,6 +17,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path,include
+from django.conf.urls import url
 
 # importando vistas
 from inventory.views import AcopioAnularView, AcopioCreateView, AcopioListView, AcopioUpdateView, ActividadAgricolaAnularView, ActividadAgricolaCreateView, ActividadAgricolaListView, AjusteStockCreateView, AjusteStockDeleteView, AjusteStockListView, AjusteStockUpdateView, AperturaCajaCerrarView, AperturaCajaCreateView, AperturaCajaListView, ArqueoCreateView, ArqueoDeleteView, ArqueoListView, BancoCreateView, BancoDeleteView, BancoListView, BancoUpdateView, CalificacionAgricolaCreateView, CalificacionAgricolaDeleteView, CalificacionAgricolaListView, CalificacionAgricolaUpdateView, CategoriaCreateView, CategoriaDeleteView, CategoriaListView, CategoriaUpdateView, CierreZafraSelectionView, CobroAnularView, CobroCreateView, CobroListView, CompraAnularView, CompraCreateView, CompraInformeListView, CompraListView, ContratoCreateView, ContratoDeleteView, ContratoListView, CuentaCreateView, CuentaDeleteView, CuentaListView, CuentaUpdateView, CustomPasswordChangeDoneView, CustomPasswordChangeView, DepositoCreateView, DepositoDeleteView, DepositoListView, DepositoUpdateView, InventarioDepositoInformeListView, ItemCreateView, LibroCompraListView, LibroVentaListView, LiquidacionAgricolaAnularView, LiquidacionAgricolaCreateView, LiquidacionAgricolaListView, LoteCreateView, LoteDeleteView, LoteListView, LoteUpdateView, MaquinariaAgricolaCreateView, MaquinariaAgricolaDeleteView, MaquinariaAgricolaListView, MaquinariaAgricolaUpdateView, NotaCreditoEmitidaAnularView, NotaCreditoEmitidaCreateView, NotaCreditoEmitidaListView, NotaCreditoRecibidaAnularView, NotaCreditoRecibidaCreateView, NotaCreditoRecibidaListView, NotaDebitoEmitidaAnularView, NotaDebitoEmitidaCreateView, NotaDebitoEmitidaListView, NotaDebitoRecibidaAnularView, NotaDebitoRecibidaCreateView, NotaDebitoRecibidaListView, OrdenCompraAnularView, OrdenCompraCreateView, OrdenCompraListView, OrdenCompraUpdateView, PedidoCompraCreateView, PedidoCompraListView, PedidoCompraUpdateView, PersonaCreateView, PersonaDeleteView, PersonaListView, PersonaUpdateView, PlanActividadZafraCreateView, PlanActividadZafraListView, PlanActividadZafraUpdateView, ProduccionAgricolaInformeListView, TipoImpuestoCreateView, TipoImpuestoDeleteView, TipoImpuestoListView, TipoImpuestoUpdateView, TransferenciaCuentaAnularView, TransferenciaCuentaCreateView, TransferenciaCuentaListView, UserDeleteView, VentaAnularView, VentaCreateView, VentaInformeListView, VentaListView, ZafraCreateView, ZafraDeleteView, ZafraListView, ZafraUpdateView, CierreZafraCreateView, CierreZafraDeleteView, CierreZafraListView
@@ -211,6 +212,8 @@ urlpatterns = [
     # menu tonto
     path('inventory/', menu, name="inventory_menu"),
     path('admin/', admin.site.urls),
+    # documentation
+    url(r'^docs/', include('inventory.documentation.urls', namespace='documentation')),
     path('', main, name="main"),
 ]
 

@@ -146,4 +146,16 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 INVOICE_CSS_DIR = os.path.join(STATICFILES_DIRS[0],"site/css/invoice.css")
 INVOICE_IMG_DIR = os.path.join(STATICFILES_DIRS[0], 'site/images/iconoAgroAmanecer.png')
 
+# Documentation
+DOCUMENTATION_ROOT = os.path.join(BASE_DIR, 'docs')
+DOCUMENTATION_HTML_ROOT = os.path.join(BASE_DIR, 'site')
+DOCUMENTATION_ACCESS_FUNCTION = lambda user: user.is_staff
+
+
+# Django-mkdocs assumes an Nginx server is used by default to serve the documentation. 
+# DOCUMENTATION_XSENDFILE is set to true by default. If you are not using Nginx, expect
+# a very small number of users, and understand the consequences of using django.views.static.serve,
+# set the following flag to False:
+DOCUMENTATION_XSENDFILE = False
+
 django_on_heroku.settings(locals(), staticfiles=False)
