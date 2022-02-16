@@ -18,8 +18,8 @@ Siguiendo con el ejemplo de personas, para crear un nuevo registro, se procede a
   ![Principal](assets/images/6.png)
 
  Una vez oprimido, nos aparecerá la ventana de registro.
-!!! Info 
-El símbolo `*` ej.: `Razón Social *` significa que el campo es requerido.
+!!! info 
+    El símbolo `*` ej.: `Razón Social *` significa que el campo es requerido.
 
 Los campos del tipo combo `(---------- <)` significan información relacionada (Información de tipo referencial):
 

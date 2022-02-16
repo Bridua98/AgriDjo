@@ -3,15 +3,15 @@
 
 A demás de lo aprendido para los formularios de movimientos, para esta opción la pantalla de listado sería muy parecido, a excepción de nuevas funciones y opciones.
 
-!!! Información
-En este caso, tomaremos el formulario de Venta como ejemplo
+!!! info
+    En este caso, tomaremos el formulario de Venta como ejemplo
 
 ## Listado Base 
 
 Como podemos ver en la imagen se añaden nuevas funcionalidades nuevas propias del formulario.
 
-!!! Información
-Los registro tachados y pintados en color gris, significan que están Anulados. 
+!!! info
+    Los registro tachados y pintados en color gris, significan que están Anulados. 
 
  ![Principal](assets/images/18.png)
 
@@ -25,27 +25,27 @@ Oprimimos el botón de anular, y nos arrojara a una ventana parecida a la de eli
 
  ![Principal](assets/images/20.png)
 
- ## Descarga de Comprobante
+## Descarga de Comprobante
 
  En algunos movimientos, el sistema tiene la opción para descargar un comprobante, procedemos a oprimir el botón de ´Descargar Factura´
 
   ![Principal](assets/images/21.png)
 
-  Al oprimir dicho botón, se descargará un archivo en su directorio local.
+ Al oprimir dicho botón, se descargará un archivo en su directorio local.
 
   ![Principal](assets/images/22.png)
 
 ## Registrar Movimiento
 
-!!! Información 
+!!! info 
 
-Apartado enmarcado en rojo (Información de cabecera del movimiento)
+    * Apartado enmarcado en rojo (Información de cabecera del movimiento)
 
-Apartado enmarcado en azul (detalles del movimiento)
+    * Apartado enmarcado en azul (detalles del movimiento)
 
-Apartado enmarcado en naranja (opción de eliminado de detalle)
+    * Apartado enmarcado en naranja (opción de eliminado de detalle)
 
-Apartado enmarcado en verde (opción de añadir nuevo detalle)
+    * Apartado enmarcado en verde (opción de añadir nuevo detalle)
 
   ![Principal](assets/images/23.png)
 
@@ -55,11 +55,11 @@ Una vez cargado toda la información necesaria y haber pasado las diferentes val
 
 Algunos formularios de Movimientos: Cobro, Cierre de Zafra y Liquidaciones Agrícolas; poseen una pequeña ventana de selección antes de registra el movimiento.
 
-!!! Información 
+!!! info 
 
-Para este caso utilizaremos el formulario de Cobro.
+    * Para este caso utilizaremos el formulario de Cobro.
 
-Una vez oprimido el botón de añadir visualizaremos una ventana de selección.
+    * Una vez oprimido el botón de añadir visualizaremos una ventana de selección.
 
  Procedemos a seleccionar el deseado y ya estaremos registrando el movimiento
 

@@ -7,7 +7,7 @@ Si el usuario posee los permisos de acceso, puede crear nuevos usuarios, accedie
 Una vez accedido visualizará esta pantalla 
 
 !!! Info
-Funciona de la misma manera que los puntos vistos anteriormente
+    Funciona de la misma manera que los puntos vistos anteriormente
 
 ![Principal](assets/images/13.png)
 
