@@ -670,6 +670,10 @@ class ZafraCreateView(LoginRequiredMixin,CreateView):
     def get_success_url(self):
         return reverse_lazy("zafra_list")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["item"].queryset = Item.objects.filter(tipoItem__pk = 1)
+        
 class ZafraUpdateView(LoginRequiredMixin,UpdateView):
     model = Zafra
     template_name = 'inventory/zafra_update.html'
