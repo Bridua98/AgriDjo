@@ -26,7 +26,22 @@ class AcopioCalificacionDetalleInline(InlineFormSetFactory):
 class PedidoCompraDetalleInline(InlineFormSetFactory):
     model = PedidoCompraDetalle
     form_class = PedidoCompraDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'item':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-10',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-2',
+                    'class':'text-right',
+                }
+            ),
+        }
+    }
     fields =  ['item','cantidad']
 
 class OrdenCompraDetalleInline(InlineFormSetFactory):
