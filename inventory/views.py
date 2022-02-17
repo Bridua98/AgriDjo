@@ -1206,6 +1206,8 @@ class CompraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
                      
         if existeRegistro == False or totalDetalle == 0 or totalDetalle is None:
             form.add_error(None, 'Registre al menos un Detalle')
+        if totalCuota is None:
+            totalCuota = 0
         if form.cleaned_data.get('esCredito') and (totalDetalle!=totalCuota ) :  
             form.add_error(None, 'Los montos de las cuotas difieren al total de la compra')
 
