@@ -1202,7 +1202,8 @@ class CompraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
             totalDetalle = totalDetalle +f.cleaned_data.get('subtotal')
             existeRegistro = True
         for f in cuotaDetalle:
-            totalCuota = totalCuota + f.cleaned_data.get('monto')
+            if f.cleaned_data.get('monto') is not None:
+                totalCuota = totalCuota + f.cleaned_data.get('monto')
                      
         if existeRegistro == False or totalDetalle == 0 or totalDetalle is None:
             form.add_error(None, 'Registre al menos un Detalle')
