@@ -8,7 +8,33 @@ from django.forms import widgets
 class PlanActividadZafraDetalleInline(InlineFormSetFactory):
     model = PlanActividadZafraDetalle
     form_class = PlanActividadZafraDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1 ,
+        'widgets':{
+            'fechaActividad':widgets.DateInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                    'type':'date'
+                }
+            ),
+            'finca':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-2',
+                }
+            ),
+            'tipoActividadAgricola':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-2',
+                }
+            ),
+            'costo':DecimalMaskInput(
+                attrs={
+                    'wrapper_class':'col-sm-2',
+                }
+            ),
+
+        }
+    }
     fields =  ['fechaActividad', 'finca', 'tipoActividadAgricola','descripcion','costo']
 
 class AcopioDetalleInline(InlineFormSetFactory):
