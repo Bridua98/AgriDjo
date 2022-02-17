@@ -313,6 +313,7 @@ class CompraForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.fields["proveedor"].queryset =  proveedor = Persona.objects.filter(esProveedor=True)
+        self.fields["deposito"].queryset = Deposito.objects.filter(esPlantaAcopiadora=False)
         self.fields['total'].label = False
         #self.fields['total'].widget = DecimalMaskInput()
         self.fields['total_iva'].label = False
