@@ -543,6 +543,7 @@ class DepositoDeleteView(LoginRequiredMixin,DeleteView):
 class CategoriaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Categoria
     table_class = CategoriaTable
+    paginate_by = 6
     search_fields = ['descripcion']
     template_name = 'inventory/categoria_list.html'
 
@@ -579,6 +580,7 @@ class CategoriaDeleteView(LoginRequiredMixin,DeleteView):
 class PersonaListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Persona
     table_class = PersonaTable
+    paginate_by = 6
     search_fields = ['documento','razonSocial','localidad__descripcion']
     template_name = 'inventory/persona_list.html'
 
@@ -615,6 +617,7 @@ class PersonaDeleteView(LoginRequiredMixin,DeleteView):
 #ITEM
 class ItemListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Item
+    paginate_by = 6
     table_class = ItemTable
     search_fields = ['descripcion', 'codigoBarra','marca__descripcion','"categoria__descripcion','tipo_item__descripcion','tipo_impuesto__descripcion']
     template_name = 'inventory/item_list.html'
@@ -653,6 +656,7 @@ class ItemDeleteView(LoginRequiredMixin,DeleteView):
 class ZafraListView(LoginRequiredMixin,SearchViewMixin, SingleTableMixin, ListView):
     model = Zafra
     table_class = ZafraTable
+    paginate_by = 6
     search_fields = ['descripcion', 'item__descripcion']
     template_name = 'inventory/zafra_list.html'
 
