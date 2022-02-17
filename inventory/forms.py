@@ -119,10 +119,14 @@ class PlanActividadZafraForm(forms.ModelForm):
         )
 
 class PlanActividadZafraDetalleForm(forms.ModelForm):
+    fechaActividad = forms.DateField(widget=DateInput(format='%Y-%m-%d'))
     class Meta:
         model = PlanActividadZafraDetalle
         fields = ['fechaActividad', 'finca', 'tipoActividadAgricola', 'descripcion','costo']
-        widgets = { 'fechaActividad':DateInput,'costo': DecimalMaskInput }
+        widgets = { 
+            'fechaActividad':DateInput,
+            'costo': DecimalMaskInput 
+        }
 
 
 
