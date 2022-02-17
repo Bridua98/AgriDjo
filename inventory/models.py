@@ -239,6 +239,7 @@ class PedidoCompra(models.Model):
     observacion = models.CharField(max_length=300, null=True, blank=True,verbose_name="Observación")
     def __str__(self):
         return self.proveedor.razonSocial +" - "+ self.observacion
+        
     @property
     def total(self):
         return sum(round(x.cantidad)  for x in self.pedidocompradetalle_set.all())
