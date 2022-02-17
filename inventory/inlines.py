@@ -1,5 +1,5 @@
 from extra_views.advanced import InlineFormSetFactory
-from inventory.widgets import ItemCustomSelect, MaquinariaCustomSelect
+from inventory.widgets import DecimalMaskInput, ItemCustomSelect, MaquinariaCustomSelect
 
 from .models import AcopioCalificacion, AcopioDetalle, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStockDetalle, CierreZafraDetalle, CobroDetalle, CobroMedio, CompraDetalle, CuotaCompra, CuotaVenta, LiquidacionAgricolaDetalle, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitidaDetalle, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompraDetalle, PlanActividadZafraDetalle, VentaDetalle
 from .forms import AcopioCalificacionForm, AcopioDetalleForm, ActividadAgricolaItemDetalleForm, ActividadAgricolaMaquinariaDetalleForm, AjusteStockDetalleForm, CierreZafraDetalleForm, CobroDetalleForm, CobroMedioForm, CompraDetalleForm, CuotaCompraForm, CuotaVentaForm, LiquidacionAgricolaDetalleForm, NotaCreditoEmitidaDetalleForm, NotaCreditoRecibidaDetalleForm, NotaCreditoRecibidaForm, NotaDebitoEmitidaDetalleForm, NotaDebitoRecibidaDetalleForm, OrdenCompraDetalleForm, PedidoCompraDetalleForm, PlanActividadZafraDetalleForm, VentaDetalleForm
@@ -8,19 +8,70 @@ from django.forms import widgets
 class PlanActividadZafraDetalleInline(InlineFormSetFactory):
     model = PlanActividadZafraDetalle
     form_class = PlanActividadZafraDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1 ,
+        'widgets':{
+            'fechaActividad':widgets.DateInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                    'type':'date'
+                }
+            ),
+            'finca':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-2',
+                }
+            ),
+            'tipoActividadAgricola':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-2',
+                }
+            ),
+            'costo':DecimalMaskInput(
+                attrs={
+                    'wrapper_class':'col-sm-2',
+                }
+            ),
+
+        }
+    }
     fields =  ['fechaActividad', 'finca', 'tipoActividadAgricola','descripcion','costo']
 
 class AcopioDetalleInline(InlineFormSetFactory):
     model = AcopioDetalle
     form_class = AcopioDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1 ,
+        'widgets':{
+            'finca':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-5',
+                }
+            ),
+            'lote':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-4',
+                }
+            ),
+            #'peso':DecimalMaskInput()
+        }
+    }
     fields = ['acopio', 'finca', 'lote', 'peso']
 
 class AcopioCalificacionDetalleInline(InlineFormSetFactory):
     model = AcopioCalificacion
     form_class = AcopioCalificacionForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1 ,
+        'widgets':{
+            'calificacionAgricola':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-5',
+                }
+            ),
+
+        }
+    }
     fields = ['acopio', 'calificacionAgricola', 'grado', 'porcentaje','peso']
 
 class PedidoCompraDetalleInline(InlineFormSetFactory):
