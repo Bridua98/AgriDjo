@@ -10,7 +10,7 @@ from django import forms
 from django.db.models import fields
 from django.contrib.auth.models import User
 
-from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, Item, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, Persona, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle, Zafra
+from .models import Acopio, AcopioCalificacion, AcopioDetalle, ActividadAgricola, ActividadAgricolaItemDetalle, ActividadAgricolaMaquinariaDetalle, AjusteStock, AjusteStockDetalle, CierreZafra, CierreZafraDetalle, Cobro, CobroDetalle, CobroMedio, Compra, CompraDetalle, Contrato, CuotaCompra, CuotaVenta, Deposito, Item, LiquidacionAgricola, LiquidacionAgricolaDetalle, NotaCreditoEmitida, NotaCreditoEmitidaDetalle, NotaCreditoRecibida, NotaCreditoRecibidaDetalle, NotaDebitoEmitida, NotaDebitoEmitidaDetalle, NotaDebitoRecibida, NotaDebitoRecibidaDetalle, OrdenCompra, OrdenCompraDetalle, PedidoCompra, PedidoCompraDetalle, Persona, PlanActividadZafra, PlanActividadZafraDetalle, TransferenciaCuenta, Venta, VentaDetalle, Zafra
 
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -140,6 +140,7 @@ class AcopioForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.fields["deposito"].queryset =  Deposito.objects.filter(esPlantaAcopiadora=True)
         self.helper.layout = Layout(
             "fecha",
             "zafra",

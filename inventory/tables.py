@@ -142,6 +142,7 @@ class LoteTable(EditableDeleteTable):
 class MaquinariaAgricolaTable(EditableDeleteTable):
     def render_precio(self,value):
         return intcomma(value)
+        
     precio = tables.Column(verbose_name= 'Precio',attrs={
             "td": {"align": "right"},
             "th":{
