@@ -142,7 +142,7 @@ class LoteTable(EditableDeleteTable):
 class MaquinariaAgricolaTable(EditableDeleteTable):
     def render_precio(self,value):
         return intcomma(value)
-        
+
     precio = tables.Column(verbose_name= 'Precio',attrs={
             "td": {"align": "right"},
             "th":{
@@ -304,7 +304,7 @@ class CompraTable(AnulableTable):
         } )
     class Meta:
         model = Compra
-        fields = ("fechaDocumento","comprobante","proveedor","total","esVigente",)
+        fields = ("fechaDocumento","comprobante","proveedor","esCredito","total","esVigente",)
         row_attrs = {
             "registro_esVigente": lambda record: record.esVigente
         }
