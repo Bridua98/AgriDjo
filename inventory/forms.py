@@ -205,11 +205,21 @@ class PedidoCompraForm(forms.ModelForm):
                 
             ),
             Row(
-                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Cantidad: </span>'), css_class="text-right"), Column("cantidad")
-            ), 
+                Column(
+                    HTML("<div class='w-100'></div>")
+                ), 
+                Column(
+                    HTML('<span class="w-100"> Cantidad: </span>'),
+                    css_class="text-right"
+                ), 
+                Column("cantidad", css_class="col-sm-3")
+            ),  
             Row(
-                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" ))
-            ) 
+                Div(
+                    Submit("submit", "Guardar",css_class = "btn btn-success"), 
+                    HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" )
+                )
+            ) ,
         )
 
 class PedidoCompraDetalleForm(forms.ModelForm):
@@ -253,10 +263,15 @@ class OrdenCompraForm(forms.ModelForm):
                 
             ),
              Row(
-                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Total: </span>'), css_class="text-right"), Column("total")
+                #Column(
+ 
+                Column( HTML('<label> Total: </label>'),css_class='text-right col-sm-10 mt-2'),
+                Column("total", css_class='col')
             ), 
             Row(
-                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" ))
+                Div(
+                    Submit("submit", "Guardar",css_class = "btn btn-success"), 
+                    HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" ))
             ) 
         )
 
@@ -375,10 +390,11 @@ class AjusteStockForm(forms.ModelForm):
                 Formset(
                     "AjusteStockDetalleInline"#, stacked=True
                 ), 
-                Row(
+                
+            ),
+            Row(
                 Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'plan_actividad_zafra_list' %}"> Cancelar</a>""" ))
                 ) 
-            )
         )
 
 class AjusteStockDetalleForm(forms.ModelForm):
@@ -490,13 +506,27 @@ class PedidoCompraForm(forms.ModelForm):
                 Formset(
                     "PedidoCompraDetalleInline"#, stacked=True
                 ), 
-                
             ),
             Row(
-                Column(HTML("<div class='w-100'></div>")), Column(HTML('<span class="w-100"> Cantidad: </span>'), css_class="text-right"), Column("cantidad")
+                #Column(
+                #    HTML("<div class='w-100'></div>")
+                #), 
+                #Column(
+                #    
+                #), 
+                Column(
+                    HTML('<label> Cantidad: </label>'), 
+                    css_class='col-sm-9 text-right mt-2 mr-4'
+                ),
+                Column("cantidad", css_class="col-sm-2"),
+                
+               
             ), 
             Row(
-                Div(Submit("submit", "Guardar",css_class = "btn btn-success"), HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" ))
+                Div(
+                    Submit("submit", "Guardar",css_class = "btn btn-success"), 
+                    HTML("""<a class="btn btn-secondary" href="{% url 'pedido_compra_list' %}"> Cancelar</a>""" )
+                )
             ) 
         )
 

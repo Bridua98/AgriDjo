@@ -26,13 +26,45 @@ class AcopioCalificacionDetalleInline(InlineFormSetFactory):
 class PedidoCompraDetalleInline(InlineFormSetFactory):
     model = PedidoCompraDetalle
     form_class = PedidoCompraDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'item':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-10',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-2',
+                    'class':'text-right',
+                }
+            ),
+        }
+    }
     fields =  ['item','cantidad']
 
 class OrdenCompraDetalleInline(InlineFormSetFactory):
     model = OrdenCompraDetalle
     form_class = OrdenCompraDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1,
+        'widgets':{
+            'item':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-4',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-1',
+                    'class':'text-right',
+                }
+            ),
+        } 
+    
+    }
+
     fields = ['item', 'cantidad','precio','descuento']
 
 class CompraDetalleInline(InlineFormSetFactory):
@@ -83,7 +115,22 @@ class CuotaVentaInline(InlineFormSetFactory):
 class AjusteStockDetalleInline(InlineFormSetFactory):
     model = AjusteStockDetalle
     form_class = AjusteStockDetalleForm
-    factory_kwargs = {'extra':1 }
+    factory_kwargs = {
+        'extra':1 ,
+        'widgets':{
+            'item':widgets.Select(
+                attrs={
+                    'wrapper_class':'col-sm-10',
+                }
+            ),
+            'cantidad':widgets.NumberInput(
+                attrs={
+                    'wrapper_class':'col-sm-2',
+                    'class':'text-right',
+                }
+            ),
+        } 
+    }
     fields = ['item', 'cantidad',]
 
 class ActividadAgricolaMaquinariaDetalleInline(InlineFormSetFactory):
