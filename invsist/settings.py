@@ -149,7 +149,7 @@ INVOICE_IMG_DIR = os.path.join(STATICFILES_DIRS[0], 'site/images/iconoAgroAmanec
 # Documentation
 DOCUMENTATION_ROOT = os.path.join(BASE_DIR, 'docs')
 DOCUMENTATION_HTML_ROOT = os.path.join(BASE_DIR, 'site')
-DOCUMENTATION_ACCESS_FUNCTION = lambda user: user.is_staff
+DOCUMENTATION_ACCESS_FUNCTION = lambda user: user.is_active
 
 
 # Django-mkdocs assumes an Nginx server is used by default to serve the documentation. 
