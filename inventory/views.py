@@ -1968,12 +1968,15 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
         totalCuota = 0
         for f in cobrodetalleinline:
             if f.cleaned_data.get('check'):
-                totalCuota = totalCuota +f.cleaned_data.get('cancelacion')
                 existeUnSeleccionado = True
+                if f.cleaned_data.get('cancelacion') is not None:
+                    totalCuota = totalCuota +f.cleaned_data.get('cancelacion')
+                
                 
         totalMedioCobro = 0
         for f in mediocobrodetalleinline:
-            totalMedioCobro = totalMedioCobro + f.cleaned_data.get('monto')
+            if  f.cleaned_data.get('monto') is not None:
+                totalMedioCobro = totalMedioCobro + f.cleaned_data.get('monto')
         montoASaldarValor = form.cleaned_data['montoASaldar']
         if existeUnSeleccionado == False:
             form.add_error(None, 'Seleccione al menos un detalle a cobrar')
