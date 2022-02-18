@@ -624,17 +624,29 @@ class ProduccionAgricolaTable(BaseTable):
         model = ActividadAgricola
         fields = ("fechaDocumento","tipoActividadAgricola","zafra","finca","lote","totalMaquinaria","totalItem","total")
 
+class SummingTotalColumn(tables.Column):
+    attrs = {
+        "th":{
+            "class":"text-right"
+        },
+        "td":{
+            "class":"text-right"
+        },
+        "tf":{
+            "class":"text-right"
+        }
+    }
 
+    def render(self, value):
+        return super().render(intcomma(value))
+
+    def render_footer(self, bound_column, table):
+        return "Total: "+intcomma(sum(bound_column.accessor.resolve(row) for row in table.data))
 
 class InventarioDepositoInformeTable(BaseTable):   
     def render_cantidad(self,value):
         return intcomma(value)
-    cantidad = tables.Column(verbose_name= 'Cantidad',attrs={
-            "td": {"align": "right"},
-            "th":{
-            "class":"text-right"
-            },
-        } )
+    cantidad = SummingTotalColumn(verbose_name='Cantidad')
     class Meta:
         model = ItemMovimiento
         fields = ("fechaDocumento","deposito","item","tipoMovimiento","cantidad")
