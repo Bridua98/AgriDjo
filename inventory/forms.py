@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from django.shortcuts import reverse
 from email.policy import default
 import calculation
@@ -119,7 +120,7 @@ class PlanActividadZafraForm(forms.ModelForm):
         )
 
 class PlanActividadZafraDetalleForm(forms.ModelForm):
-    fechaActividad = forms.DateField(widget=DateInput(format='%Y-%m-%d'))
+    fechaActividad = forms.DateField(widget=DateInput(format='%Y-%m-%d'), label="Fecha Act.")
     class Meta:
         model = PlanActividadZafraDetalle
         fields = ['fechaActividad', 'finca', 'tipoActividadAgricola', 'descripcion','costo']
