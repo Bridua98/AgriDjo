@@ -1983,7 +1983,7 @@ class CobroCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
             form.add_error('montoASaldar', 'El Monto A Saldar difiere de la suma de los medios de cobros')
 
     def get_inlines(self):
-        initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': x.monto, 'saldo': x.saldo, 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True,venta__cliente__pk = self.request.GET.get('cliente')).exclude(saldo = 0) ]
+        initial = [ {'cuotaVenta': x,'check': False, 'comprobante': x.venta.comprobante, 'monto': round(x.monto), 'saldo': round(x.saldo), 'cancelacion': 0} for x in CuotaVenta.objects.filter(venta__esVigente = True,venta__cliente__pk = self.request.GET.get('cliente')).exclude(saldo = 0) ]
         cobrodetalleinline = self.inlines[0]
         cobrodetalleinline.initial = initial
         cobrodetalleinline.factory_kwargs['extra'] = len(initial)
@@ -2078,11 +2078,11 @@ class LiquidacionAgricolaCreateView(LoginRequiredMixin,CreateWithFormsetInlinesV
         tipoSel = self.request.GET.get('tipo', None)
         precio = self.request.GET.get('precioUnitario', None)
         if tipoSel == 'ACTIVIDADES AGRICOLAS':
-            initial = [{'precio': precio, 'secuenciaOrigen': x.pk, 'check': False, 'movimiento': x.tipoActividadAgricola.descripcion, 'finca': x.finca, 'lote': x.lote, 'cantidad': x.cantidadTrabajada, 'subTotal':  (float(x.cantidadTrabajada) * float(
-                precio))} for x in ActividadAgricola.objects.filter(esVigente=True, esServicioContratado=True) if not LiquidacionAgricolaDetalle.objects.filter(liquidacionAgricola__esVigente=True, secuenciaOrigen=x.pk, liquidacionAgricola__tipo='ACTIVIDADES AGRICOLAS').exists()]
+            initial = [{'precio': precio, 'secuenciaOrigen': x.pk, 'check': False, 'movimiento': x.tipoActividadAgricola.descripcion, 'finca': x.finca, 'lote': x.lote, 'cantidad': x.cantidadTrabajada, 'subTotal':  round((float(x.cantidadTrabajada) * float(
+                precio)))} for x in ActividadAgricola.objects.filter(esVigente=True, esServicioContratado=True) if not LiquidacionAgricolaDetalle.objects.filter(liquidacionAgricola__esVigente=True, secuenciaOrigen=x.pk, liquidacionAgricola__tipo='ACTIVIDADES AGRICOLAS').exists()]
         else:
             initial = [{'precio': precio, 'secuenciaOrigen': x.pk, 'check': False, 'movimiento': "Comp:" + x.acopio.comprobante + " Conductor "+x.acopio.conductor.razonSocial, 'finca': x.finca, 'lote': x.lote,
-                        'cantidad': x.acopio.pBruto, 'subTotal':  (float(x.acopio.pBruto) * float(precio))} for x in AcopioDetalle.objects.filter(acopio__esVigente=True, acopio__esTransportadoraPropia=False) if not LiquidacionAgricolaDetalle.objects.filter(liquidacionAgricola__esVigente=True, secuenciaOrigen=x.pk, liquidacionAgricola__tipo='ACOPIOS').exists()]
+                        'cantidad': x.acopio.pBruto, 'subTotal':  round((float(x.acopio.pBruto) * float(precio)))} for x in AcopioDetalle.objects.filter(acopio__esVigente=True, acopio__esTransportadoraPropia=False) if not LiquidacionAgricolaDetalle.objects.filter(liquidacionAgricola__esVigente=True, secuenciaOrigen=x.pk, liquidacionAgricola__tipo='ACOPIOS').exists()]
         detalle = self.inlines[0]
         detalle.initial = initial
         detalle.factory_kwargs['extra'] = len(initial)
@@ -2380,7 +2380,7 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
             if costoTotal != 0  or acopios !=0 or hectareasCultivadas != 0:                                                
                 initial += [ {'check': False,'finca': fincaDet, 'haCultivada': hectareasCultivadas, 'cantidadAcopioNeto': round(acopios), 'rendimiento': round(rendimientoKg), 'costoTotal': round(costoTotal), 'costoHA': round(costoHa), 'costoUnit': round(costoUnit)}]
        
-       
+
         detalle = self.inlines[0]
         detalle.initial = initial
         detalle.factory_kwargs['extra'] = len(initial)
