@@ -2378,7 +2378,8 @@ class CierreZafraCreateView(LoginRequiredMixin,CreateWithFormsetInlinesView):
                 costoUnit = round(costoTotal / acopios)
 
             if costoTotal != 0  or acopios !=0 or hectareasCultivadas != 0:                                                
-                initial += [ {'check': False,'finca': fincaDet, 'haCultivada': hectareasCultivadas, 'cantidadAcopioNeto': round(acopios), 'rendimiento': round(rendimientoKg), 'costoTotal': round(costoTotal()), 'costoHA': round(costoHa), 'costoUnit': round(costoUnit)}]
+                initial += [ {'check': False,'finca': fincaDet, 'haCultivada': hectareasCultivadas, 'cantidadAcopioNeto': round(acopios), 'rendimiento': round(rendimientoKg), 'costoTotal': round(costoTotal), 'costoHA': round(costoHa), 'costoUnit': round(costoUnit)}]
+       
        
         detalle = self.inlines[0]
         detalle.initial = initial
